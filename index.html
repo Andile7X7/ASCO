@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>ASIHLANGANENI CIVIC MOVEMENT | ASCO Official Site</title>
+    <link rel="icon" href="Assets/ASCO_logo.jpeg" type="image/jpeg" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#313030",
+                        "on-surface-variant": "#41493e",
+                        "surface-dim": "#dcd9d9",
+                        "outline": "#717a6d",
+                        "secondary-container": "#fed65b",
+                        "primary-fixed": "#acf4a4",
+                        "secondary": "#735c00",
+                        "surface-container-highest": "#e5e2e1",
+                        "surface": "#fcf9f8",
+                        "secondary-fixed": "#ffe088",
+                        "error": "#ba1a1a",
+                        "background-main": "#FFFFFF",
+                        "on-background": "#1c1b1b",
+                        "secondary-fixed-dim": "#e9c349",
+                        "tertiary-fixed": "#ffd9e2",
+                        "on-primary-fixed-variant": "#0c5216",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#3e001d",
+                        "surface-container-high": "#ebe7e7",
+                        "on-secondary-fixed": "#241a00",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#2a6b2c",
+                        "surface-muted": "#F5F5F5",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#574500",
+                        "primary-fixed-dim": "#91d78a",
+                        "on-primary-fixed": "#002203",
+                        "on-secondary-container": "#745c00",
+                        "surface-container": "#f0edec",
+                        "text-secondary": "#424242",
+                        "tertiary": "#6b1d3d",
+                        "inverse-on-surface": "#f3f0ef",
+                        "primary": "#00450d",
+                        "text-primary": "#121212",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#ffaec6",
+                        "surface-variant": "#e5e2e1",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#883454",
+                        "outline-variant": "#c0c9bb",
+                        "on-surface": "#1c1b1b",
+                        "on-tertiary-fixed-variant": "#7a2949",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-bright": "#fcf9f8",
+                        "inverse-primary": "#91d78a",
+                        "background": "#fcf9f8",
+                        "tertiary-fixed-dim": "#ffb1c8",
+                        "primary-container": "#1b5e20",
+                        "border-subtle": "#E0E0E0",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "space-md": "16px",
+                        "max-container": "1200px",
+                        "space-xs": "4px",
+                        "gutter": "20px",
+                        "space-xl": "32px",
+                        "sidebar-width": "260px",
+                        "space-sm": "8px",
+                        "unit": "4px",
+                        "space-lg": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Hanken Grotesk"],
+                        "h1-mobile": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "h3": ["Hanken Grotesk"],
+                        "h1": ["Hanken Grotesk"],
+                        "h2": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "h1-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "h3": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "h1": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "h2": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        @media (min-width: 1140px) {
+            .nav-links-desktop {
+                display: flex !important;
+            }
+            .burger-menu-btn {
+                display: none !important;
+            }
+        }
+        @media (max-width: 1139px) {
+            .nav-links-desktop {
+                display: none !important;
+            }
+            .burger-menu-btn {
+                display: flex !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface overflow-x-hidden">
+    <!-- Menu Backdrop Overlay -->
+    <div id="menu-overlay" class="fixed inset-0 bg-on-background/40 z-40 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out"></div>
+
+    <!-- Sliding Side Menu Drawer -->
+    <div id="side-menu" class="fixed top-0 right-0 h-full w-[300px] bg-surface shadow-2xl border-l border-border-subtle z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-space-lg">
+        <button id="close-menu-btn" class="self-end text-primary hover:opacity-80 transition-opacity mb-space-lg">
+            <span class="material-symbols-outlined text-[28px]">close</span>
+        </button>
+        <nav class="flex flex-col gap-space-md">
+            <a class="text-primary font-semibold font-body-lg text-body-lg pb-space-sm border-b-2 border-primary" href="index.html">Home</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle" href="About.html">About</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle" href="StrategicPlan.html">Strategic Planning</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle" href="ServiceDelivery.html">Service Delivery</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle" href="8Pillars.html">8 Pillars</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle" href="Contact.html">Contact</a>
+        </nav>
+        <button class="mt-space-xl bg-primary-container text-on-primary py-space-sm rounded-xl font-body-md text-body-md hover:opacity-90 transition-all uppercase tracking-wider font-semibold">
+            Join Movement
+        </button>
+    </div>
+
+    <!-- Page Wrapper (gets shifted left to displace the content) -->
+    <div id="page-wrapper" class="w-full min-h-screen transition-transform duration-300 ease-in-out flex flex-col">
+        <!-- TopNavBar -->
+        <header class="fixed top-0 w-full z-30 bg-surface border-b border-border-subtle">
+            <div class="flex justify-between items-center h-[56px] px-space-lg max-w-max-container mx-auto">
+                <div class="flex items-center">
+                    <img src="Assets/ASCO_logo.jpeg" alt="ASCO Logo" width="36" height="36" class="mr-2" />
+                    <div class="text-sm xs:text-base sm:text-lg md:text-xl lg:text-h2 font-bold text-primary whitespace-nowrap overflow-hidden text-ellipsis">ASIHLANGANENI CIVIC MOVEMENT</div>
+                </div>
+                <div class="nav-links-desktop items-center gap-space-lg">
+                    <!-- Desktop Navigation -->
+                    <nav class="flex gap-space-lg items-center">
+                        <a class="text-primary font-semibold border-b-2 border-primary pb-1 font-body-md text-body-md"
+                            href="index.html">Home</a>
+                        <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md"
+                            href="About.html">About</a>
+                        <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md"
+                            href="StrategicPlan.html">Strategic Planning</a>
+                        <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md"
+                            href="ServiceDelivery.html">Service Delivery</a>
+                        <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md"
+                            href="8Pillars.html">8 Pillars</a>
+                        <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md"
+                            href="Contact.html">Contact</a>
+                    </nav>
+                    <button
+                        class="bg-primary-container text-on-primary px-space-md py-space-xs rounded-lg font-label-sm text-label-sm uppercase tracking-wider hover:opacity-90 transition-all">
+                        Join Movement
+                    </button>
+                </div>
+                <button id="burger-menu-btn" class="burger-menu-btn text-primary hover:opacity-80 transition-opacity">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 stroke-primary fill-primary">
+                        <path d="M1 12C1 11.4477 1.44772 11 2 11H22C22.5523 11 23 11.4477 23 12C23 12.5523 22.5523 13 22 13H2C1.44772 13 1 12.5523 1 12Z" fill="currentColor"/>
+                        <path d="M1 4C1 3.44772 1.44772 3 2 3H22C22.5523 3 23 3.44772 23 4C23 4.55228 22.5523 5 22 5H2C1.44772 5 1 4.55228 1 4Z" fill="currentColor"/>
+                        <path d="M1 20C1 19.4477 1.44772 19 2 19H22C22.5523 19 23 19.4477 23 20C23 20.5523 22.5523 21 22 21H2C1.44772 21 1 20.5523 1 20Z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+    <main class="pt-[56px]">
+        <!-- Hero Section -->
+        <section class="relative h-[600px] flex items-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img alt="Community Engagement Hero" class="w-full h-full object-cover"
+                    data-alt="A wide-angle, professional photograph of a community meeting in a modern civic hall. The lighting is bright and natural, emphasizing transparency and open communication. The scene features a diverse group of focused citizens engaged in formal discussion, with clean architectural lines and a muted color palette of whites and greens reflecting an institutional and professional atmosphere."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGB47bDWubksj2IWRrzzw35rT6rEZGefN6o0bZ6IdRevU-S7ii27QeT3mrkChgcjTMx79R-YeGBJGAOsw_nnNImXOwk5X9sNQLsrExKdMlo1Kiy1Xm9Ot9SAPSPVVNTwBvwoDhlLLwJdPAVxgZaoO7xJRw6sXUC4tmygVV9ni4t5LQhnp_czDPamDxm2dL2XSVeiqvQVDy1ahbGGuxZdNfh7XuyhbpMMf0ZYrjWGif4KzjvgQqGn6j44Lz0_KZUXz2aWAylJ2dv3M" />
+                <div class="absolute inset-0 bg-primary/40 mix-blend-multiply"></div>
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-on-background/90 via-on-background/60 to-transparent">
+                </div>
+            </div>
+            <div class="relative z-10 max-w-max-container mx-auto px-space-lg w-full">
+                <div class="max-w-2xl">
+                    <h1 class="font-h1 text-h1 text-white mb-space-md leading-tight">
+                        Uniting Communities Through <span class="text-primary-fixed">Accountability</span> and
+                        Development
+                    </h1>
+                    <p class="font-body-lg text-body-lg text-surface-variant mb-space-xl">
+                        A movement dedicated to formal governance, constitutional order, and the socio-economic
+                        advancement of every citizen through collective action.
+                    </p>
+                    <div class="flex gap-space-md">
+                        <button
+                            class="bg-primary text-white px-space-xl py-space-md rounded-lg font-h3 text-h3 hover:bg-primary-container transition-colors">
+                            Join The Movement
+                        </button>
+                        <button
+                            class="border border-white text-white px-space-xl py-space-md rounded-lg font-h3 text-h3 hover:bg-white/10 transition-colors">
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- About Preview Section -->
+        <section class="py-space-xl bg-background">
+            <div class="max-w-max-container mx-auto px-space-lg">
+                <div class="grid md:grid-cols-2 gap-space-xl items-center">
+                    <div>
+                        <span
+                            class="text-primary font-label-sm text-label-sm uppercase tracking-widest block mb-space-sm">About
+                            ASCO</span>
+                        <h2 class="font-h1 text-h1 mb-space-md text-on-surface">Restoring Civic Dignity</h2>
+                        <div class="space-y-space-md font-body-lg text-body-lg text-on-surface-variant">
+                            <p>
+                                ASIHLANGANENI CIVIC MOVEMENT (ASCO) is a principled organization established to bridge
+                                the gap between governance and the grassroots community. We focus on localized
+                                development, addressing service delivery failures, and tackling the scourge of
+                                unemployment.
+                            </p>
+                            <p>
+                                Our approach is rooted in the belief that community participation is the cornerstone of
+                                sustainable development. By fostering a culture of accountability, we ensure that
+                                resources are utilized effectively for the benefit of all citizens.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bg-surface-muted p-space-lg border border-border-subtle rounded-xl">
+                        <img alt="Institutional Rigor"
+                            class="w-full h-auto rounded-lg mb-space-md grayscale contrast-125"
+                            data-alt="A high-contrast black and white architectural photograph of a modern government building with clean geometric lines and stable structures. The image communicates institutional rigor and transparency, with sharp shadows and clear perspectives that evoke a sense of order, professional governance, and reliability in civic infrastructure."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSUMtmSzzRawz-r_TMOZl9qDVpnAUhzT5lFcm8SYSPILgsi8fat0CQwTnnKAIVFKtr6kubRQ9820cbmVsZyQ1RSa3-2xF0TkSj0GtaU0EZC_OLhLBF5Wt5h7KaO_i4ZfpNEx42AtC_OwMGZII4vd9ih2gH7gsF_0gL63Ht6iforsbziZQy7iYtMvKvs3qTCheHzVjBEKs-PRx2wfem6Abgo8aSjlWApkassznGCmiFF_c4l5L9p-PrBqfHxGYwsQD0Ij234C9ZQNQ" />
+                        <div class="flex items-start gap-space-sm">
+                            <span class="material-symbols-outlined text-primary mt-1">verified</span>
+                            <p class="font-body-md text-body-md text-on-surface font-semibold">Registered under
+                                Constitutional Mandate for Civic Oversight.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Vision & Mission Section -->
+        <section class="py-space-xl bg-surface-container-low border-y border-border-subtle">
+            <div class="max-w-max-container mx-auto px-space-lg">
+                <div class="grid md:grid-cols-2 gap-space-xl">
+                    <div class="bg-white p-space-xl border border-border-subtle rounded-xl">
+                        <div class="w-12 h-12 bg-primary-fixed flex items-center justify-center rounded-lg mb-space-md">
+                            <span class="material-symbols-outlined text-primary"
+                                style="font-variation-settings: 'FILL' 1;">visibility</span>
+                        </div>
+                        <h3 class="font-h2 text-h2 mb-space-sm text-on-surface">Our Vision</h3>
+                        <p class="font-body-lg text-body-lg text-on-surface-variant">
+                            To create a society where transparency, accountability, and development are the standards of
+                            governance, ensuring every community thrives in dignity and security.
+                        </p>
+                    </div>
+                    <div class="bg-white p-space-xl border border-border-subtle rounded-xl">
+                        <div class="w-12 h-12 bg-primary-fixed flex items-center justify-center rounded-lg mb-space-md">
+                            <span class="material-symbols-outlined text-primary"
+                                style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+                        </div>
+                        <h3 class="font-h2 text-h2 mb-space-sm text-on-surface">Our Mission</h3>
+                        <p class="font-body-lg text-body-lg text-on-surface-variant">
+                            To empower citizens through civic education, advocate for ethical service delivery, and
+                            facilitate localized economic opportunities that directly benefit the unemployed.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Focus Areas Bento Grid -->
+        <section class="py-space-xl bg-background">
+            <div class="max-w-max-container mx-auto px-space-lg">
+                <div class="text-center mb-space-xl">
+                    <span
+                        class="text-primary font-label-sm text-label-sm uppercase tracking-widest block mb-space-sm">Strategic
+                        Focus</span>
+                    <h2 class="font-h1 text-h1 text-on-surface">Pillars of Transformation</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+                    <!-- Service Delivery -->
+                    <div
+                        class="md:col-span-2 bg-white border border-border-subtle p-space-lg rounded-xl flex flex-col justify-between hover:border-primary transition-colors cursor-default">
+                        <div>
+                            <span class="material-symbols-outlined text-primary mb-space-sm">package_2</span>
+                            <h3 class="font-h2 text-h2 mb-space-sm">Service Delivery Oversight</h3>
+                            <p class="font-body-md text-body-md text-on-surface-variant">Direct monitoring of municipal
+                                and state services to ensure water, electricity, and sanitation reach every household
+                                without interruption.</p>
+                        </div>
+                        <div class="mt-space-lg border-t border-border-subtle pt-space-sm">
+                            <a class="text-primary font-label-sm text-label-sm flex items-center gap-1" href="#">View
+                                Current Audits <span
+                                    class="material-symbols-outlined text-[16px]">arrow_forward</span></a>
+                        </div>
+                    </div>
+                    <!-- LED -->
+                    <div
+                        class="bg-surface-muted border border-border-subtle p-space-lg rounded-xl flex flex-col justify-between">
+                        <div>
+                            <span class="material-symbols-outlined text-primary mb-space-sm">trending_up</span>
+                            <h3 class="font-h3 text-h3 mb-space-sm">Local Economic Development</h3>
+                            <p class="font-body-md text-body-md text-on-surface-variant">Harnessing local talent and
+                                resources to create sustainable jobs within the community boundaries.</p>
+                        </div>
+                    </div>
+                    <!-- Accountability -->
+                    <div
+                        class="bg-surface-muted border border-border-subtle p-space-lg rounded-xl flex flex-col justify-between">
+                        <div>
+                            <span class="material-symbols-outlined text-primary mb-space-sm">gavel</span>
+                            <h3 class="font-h3 text-h3 mb-space-sm">Accountability</h3>
+                            <p class="font-body-md text-body-md text-on-surface-variant">Holding officials responsible
+                                through legal and community-driven oversight mechanisms.</p>
+                        </div>
+                    </div>
+                    <!-- Participation -->
+                    <div
+                        class="md:col-span-2 bg-white border border-border-subtle p-space-lg rounded-xl flex flex-col justify-between">
+                        <div class="flex gap-space-lg items-start">
+                            <div class="flex-1">
+                                <span class="material-symbols-outlined text-primary mb-space-sm">groups</span>
+                                <h3 class="font-h2 text-h2 mb-space-sm">Community Participation</h3>
+                                <p class="font-body-md text-body-md text-on-surface-variant">Ensuring that "Nothing for
+                                    us without us" is not just a slogan, but a mandatory practice in planning.</p>
+                            </div>
+                            <img alt="Participation" class="w-32 h-32 object-cover rounded-lg hidden sm:block grayscale"
+                                data-alt="A tight-cropped, high-detail photograph of diverse hands coming together on a wooden table, symbolizing unity and community participation. The lighting is warm and directional, emphasizing textures of skin and wood. The style is honest and journalistic, avoiding artificial filters to maintain an institutional and professional tone."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSKeXbk9diqUWo7U-yS7_QOj-bF4U9mFVeqzaBwOOl6zu75gKGs_tzgfpex3cyralSL0WdTDNnGCFHBmS9RYinfg6dE5CEb5iXcXNLUVNwC_UvqL9Z_kjvX5DpQtbrjgOe1vxtDqG3wBV3oaKKG_PX8OAcLe8ywy1VNi5BsK58lQnAKdpbWP1IysOMNydyJr9rtcmHkA3kyi-THLpiyNnJI37dskP6pIHuQLISbvy78K84e5vmEA4PwGL-KodDQmnoyQrrBijOPxw" />
+                        </div>
+                    </div>
+                    <!-- Sustainable Governance -->
+                    <div
+                        class="md:col-span-3 bg-primary-container p-space-lg rounded-xl text-on-primary flex flex-col md:flex-row justify-between items-center gap-space-lg">
+                        <div class="md:max-w-xl">
+                            <h3 class="font-h2 text-h2 mb-space-xs">Sustainable Governance</h3>
+                            <p class="font-body-md text-body-md opacity-90">Building structures that outlast political
+                                cycles, focused on constitutional order and the long-term prosperity of our movement
+                                members.</p>
+                        </div>
+                        <button
+                            class="bg-white text-primary px-space-lg py-space-sm rounded-lg font-label-sm text-label-sm uppercase tracking-wider whitespace-nowrap">
+                            Read Governance Policy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- CTA Section -->
+        <section class="py-[80px] bg-on-background relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10">
+                <!-- Subtle geometric pattern background via CSS -->
+                <div class="w-full h-full"
+                    style="background-image: radial-gradient(circle at 2px 2px, #ffffff 1px, transparent 0); background-size: 40px 40px;">
+                </div>
+            </div>
+            <div class="relative z-10 max-w-max-container mx-auto px-space-lg text-center">
+                <h2 class="font-h1 text-h1 text-white mb-space-md">Become Part of the Movement</h2>
+                <p class="font-body-lg text-body-lg text-surface-variant max-w-2xl mx-auto mb-space-xl">
+                    Our strength lies in our unity. Join thousands of citizens who have decided to stop being spectators
+                    and start being architects of their own future.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-space-md">
+                    <button
+                        class="bg-primary text-white px-[40px] py-space-md rounded-lg font-h3 text-h3 hover:bg-primary-container transition-all">
+                        Register as a Member
+                    </button>
+                    <button
+                        class="border border-surface-variant text-white px-[40px] py-space-md rounded-lg font-h3 text-h3 hover:bg-white/10 transition-all">
+                        Donate to Cause
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full bg-surface-container border-t border-border-subtle">
+        <div
+            class="w-full py-space-xl px-space-lg flex flex-col md:flex-row justify-between items-start gap-space-lg max-w-max-container mx-auto">
+            <div class="flex flex-col gap-space-sm max-w-sm">
+                <div class="font-h3 text-h3 font-bold text-primary">ASCO</div>
+                <p class="font-body-md text-body-md text-on-surface-variant">
+                    ASIHLANGANENI CIVIC MOVEMENT is a non-partisan organization dedicated to community empowerment
+                    through ethical governance.
+                </p>
+                <p class="font-label-sm text-label-sm text-primary mt-space-sm">
+                    © 2024 ASIHLANGANENI CIVIC MOVEMENT. Community • Accountability • Development
+                </p>
+            </div>
+            <div class="grid grid-cols-2 gap-space-xl">
+                <div class="flex flex-col gap-space-sm">
+                    <span
+                        class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Movement</span>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Mission Statement</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Quick Links</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Volunteer</a>
+                </div>
+                <div class="flex flex-col gap-space-sm">
+                    <span
+                        class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Legal</span>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Privacy Policy</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Terms of Service</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Constitution</a>
+                </div>
+            </div>
+            <div class="flex flex-col gap-space-sm">
+                <span class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Contact
+                    Us</span>
+                <div class="flex items-center gap-space-sm text-on-surface-variant">
+                    <span class="material-symbols-outlined text-[18px]">mail</span>
+                    <span class="font-body-md text-body-md">info@asco-movement.org.za</span>
+                </div>
+                <div class="flex items-center gap-space-sm text-on-surface-variant">
+                    <span class="material-symbols-outlined text-[18px]">location_on</span>
+                    <span class="font-body-md text-body-md">Pretoria, South Africa</span>
+                </div>
+                <div class="flex gap-space-sm mt-space-sm">
+                    <a class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center hover:bg-primary-fixed transition-colors"
+                        href="#">
+                        <img alt="FB" class="w-4 h-4 opacity-70"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0uwROLCN0_CB1xncjON4AMmdsAs4xdMtZgp973LQ5KFE7v1r7Ye94-G-7OcGPzCct-O6jvaSFCMfl2RbWXzfPBgpQ9uHpnz-J-Tn8kAiOXIGae5KXTbTDjRsixeriXhean8mHOES5aV1uJVZrS_PIC2OlGH-zgpxuCI5A1KCuwZeohLHlHNA3vq9ia1mR6pVfKwqTHZWTFfS4-7W91MX35h7TEYg7zPjDT1YascgKZrEdJ4cj2UC3BXODdh0zdaXdbjXmdXiAalU" />
+                    </a>
+                    <a class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center hover:bg-primary-fixed transition-colors"
+                        href="#">
+                        <img alt="TW" class="w-4 h-4 opacity-70"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1JW7LeoW0mrmoDZTs3VBlYJcMdayoLHDelyOldvL1kIQPaUb_IHRp6-PqEZv8jgrBYGboRkTS9mTqtzYQ9l_W8TDEj1Ijb24zgwlpLNM_7YzVOPjaOKC0hwJ4rrwapvSHYh9tFp_zemEoa-vYerty-SWUOQ4ZhqSaPqAhXONpcGeqPuCkgdkZUO8--ZI5Mj95OuwsLglitPy1n3CnaBhWVfzPmYXceYSIEjgkhkGFRvUmvg8fmdVD_UNbAT1S2KzNvpxT3Pmt6z8" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const burgerBtn = document.getElementById('burger-menu-btn');
+            const closeBtn = document.getElementById('close-menu-btn');
+            const sideMenu = document.getElementById('side-menu');
+            const pageWrapper = document.getElementById('page-wrapper');
+            const menuOverlay = document.getElementById('menu-overlay');
+
+            function openMenu() {
+                sideMenu.classList.remove('translate-x-full');
+                pageWrapper.classList.add('-translate-x-[300px]');
+                menuOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                document.body.classList.add('overflow-hidden');
+            }
+
+            function closeMenu() {
+                sideMenu.classList.add('translate-x-full');
+                pageWrapper.classList.remove('-translate-x-[300px]');
+                menuOverlay.classList.add('opacity-0', 'pointer-events-none');
+                document.body.classList.remove('overflow-hidden');
+            }
+
+            burgerBtn.addEventListener('click', openMenu);
+            closeBtn.addEventListener('click', closeMenu);
+            menuOverlay.addEventListener('click', closeMenu);
+        });
+    </script>
+</body>
+
+</html>

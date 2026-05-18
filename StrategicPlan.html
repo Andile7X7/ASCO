@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Strategic Planning | ASIHLANGANENI CIVIC MOVEMENT</title>
+    <link rel="icon" href="Assets/ASCO_logo.jpeg" type="image/jpeg" />
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#313030",
+                        "on-surface-variant": "#41493e",
+                        "surface-dim": "#dcd9d9",
+                        "outline": "#717a6d",
+                        "secondary-container": "#fed65b",
+                        "primary-fixed": "#acf4a4",
+                        "secondary": "#735c00",
+                        "surface-container-highest": "#e5e2e1",
+                        "surface": "#fcf9f8",
+                        "secondary-fixed": "#ffe088",
+                        "error": "#ba1a1a",
+                        "background-main": "#FFFFFF",
+                        "on-background": "#1c1b1b",
+                        "secondary-fixed-dim": "#e9c349",
+                        "tertiary-fixed": "#ffd9e2",
+                        "on-primary-fixed-variant": "#0c5216",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#3e001d",
+                        "surface-container-high": "#ebe7e7",
+                        "on-secondary-fixed": "#241a00",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#2a6b2c",
+                        "surface-muted": "#F5F5F5",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#574500",
+                        "primary-fixed-dim": "#91d78a",
+                        "on-primary-fixed": "#002203",
+                        "on-secondary-container": "#745c00",
+                        "surface-container": "#f0edec",
+                        "text-secondary": "#424242",
+                        "tertiary": "#6b1d3d",
+                        "inverse-on-surface": "#f3f0ef",
+                        "primary": "#00450d",
+                        "text-primary": "#121212",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#ffaec6",
+                        "surface-variant": "#e5e2e1",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#883454",
+                        "outline-variant": "#c0c9bb",
+                        "on-surface": "#1c1b1b",
+                        "on-tertiary-fixed-variant": "#7a2949",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-bright": "#fcf9f8",
+                        "inverse-primary": "#91d78a",
+                        "background": "#fcf9f8",
+                        "tertiary-fixed-dim": "#ffb1c8",
+                        "primary-container": "#1b5e20",
+                        "border-subtle": "#E0E0E0",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "space-md": "16px",
+                        "max-container": "1200px",
+                        "space-xs": "4px",
+                        "gutter": "20px",
+                        "space-xl": "32px",
+                        "sidebar-width": "260px",
+                        "space-sm": "8px",
+                        "unit": "4px",
+                        "space-lg": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Hanken Grotesk"],
+                        "h1-mobile": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "h3": ["Hanken Grotesk"],
+                        "h1": ["Hanken Grotesk"],
+                        "h2": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "h1-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "h3": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "h1": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "h2": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            background-color: #fcf9f8;
+            color: #1c1b1b;
+            overflow-x: hidden;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        @media (min-width: 1140px) {
+            .nav-links-desktop {
+                display: flex !important;
+            }
+            .burger-menu-btn {
+                display: none !important;
+            }
+        }
+        @media (max-width: 1139px) {
+            .nav-links-desktop {
+                display: none !important;
+            }
+            .burger-menu-btn {
+                display: flex !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface overflow-x-hidden">
+    <!-- Menu Backdrop Overlay -->
+    <div id="menu-overlay" class="fixed inset-0 bg-on-background/40 z-40 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out"></div>
+
+    <!-- Sliding Side Menu Drawer -->
+    <div id="side-menu" class="fixed top-0 right-0 h-full w-[300px] bg-surface shadow-2xl border-l border-border-subtle z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-space-lg">
+        <button id="close-menu-btn" class="self-end text-primary hover:opacity-80 transition-opacity mb-space-lg">
+            <span class="material-symbols-outlined text-[28px]">close</span>
+        </button>
+        <nav class="flex flex-col gap-space-md">
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle" href="index.html">Home</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle" href="About.html">About</a>
+            <a class="text-primary font-semibold font-body-lg text-body-lg pb-space-sm border-b-2 border-primary" href="StrategicPlan.html">Strategic Planning</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle" href="ServiceDelivery.html">Service Delivery</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle" href="8Pillars.html">8 Pillars</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle" href="Contact.html">Contact</a>
+        </nav>
+        <button class="mt-space-xl bg-primary-container text-on-primary py-space-sm rounded-xl font-body-md text-body-md hover:opacity-90 transition-all uppercase tracking-wider font-semibold">
+            Join Movement
+        </button>
+    </div>
+
+    <!-- Page Wrapper (gets shifted left to displace the content) -->
+    <div id="page-wrapper" class="w-full min-h-screen transition-transform duration-300 ease-in-out flex flex-col">
+        <!-- TopNavBar -->
+        <header class="fixed top-0 w-full z-30 bg-surface dark:bg-on-background border-b border-border-subtle">
+            <div class="flex justify-between items-center h-[56px] px-space-lg max-w-max-container mx-auto">
+                <div class="flex items-center">
+                    <img src="Assets/ASCO_logo.jpeg" alt="ASCO Logo" width="36" height="36" class="mr-2" />
+                    <div class="text-sm xs:text-base sm:text-lg md:text-xl lg:text-h2 font-bold text-primary dark:text-primary-fixed-dim whitespace-nowrap overflow-hidden text-ellipsis">ASIHLANGANENI CIVIC MOVEMENT</div>
+                </div>
+                <div class="nav-links-desktop items-center gap-space-lg">
+                    <nav class="flex space-x-space-lg items-center">
+                        <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors font-body-md text-body-md"
+                            href="index.html">Home</a>
+                        <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors font-body-md text-body-md"
+                            href="About.html">About</a>
+                        <a class="text-primary dark:text-primary-fixed-dim font-semibold border-b-2 border-primary dark:border-primary-fixed-dim pb-1 font-body-md text-body-md"
+                            href="StrategicPlan.html">Strategic Planning</a>
+                        <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors font-body-md text-body-md"
+                            href="ServiceDelivery.html">Service Delivery</a>
+                        <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors font-body-md text-body-md"
+                            href="8Pillars.html">8 Pillars</a>
+                        <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors font-body-md text-body-md"
+                            href="Contact.html">Contact</a>
+                        <button
+                            class="ml-space-md px-space-md py-space-sm bg-primary-container text-on-primary rounded-lg font-label-sm text-label-sm hover:opacity-90 transition-all">
+                            Join Movement
+                        </button>
+                    </nav>
+                </div>
+                <button id="burger-menu-btn" class="burger-menu-btn text-primary hover:opacity-80 transition-opacity">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 stroke-primary fill-primary">
+                        <path d="M1 12C1 11.4477 1.44772 11 2 11H22C22.5523 11 23 11.4477 23 12C23 12.5523 22.5523 13 22 13H2C1.44772 13 1 12.5523 1 12Z" fill="currentColor"/>
+                        <path d="M1 4C1 3.44772 1.44772 3 2 3H22C22.5523 3 23 3.44772 23 4C23 4.55228 22.5523 5 22 5H2C1.44772 5 1 4.55228 1 4Z" fill="currentColor"/>
+                        <path d="M1 20C1 19.4477 1.44772 19 2 19H22C22.5523 19 23 19.4477 23 20C23 20.5523 22.5523 21 22 21H2C1.44772 21 1 20.5523 1 20Z" fill="currentColor"/>
+                    </svg>
+                </button>
+        </div>
+    </header>
+    <main class="pt-[56px] pb-space-xl">
+        <!-- Hero Section / Introduction -->
+        <section class="bg-surface-container-lowest border-b border-border-subtle">
+            <div class="max-w-max-container mx-auto px-space-lg py-space-xl md:py-24">
+                <div class="max-w-3xl">
+                    <span
+                        class="inline-block px-3 py-1 bg-primary text-on-primary text-label-sm font-label-sm rounded mb-space-md">STRATEGIC
+                        FRAMEWORK</span>
+                    <h1 class="font-h1 text-h1 text-primary mb-space-lg">Consultative Governance &amp; Planning</h1>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                        ASIHLANGANENI (ASCO) operates on a foundation of professional, constitutional order. Our
+                        strategic planning is not a top-down mandate but a consultative journey where community voices
+                        shape legislative outcomes. We prioritize transparency and accountability in every ward,
+                        ensuring that governance serves the people.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <!-- Goals Section: Bento Grid Layout -->
+        <section class="max-w-max-container mx-auto px-space-lg py-space-xl">
+            <div class="mb-space-xl">
+                <h2 class="font-h2 text-h2 text-on-surface">Core Strategic Goals</h2>
+                <div class="w-16 h-1 bg-primary mt-space-sm"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-space-md">
+                <!-- LED Goal -->
+                <div
+                    class="md:col-span-8 bg-white border border-border-subtle rounded-xl p-space-lg flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-space-sm mb-space-md">
+                            <div class="p-2 bg-secondary-container rounded-lg">
+                                <span class="material-symbols-outlined text-on-secondary-container">trending_up</span>
+                            </div>
+                            <h3 class="font-h3 text-h3 text-primary">Local Economic Development</h3>
+                        </div>
+                        <p class="font-body-md text-body-md text-on-surface-variant mb-space-lg">
+                            Fostering sustainable economic growth by supporting local entrepreneurs and optimizing
+                            municipal resources. Our focus is on job creation and infrastructure that supports local
+                            commerce within the community.
+                        </p>
+                    </div>
+                    <div class="h-48 w-full bg-surface-muted rounded-lg overflow-hidden border border-border-subtle">
+                        <img class="w-full h-full object-cover grayscale"
+                            data-alt="A professional corporate meeting room with local business leaders engaged in a strategic discussion. The lighting is bright and airy, emphasizing a modern light-mode aesthetic. The color palette is composed of soft whites, cool greys, and deep forest green accents, reflecting a sense of serious governance and community development. The style is clean, high-contrast, and institutional."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXNDSTAqUKYi_nkYbfwxaZ7xyyYdz6eKh3EHAWH-ueblvEyJ7dH77EcQT4mj9C4CBloQjHFlVlufSuG5bv7lYnGJrfemCQ-Cc6a3D-7k-ZwI3EgmTRsF-klGXA2_Vkzsfwb6Wwg8ZhXazDx7Vk-C4rvvrBbTc-Ht9JpdJEU3CEhkniR46EvIdNkBPgbQ9dmCD4bK13NL3S4LqxUvKfs3fjoQZVsuOkNyz6ng9UG6m3dklcKvuZ0fMAuZ6DuJxXRN128NY3988eUAU" />
+                    </div>
+                </div>
+                <!-- Accountability Goal -->
+                <div class="md:col-span-4 bg-primary text-on-primary border border-primary rounded-xl p-space-lg">
+                    <div class="p-2 bg-primary-fixed-dim rounded-lg w-fit mb-space-md">
+                        <span class="material-symbols-outlined text-primary">gavel</span>
+                    </div>
+                    <h3 class="font-h3 text-h3 mb-space-md">Governance &amp; Accountability</h3>
+                    <p class="font-body-md text-body-md text-primary-fixed leading-relaxed">
+                        Restoring the integrity of public office through strict adherence to constitutional mandates and
+                        the regular auditing of representative performance. We hold leaders accountable to the people
+                        they serve.
+                    </p>
+                </div>
+                <!-- Budgeting Goal -->
+                <div class="md:col-span-4 bg-white border border-border-subtle rounded-xl p-space-lg">
+                    <div class="p-2 bg-surface-container rounded-lg w-fit mb-space-md">
+                        <span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+                    </div>
+                    <h3 class="font-h3 text-h3 text-on-surface mb-space-md">Budgeting by Ward</h3>
+                    <p class="font-body-md text-body-md text-on-surface-variant">
+                        Decentralizing fiscal power to ensure that funds are allocated where they are needed most. Each
+                        ward's budget is determined by its unique requirements, identified through direct resident
+                        participation.
+                    </p>
+                </div>
+                <!-- Community Collaboration -->
+                <div
+                    class="md:col-span-8 bg-white border border-border-subtle rounded-xl p-space-lg flex flex-col md:flex-row gap-space-lg">
+                    <div class="flex-1">
+                        <div class="p-2 bg-secondary-fixed rounded-lg w-fit mb-space-md">
+                            <span class="material-symbols-outlined text-on-secondary-fixed">groups</span>
+                        </div>
+                        <h3 class="font-h3 text-h3 text-on-surface mb-space-md">Collaboration with Communities</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                            ASCO builds bridges between civic structures and residents. We believe that lasting change
+                            only occurs when the community is an active partner in the implementation of development
+                            projects.
+                        </p>
+                    </div>
+                    <div
+                        class="flex-1 h-32 md:h-full bg-surface-muted rounded-lg overflow-hidden border border-border-subtle">
+                        <img class="w-full h-full object-cover grayscale"
+                            data-alt="A diverse group of community members standing together in a public plaza, looking towards a bright future. The scene is shot in natural morning light, creating sharp shadows and high contrast. The aesthetic is professional and grounded, using a minimalist color scheme of white, charcoal, and forest green. The image conveys unity, civic pride, and organized community action without decorative flair."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFQFVOBDKlzDNcxKD1EuP1n2FJe2s1n_iSV7EELg9e4jheDfbVhyyLo25y8kZWdYftXqsC-iCqDlRegrkVse2LCZaUEKJt2bJz7CEcY7ADj5fqQ_sX4KuOlG3dVLVFryraZafW_OHBfXHsPWt-hQGmbXpjtxTrZspBC3Zf5f7Zaaktr27MGZKhcbKRJSGsHMBX_CPWEZJE1xp0nPdIzjWnsBxJ0s57yf5q9343Xb78fA_lnwBBQwp-Ft5bF61h4Z5_5q9Tq5FvN2A" />
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Implementation Approach: Timeline Cards -->
+        <section class="max-w-max-container mx-auto px-space-lg py-space-xl">
+            <div class="mb-space-xl text-center">
+                <h2 class="font-h2 text-h2 text-on-surface">Implementation Approach</h2>
+                <p class="font-body-md text-body-md text-on-surface-variant mt-space-sm">A structured pathway from
+                    community voice to tangible results.</p>
+            </div>
+            <div class="relative flex flex-col gap-space-md">
+                <!-- Step 1 -->
+                <div class="flex items-start gap-space-md">
+                    <div class="hidden md:flex flex-col items-center">
+                        <div
+                            class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold">
+                            1</div>
+                        <div class="w-[2px] h-full bg-border-subtle"></div>
+                    </div>
+                    <div class="flex-1 bg-white border border-border-subtle rounded-xl p-space-lg">
+                        <span class="text-label-sm font-label-sm text-primary uppercase tracking-wider">Phase One</span>
+                        <h4 class="font-h3 text-h3 text-on-surface mt-1 mb-space-sm">Consultation</h4>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Direct engagement with ward
+                            committees and residents to identify critical needs and service delivery gaps. No planning
+                            happens in isolation from the people.</p>
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div class="flex items-start gap-space-md">
+                    <div class="hidden md:flex flex-col items-center">
+                        <div
+                            class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold">
+                            2</div>
+                        <div class="w-[2px] h-full bg-border-subtle"></div>
+                    </div>
+                    <div class="flex-1 bg-white border border-border-subtle rounded-xl p-space-lg">
+                        <span class="text-label-sm font-label-sm text-primary uppercase tracking-wider">Phase Two</span>
+                        <h4 class="font-h3 text-h3 text-on-surface mt-1 mb-space-sm">Planning</h4>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Converting community feedback into
+                            actionable technical frameworks, ensuring alignment with constitutional standards and
+                            municipal legislation.</p>
+                    </div>
+                </div>
+                <!-- Step 3 -->
+                <div class="flex items-start gap-space-md">
+                    <div class="hidden md:flex flex-col items-center">
+                        <div
+                            class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold">
+                            3</div>
+                        <div class="w-[2px] h-full bg-border-subtle"></div>
+                    </div>
+                    <div class="flex-1 bg-white border border-border-subtle rounded-xl p-space-lg">
+                        <span class="text-label-sm font-label-sm text-primary uppercase tracking-wider">Phase
+                            Three</span>
+                        <h4 class="font-h3 text-h3 text-on-surface mt-1 mb-space-sm">Allocation</h4>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Transparent resource and budgetary
+                            allocation based on the ward-level budgeting model. Every cent is tracked and published for
+                            public review.</p>
+                    </div>
+                </div>
+                <!-- Step 4 -->
+                <div class="flex items-start gap-space-md">
+                    <div class="hidden md:flex flex-col items-center">
+                        <div
+                            class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold">
+                            4</div>
+                        <div class="w-[2px] h-full bg-border-subtle"></div>
+                    </div>
+                    <div class="flex-1 bg-white border border-border-subtle rounded-xl p-space-lg">
+                        <span class="text-label-sm font-label-sm text-primary uppercase tracking-wider">Phase
+                            Four</span>
+                        <h4 class="font-h3 text-h3 text-on-surface mt-1 mb-space-sm">Implementation</h4>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Execution of projects through local
+                            labor and procurement where possible, maximizing the impact of economic development within
+                            the ward.</p>
+                    </div>
+                </div>
+                <!-- Step 5 -->
+                <div class="flex items-start gap-space-md">
+                    <div class="hidden md:flex flex-col items-center">
+                        <div
+                            class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold">
+                            5</div>
+                    </div>
+                    <div class="flex-1 bg-surface-muted border border-border-subtle rounded-xl p-space-lg">
+                        <span class="text-label-sm font-label-sm text-primary uppercase tracking-wider">Phase
+                            Five</span>
+                        <h4 class="font-h3 text-h3 text-on-surface mt-1 mb-space-sm">Accountability</h4>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Post-project review and performance
+                            auditing. Results are presented back to the community for final approval and feedback.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full bg-surface-container dark:bg-on-background border-t border-border-subtle">
+        <div
+            class="w-full py-space-xl px-space-lg flex flex-col md:flex-row justify-between items-start gap-space-lg max-w-max-container mx-auto">
+            <div class="flex flex-col gap-space-sm">
+                <div class="font-h3 text-h3 font-bold text-primary dark:text-primary-fixed-dim">ASCO</div>
+                <p class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md max-w-sm">
+                    Empowering communities through transparent governance and strategic planning. Join us in building a
+                    better future.
+                </p>
+            </div>
+            <div class="grid grid-cols-2 md:flex md:gap-space-xl gap-space-lg">
+                <div class="flex flex-col gap-space-sm">
+                    <h5 class="font-label-sm text-label-sm text-on-surface font-bold uppercase">Quick Links</h5>
+                    <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:underline transition-all font-body-md text-body-md"
+                        href="#">Mission Statement</a>
+                    <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:underline transition-all font-body-md text-body-md"
+                        href="#">Strategic Planning</a>
+                </div>
+                <div class="flex flex-col gap-space-sm">
+                    <h5 class="font-label-sm text-label-sm text-on-surface font-bold uppercase">Legal</h5>
+                    <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:underline transition-all font-body-md text-body-md"
+                        href="#">Privacy Policy</a>
+                    <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:underline transition-all font-body-md text-body-md"
+                        href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+        <div class="w-full py-space-md border-t border-border-subtle text-center">
+            <p class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md">
+                © 2024 ASIHLANGANENI CIVIC MOVEMENT. Community • Accountability • Development
+            </p>
+        </div>
+    </footer>
+</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const burgerBtn = document.getElementById('burger-menu-btn');
+            const closeBtn = document.getElementById('close-menu-btn');
+            const sideMenu = document.getElementById('side-menu');
+            const pageWrapper = document.getElementById('page-wrapper');
+            const menuOverlay = document.getElementById('menu-overlay');
+
+            function openMenu() {
+                sideMenu.classList.remove('translate-x-full');
+                pageWrapper.classList.add('-translate-x-[300px]');
+                menuOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                document.body.classList.add('overflow-hidden');
+            }
+
+            function closeMenu() {
+                sideMenu.classList.add('translate-x-full');
+                pageWrapper.classList.remove('-translate-x-[300px]');
+                menuOverlay.classList.add('opacity-0', 'pointer-events-none');
+                document.body.classList.remove('overflow-hidden');
+            }
+
+            burgerBtn.addEventListener('click', openMenu);
+            closeBtn.addEventListener('click', closeMenu);
+            menuOverlay.addEventListener('click', closeMenu);
+        });
+    </script>
+</body>
+
+</html>

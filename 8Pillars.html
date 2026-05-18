@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>8 Pillars - ASIHLANGANENI CIVIC MOVEMENT</title>
+    <link rel="icon" href="Assets/ASCO_logo.jpeg" type="image/jpeg" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            background-color: #fcf9f8;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#313030",
+                        "on-surface-variant": "#41493e",
+                        "surface-dim": "#dcd9d9",
+                        "outline": "#717a6d",
+                        "secondary-container": "#fed65b",
+                        "primary-fixed": "#acf4a4",
+                        "secondary": "#735c00",
+                        "surface-container-highest": "#e5e2e1",
+                        "surface": "#fcf9f8",
+                        "secondary-fixed": "#ffe088",
+                        "error": "#ba1a1a",
+                        "background-main": "#FFFFFF",
+                        "on-background": "#1c1b1b",
+                        "secondary-fixed-dim": "#e9c349",
+                        "tertiary-fixed": "#ffd9e2",
+                        "on-primary-fixed-variant": "#0c5216",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#90d689",
+                        "on-tertiary-fixed": "#3e001d",
+                        "surface-container-high": "#ebe7e7",
+                        "on-secondary-fixed": "#241a00",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#2a6b2c",
+                        "surface-muted": "#F5F5F5",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#574500",
+                        "primary-fixed-dim": "#91d78a",
+                        "on-primary-fixed": "#002203",
+                        "on-secondary-container": "#745c00",
+                        "surface-container": "#f0edec",
+                        "text-secondary": "#424242",
+                        "tertiary": "#6b1d3d",
+                        "inverse-on-surface": "#f3f0ef",
+                        "primary": "#00450d",
+                        "text-primary": "#121212",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#ffaec6",
+                        "surface-variant": "#e5e2e1",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#883454",
+                        "outline-variant": "#c0c9bb",
+                        "on-surface": "#1c1b1b",
+                        "on-tertiary-fixed-variant": "#7a2949",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-bright": "#fcf9f8",
+                        "inverse-primary": "#91d78a",
+                        "background": "#fcf9f8",
+                        "tertiary-fixed-dim": "#ffb1c8",
+                        "primary-container": "#1b5e20",
+                        "border-subtle": "#E0E0E0",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "space-md": "16px",
+                        "max-container": "1200px",
+                        "space-xs": "4px",
+                        "gutter": "20px",
+                        "space-xl": "32px",
+                        "sidebar-width": "260px",
+                        "space-sm": "8px",
+                        "unit": "4px",
+                        "space-lg": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Hanken Grotesk"],
+                        "h1-mobile": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "h3": ["Hanken Grotesk"],
+                        "h1": ["Hanken Grotesk"],
+                        "h2": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "h1-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "h3": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "h1": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "h2": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        @media (min-width: 1140px) {
+            .nav-links-desktop {
+                display: flex !important;
+            }
+
+            .burger-menu-btn {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 1139px) {
+            .nav-links-desktop {
+                display: none !important;
+            }
+
+            .burger-menu-btn {
+                display: flex !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface overflow-x-hidden">
+    <!-- Menu Backdrop Overlay -->
+    <div id="menu-overlay"
+        class="fixed inset-0 bg-on-background/40 z-40 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out">
+    </div>
+
+    <!-- Sliding Side Menu Drawer -->
+    <div id="side-menu"
+        class="fixed top-0 right-0 h-full w-[300px] bg-surface shadow-2xl border-l border-border-subtle z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-space-lg">
+        <button id="close-menu-btn" class="self-end text-primary hover:opacity-80 transition-opacity mb-space-lg">
+            <span class="material-symbols-outlined text-[28px]">close</span>
+        </button>
+        <nav class="flex flex-col gap-space-md">
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle"
+                href="index.html">Home</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle"
+                href="About.html">About</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle"
+                href="StrategicPlan.html">Strategic Planning</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle"
+                href="ServiceDelivery.html">Service Delivery</a>
+            <a class="text-primary font-semibold font-body-lg text-body-lg pb-space-sm border-b-2 border-primary"
+                href="8Pillars.html">8 Pillars</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle"
+                href="Contact.html">Contact</a>
+        </nav>
+        <button
+            class="mt-space-xl bg-primary-container text-on-primary py-space-sm rounded-xl font-body-md text-body-md hover:opacity-90 transition-all uppercase tracking-wider font-semibold">
+            Join Movement
+        </button>
+    </div>
+
+    <!-- Page Wrapper (gets shifted left to displace the content) -->
+    <div id="page-wrapper" class="w-full min-h-screen transition-transform duration-300 ease-in-out flex flex-col">
+        <!-- Top Navigation Bar -->
+        <nav class="fixed top-0 w-full z-30 bg-surface border-b border-border-subtle">
+            <div class="flex justify-between items-center h-[56px] px-space-lg max-w-max-container mx-auto">
+                <div class="flex items-center">
+                    <img src="Assets/ASCO_logo.jpeg" alt="ASCO Logo" width="36" height="36" class="mr-2" />
+                    <div
+                        class="text-sm xs:text-base sm:text-lg md:text-xl lg:text-h2 font-bold text-primary whitespace-nowrap overflow-hidden text-ellipsis">
+                        ASIHLANGANENI CIVIC MOVEMENT</div>
+                </div>
+                <div class="nav-links-desktop items-center gap-space-lg font-body-md text-body-md">
+                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="index.html">Home</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="About.html">About</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors"
+                        href="StrategicPlan.html">Strategic Planning</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors"
+                        href="ServiceDelivery.html">Service Delivery</a>
+                    <a class="text-primary font-semibold border-b-2 border-primary pb-1" href="8Pillars.html">8
+                        Pillars</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors"
+                        href="Contact.html">Contact</a>
+                    <button
+                        class="bg-primary-container text-on-primary px-space-md py-space-xs rounded-lg font-label-sm hover:opacity-90 transition-all">
+                        Join Movement
+                    </button>
+                </div>
+                <button id="burger-menu-btn" class="burger-menu-btn text-primary hover:opacity-80 transition-opacity">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="w-6 h-6 stroke-primary fill-primary">
+                        <path
+                            d="M1 12C1 11.4477 1.44772 11 2 11H22C22.5523 11 23 11.4477 23 12C23 12.5523 22.5523 13 22 13H2C1.44772 13 1 12.5523 1 12Z"
+                            fill="currentColor" />
+                        <path
+                            d="M1 4C1 3.44772 1.44772 3 2 3H22C22.5523 3 23 3.44772 23 4C23 4.55228 22.5523 5 22 5H2C1.44772 5 1 4.55228 1 4Z"
+                            fill="currentColor" />
+                        <path
+                            d="M1 20C1 19.4477 1.44772 19 2 19H22C22.5523 19 23 19.4477 23 20C23 20.5523 22.5523 21 22 21H2C1.44772 21 1 20.5523 1 20Z"
+                            fill="currentColor" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+        <!-- Main Content Canvas -->
+        <main class="pt-[88px] pb-space-xl px-space-lg max-w-max-container mx-auto">
+            <!-- Header Section -->
+            <header class="mb-space-xl">
+                <h1 class="font-h1 text-h1 text-primary mb-space-sm">The 8 Pillars of ASCO</h1>
+                <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                    Our movement is built upon eight fundamental pillars designed to ensure accountability, community
+                    development, and constitutional integrity for all citizens.
+                </p>
+            </header>
+            <!-- Bento Grid of Pillars -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md">
+                <!-- Pillar 1 -->
+                <div
+                    class="bg-surface-container-lowest border border-border-subtle p-space-lg rounded-xl flex flex-col gap-space-md hover:border-primary transition-colors">
+                    <div
+                        class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-[28px]" data-icon="account_tree">account_tree</span>
+                    </div>
+                    <div>
+                        <h3 class="font-h3 text-h3 text-primary mb-2">Self-Determination</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                            Empowering local communities to take
+                            charge of
+                            their own governance and destiny through structured civic participation.
+                        </p>
+                    </div>
+                </div>
+                <!-- Pillar 2 -->
+                <div
+                    class="bg-surface-container-lowest border border-border-subtle p-space-lg rounded-xl flex flex-col gap-space-md hover:border-primary transition-colors">
+                    <div
+                        class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-[28px]"
+                            data-icon="account_balance_wallet">account_balance_wallet</span>
+                    </div>
+                    <div>
+                        <h3 class="font-h3 text-h3 text-primary mb-2">Budgeting by Ward</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                            Directing financial resources to the ward
+                            level to ensure that local priorities are funded transparently and effectively.
+                        </p>
+                    </div>
+                </div>
+                <!-- Pillar 3 -->
+                <div
+                    class="bg-surface-container-lowest border border-border-subtle p-space-lg rounded-xl flex flex-col gap-space-md hover:border-primary transition-colors">
+                    <div
+                        class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-[28px]" data-icon="factory">factory</span>
+                    </div>
+                    <div>
+                        <h3 class="font-h3 text-h3 text-primary mb-2">Local Economic Industrialization</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                            Fostering local production and manufacturing
+                            to create sustainable jobs and economic independence within our borders.
+                        </p>
+                    </div>
+                </div>
+                <!-- Pillar 4 -->
+                <div
+                    class="bg-surface-container-lowest border border-border-subtle p-space-lg rounded-xl flex flex-col gap-space-md hover:border-primary transition-colors">
+                    <div
+                        class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-[28px]" data-icon="agriculture">agriculture</span>
+                    </div>
+                    <div>
+                        <h3 class="font-h3 text-h3 text-primary mb-2">Food Security</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                            Building resilient agricultural systems and
+                            local food networks to ensure every community has access to affordable nutrition.
+                        </p>
+                    </div>
+                </div>
+                <!-- Pillar 5 -->
+                <div
+                    class="bg-surface-container-lowest border border-border-subtle p-space-lg rounded-xl flex flex-col gap-space-md hover:border-primary transition-colors">
+                    <div
+                        class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-[28px]" data-icon="water_drop">water_drop</span>
+                    </div>
+                    <div>
+                        <h3 class="font-h3 text-h3 text-primary mb-2">Basic Services</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                            Guaranteeing the consistent delivery of
+                            essential utilities like clean water, electricity, and sanitation to all residents.
+                        </p>
+                    </div>
+                </div>
+                <!-- Pillar 6 -->
+                <div
+                    class="bg-surface-container-lowest border border-border-subtle p-space-lg rounded-xl flex flex-col gap-space-md hover:border-primary transition-colors">
+                    <div
+                        class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-[28px]"
+                            data-icon="health_and_safety">health_and_safety</span>
+                    </div>
+                    <div>
+                        <h3 class="font-h3 text-h3 text-primary mb-2">Safe &amp; Healthy Environment</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                            Protecting our natural resources and ensuring
+                            urban spaces are safe, clean, and conducive to well-being.
+                        </p>
+                    </div>
+                </div>
+                <!-- Pillar 7 -->
+                <div
+                    class="bg-surface-container-lowest border border-border-subtle p-space-lg rounded-xl flex flex-col gap-space-md hover:border-primary transition-colors">
+                    <div
+                        class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-[28px]"
+                            data-icon="military_tech">military_tech</span>
+                    </div>
+                    <div>
+                        <h3 class="font-h3 text-h3 text-primary mb-2">Appointment on Merit</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                            Ending political patronage by ensuring all
+                            public appointments are based on competence and qualification.
+                        </p>
+                    </div>
+                </div>
+                <!-- Pillar 8 -->
+                <div
+                    class="bg-surface-container-lowest border border-border-subtle p-space-lg rounded-xl flex flex-col gap-space-md hover:border-primary transition-colors">
+                    <div
+                        class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-[28px]" data-icon="diversity_3">diversity_3</span>
+                    </div>
+                    <div>
+                        <h3 class="font-h3 text-h3 text-primary mb-2">Free &amp; Just Society for Youth</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                            Creating opportunities for the next generation
+                            to thrive in a society defined by justice and equal opportunity.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Call to Action Banner -->
+            <section class="mt-space-xl bg-primary-container text-on-primary p-space-xl rounded-xl">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-space-lg">
+                    <div class="max-w-xl">
+                        <h2 class="font-h2 text-h2 mb-2">Be part of the solution.</h2>
+                        <p class="font-body-lg text-body-lg opacity-90">Our pillars are only as strong as the community
+                            that
+                            supports them. Join ASCO today to help us implement these changes.</p>
+                    </div>
+                    <button
+                        class="bg-on-primary text-primary px-space-xl py-space-sm rounded-lg font-h3 hover:bg-surface-container-high transition-all">
+                        Get Involved
+                    </button>
+                </div>
+            </section>
+            <!-- Movement Visual -->
+            <section class="mt-space-xl grid grid-cols-1 md:grid-cols-2 gap-space-lg items-center">
+                <div class="relative rounded-xl overflow-hidden aspect-video border border-border-subtle bg-primary/10">
+                    <img alt="South African Flag" class="w-full h-full object-cover opacity-35 blur-[1px]"
+                        src="Assets/SouthAfricanFlag.jpg" />
+                    <div class="absolute inset-0 bg-primary/20 pointer-events-none"></div>
+                </div>
+                <div class="flex flex-col gap-space-md">
+                    <h2 class="font-h2 text-h2 text-primary">The Foundation of Our Civic Duty</h2>
+                    <p class="font-body-md text-body-md text-on-surface-variant">
+                        ASCO stands for the restoration of order and the empowerment of every citizen. These 8 pillars
+                        represent more than just a manifesto; they are the architectural blueprints for a revitalized
+                        society where transparency is the norm and service delivery is a right, not a privilege.
+                    </p>
+                    <ul class="space-y-space-xs font-label-sm text-label-sm text-primary">
+                        <li class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]"
+                                data-icon="check_circle">check_circle</span>
+                            Constitutional Alignment
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]"
+                                data-icon="check_circle">check_circle</span>
+                            Transparent Financial Oversight
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]"
+                                data-icon="check_circle">check_circle</span>
+                            Direct Accountability to Wards
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+        <!-- Footer -->
+        <footer
+            class="w-full py-space-xl px-space-lg flex flex-col md:flex-row justify-between items-start gap-space-lg max-w-max-container mx-auto border-t border-border-subtle bg-surface-container">
+            <div class="max-w-sm">
+                <div class="font-h3 text-h3 font-bold text-primary mb-2">ASCO</div>
+                <p class="font-body-md text-body-md text-on-surface-variant">
+                    © 2024 ASIHLANGANENI CIVIC MOVEMENT. Community • Accountability • Development
+                </p>
+            </div>
+            <div class="grid grid-cols-2 gap-x-12 gap-y-4">
+                <div class="flex flex-col gap-2">
+                    <span class="font-label-sm text-label-sm text-primary">Movement</span>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Mission Statement</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Quick Links</a>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <span class="font-label-sm text-label-sm text-primary">Legal</span>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Privacy Policy</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Terms of Service</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const burgerBtn = document.getElementById('burger-menu-btn');
+            const closeBtn = document.getElementById('close-menu-btn');
+            const sideMenu = document.getElementById('side-menu');
+            const pageWrapper = document.getElementById('page-wrapper');
+            const menuOverlay = document.getElementById('menu-overlay');
+
+            function openMenu() {
+                sideMenu.classList.remove('translate-x-full');
+                pageWrapper.classList.add('-translate-x-[300px]');
+                menuOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                document.body.classList.add('overflow-hidden');
+            }
+
+            function closeMenu() {
+                sideMenu.classList.add('translate-x-full');
+                pageWrapper.classList.remove('-translate-x-[300px]');
+                menuOverlay.classList.add('opacity-0', 'pointer-events-none');
+                document.body.classList.remove('overflow-hidden');
+            }
+
+            burgerBtn.addEventListener('click', openMenu);
+            closeBtn.addEventListener('click', closeMenu);
+            menuOverlay.addEventListener('click', closeMenu);
+        });
+    </script>
+</body>
+
+</html>
