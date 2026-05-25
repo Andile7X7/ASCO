@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ASCO Admin - Create Campaign</title>
+<meta name="description" content="Create and send email campaigns to ASCO civic movement members."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Supabase JS Client CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+    body { font-family: 'Hanken Grotesk', sans-serif; }
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #F5F5F5; }
+    ::-webkit-scrollbar-thumb { background: #BDBDBD; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #717a6d; }
+
+    /* Rich Text Editor */
+    #email-body-editor {
+        min-height: 220px;
+        outline: none;
+        white-space: pre-wrap;
+    }
+    #email-body-editor:empty:before {
+        content: attr(data-placeholder);
+        color: #9CA3AF;
+        pointer-events: none;
+    }
+    .toolbar-btn.active {
+        background: #e0e0e0;
+    }
+
+    /* Toast */
+    #toast {
+        transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transform: translateY(100px);
+        opacity: 0;
+        pointer-events: none;
+    }
+    #toast.show {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Loading overlay */
+    #loading-overlay {
+        backdrop-filter: blur(4px);
+    }
+
+    /* Ward chip hover */
+    .ward-chip input:checked + div {
+        border-color: #00450d;
+        background: #f0fdf4;
+        color: #00450d;
+    }
+
+    /* Banner upload drag state */
+    .banner-drag-active {
+        border-color: #00450d !important;
+        background: #f0fdf4 !important;
+    }
+
+    /* Audience bar animation */
+    .audience-bar-fill {
+        transition: width 0.5s ease;
+    }
+
+    /* Preview body content */
+    #preview-body-content p { margin: 0 0 12px; }
+    #preview-body-content strong { font-weight: 700; }
+    #preview-body-content em { font-style: italic; }
+    #preview-body-content ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 12px; }
+    #preview-body-content ol { list-style: decimal; margin-left: 1.5rem; margin-bottom: 12px; }
+
+    /* Sticky sidebar offset */
+    @media (min-width: 1024px) {
+        .sticky-sidebar { top: 5.5rem; }
+    }
+</style>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                "colors": {
+                    "surface-muted": "#F5F5F5",
+                    "tertiary-fixed": "#ffd9e2",
+                    "primary-fixed": "#acf4a4",
+                    "surface-tint": "#2a6b2c",
+                    "surface-container": "#f0edec",
+                    "on-primary": "#ffffff",
+                    "primary-container": "#1b5e20",
+                    "text-primary": "#121212",
+                    "surface-dim": "#dcd9d9",
+                    "secondary-container": "#fed65b",
+                    "primary": "#00450d",
+                    "on-primary-fixed-variant": "#0c5216",
+                    "surface-container-high": "#ebe7e7",
+                    "on-primary-fixed": "#002203",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#1c1b1b",
+                    "surface-bright": "#fcf9f8",
+                    "background": "#fcf9f8",
+                    "primary-fixed-dim": "#91d78a",
+                    "on-surface-variant": "#41493e",
+                    "on-tertiary-fixed-variant": "#7a2949",
+                    "inverse-on-surface": "#f3f0ef",
+                    "text-secondary": "#424242",
+                    "surface-variant": "#e5e2e1",
+                    "secondary-fixed": "#ffe088",
+                    "border-subtle": "#E0E0E0",
+                    "tertiary-fixed-dim": "#ffb1c8",
+                    "inverse-primary": "#91d78a",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error": "#ffffff",
+                    "secondary": "#735c00",
+                    "on-tertiary-fixed": "#3e001d",
+                    "background-main": "#FFFFFF",
+                    "on-secondary-container": "#745c00",
+                    "inverse-surface": "#313030",
+                    "on-primary-container": "#90d689",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#c0c9bb",
+                    "on-tertiary-container": "#ffaec6",
+                    "outline": "#717a6d",
+                    "tertiary-container": "#883454",
+                    "surface-container-highest": "#e5e2e1",
+                    "surface": "#fcf9f8",
+                    "on-secondary-fixed-variant": "#574500",
+                    "on-secondary-fixed": "#241a00",
+                    "on-error-container": "#93000a",
+                    "on-background": "#1c1b1b",
+                    "error": "#ba1a1a",
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f6f3f2",
+                    "secondary-fixed-dim": "#e9c349",
+                    "tertiary": "#6b1d3d"
+                },
+                "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+                },
+                "spacing": {
+                    "space-xs": "4px",
+                    "space-xl": "32px",
+                    "max-container": "1200px",
+                    "unit": "4px",
+                    "space-md": "16px",
+                    "space-sm": "8px",
+                    "space-lg": "24px",
+                    "gutter": "20px",
+                    "sidebar-width": "260px"
+                },
+                "fontFamily": {
+                    "h2": ["Hanken Grotesk"],
+                    "h3": ["Hanken Grotesk"],
+                    "h1-mobile": ["Hanken Grotesk"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "label-sm": ["Hanken Grotesk"],
+                    "h1": ["Hanken Grotesk"]
+                },
+                "fontSize": {
+                    "h2": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "h1-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "h1": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                }
+            },
+        },
+    }
+</script>
+<base target="_blank">
+</head>
+<body class="bg-background text-on-surface">
+
+<!-- Toast Notification -->
+<div id="toast" class="fixed bottom-6 right-6 z-[9999] flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl max-w-sm">
+    <span id="toast-icon" class="material-symbols-outlined text-[20px]">check_circle</span>
+    <p id="toast-message" class="font-body-md text-body-md font-semibold"></p>
+    <button onclick="hideToast()" class="ml-2 opacity-60 hover:opacity-100"><span class="material-symbols-outlined text-[16px]">close</span></button>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loading-overlay" class="fixed inset-0 bg-white/70 z-[9998] flex-col items-center justify-center hidden">
+    <div class="bg-white border border-border-subtle rounded-2xl shadow-2xl p-8 flex flex-col items-center gap-4 max-w-xs w-full mx-4">
+        <span class="material-symbols-outlined text-primary text-[48px] animate-spin">progress_activity</span>
+        <p id="loading-text" class="font-h3 text-h3 text-on-surface text-center">Sending Campaign...</p>
+        <p id="loading-sub" class="font-body-md text-body-md text-on-surface-variant text-center">Please wait while we reach your members.</p>
+    </div>
+</div>
+
+<!-- Main Content Wrapper -->
+<div class="flex flex-col min-h-screen">
+<!-- Top Admin Header -->
+<header class="fixed top-0 left-0 right-0 bg-surface border-b border-border-subtle z-30 h-[56px]">
+    <div class="flex justify-between items-center h-full px-space-lg max-w-max-container mx-auto">
+        <div class="flex items-center gap-space-sm">
+            <img src="Assets/ASCO_logo.jpeg" alt="ASCO logo" class="logo w-[34px] h-[34px]">
+            <span class="font-h2 text-h2 font-bold text-primary hidden sm:inline">ASIHLANGANENI CIVIC MOVEMENT</span>
+            <span class="font-h2 text-h2 font-bold text-primary sm:hidden">ASCO</span>
+        </div>
+        <div class="flex items-center gap-space-md">
+            <div class="flex items-center gap-space-xs">
+                <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center border border-border-subtle">
+                    <span class="material-symbols-outlined text-primary text-[18px]">person</span>
+                </div>
+                <span class="font-label-sm text-label-sm text-on-surface font-semibold" id="AdminName">Admin</span>
+            </div>
+            <button id="logout-btn" class="flex items-center gap-space-xs text-on-surface-variant hover:text-error transition-colors">
+                <span class="material-symbols-outlined text-[20px]">logout</span>
+                <span class="font-label-sm text-label-sm hidden sm:inline">Logout</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- Page Content -->
+<main class="flex-1 p-space-lg max-w-max-container mx-auto w-full">
+    <div class="mb-space-lg flex flex-col sm:flex-row sm:items-end justify-between pt-[56px] gap-3">
+        <div>
+            <div class="flex items-center gap-2 mb-1">
+                <a href="Admin.html" class="text-on-surface-variant hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+                </a>
+                <h2 class="font-h1 text-h1 text-on-surface">Create New Campaign</h2>
+            </div>
+            <p class="font-body-md text-body-md text-on-surface-variant">Constitutional communication and civic outreach portal.</p>
+        </div>
+        <div id="resend-status-badge" class="flex items-center gap-2 text-on-surface-variant font-semibold text-body-md bg-surface-container px-3 py-1 rounded-lg self-start sm:self-auto">
+            <span class="w-2 h-2 bg-border-subtle rounded-full" id="resend-dot"></span>
+            <span id="resend-status-text">Checking...</span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-12 gap-space-lg">
+        <!-- Primary Column -->
+        <div class="col-span-12 lg:col-span-8 space-y-space-lg">
+
+            <!-- Campaign Composer Section -->
+            <section class="bg-surface-container-lowest border border-border-subtle rounded-xl p-space-lg">
+                <h3 class="font-h3 text-h3 mb-space-md flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">edit_note</span>
+                    Campaign Composer
+                </h3>
+                <div class="space-y-space-md">
+                    <!-- Title + Subject -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+                        <div class="space-y-space-xs">
+                            <label for="campaign-title" class="font-label-sm text-label-sm text-on-surface-variant">Internal Campaign Title <span class="text-error">*</span></label>
+                            <input id="campaign-title" class="w-full border border-border-subtle rounded-lg p-space-sm text-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" type="text" placeholder="e.g. Ward 14 Budget Update Q3"/>
+                        </div>
+                        <div class="space-y-space-xs">
+                            <label for="campaign-subject" class="font-label-sm text-label-sm text-on-surface-variant">Email Subject Line <span class="text-error">*</span></label>
+                            <input id="campaign-subject" class="w-full border border-border-subtle rounded-lg p-space-sm text-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="e.g. Action Required: Your Ward's Feedback" type="text"/>
+                        </div>
+                    </div>
+
+                    <!-- Sender Info -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+                        <div class="space-y-space-xs">
+                            <label for="sender-name" class="font-label-sm text-label-sm text-on-surface-variant">Sender Display Name</label>
+                            <input id="sender-name" class="w-full border border-border-subtle rounded-lg p-space-sm text-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" type="text" value="ASIHLANGANENI CIVIC MOVEMENT"/>
+                        </div>
+                        <div class="space-y-space-xs">
+                            <label for="sender-email" class="font-label-sm text-label-sm text-on-surface-variant">Sender Email Address</label>
+                            <div class="relative">
+                                <input id="sender-email" class="w-full border border-border-subtle rounded-lg p-space-sm text-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all pr-32" type="email" value="noreply@campaigns.asco.org.za"/>
+                                <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] bg-primary-fixed/40 text-primary px-2 py-0.5 rounded font-bold">VERIFIED</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preview Text -->
+                    <div class="space-y-space-xs">
+                        <label for="campaign-preview-text" class="font-label-sm text-label-sm text-on-surface-variant">Preview Text <span class="text-on-surface-variant font-normal">(shown in inbox before opening)</span></label>
+                        <input id="campaign-preview-text" class="w-full border border-border-subtle rounded-lg p-space-sm text-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" type="text" placeholder="e.g. Important update from your civic representatives..."/>
+                    </div>
+
+                    <!-- Banner Upload Zone -->
+                    <div class="space-y-space-xs">
+                        <label class="font-label-sm text-label-sm text-on-surface-variant">Campaign Banner <span class="text-on-surface-variant font-normal">(optional, PNG/JPG/WEBP, max 2MB, ideal 1200×400px)</span></label>
+                        <div id="banner-drop-zone" class="border-2 border-dashed border-border-subtle rounded-xl p-space-xl flex flex-col items-center justify-center bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group relative overflow-hidden">
+                            <input type="file" id="banner-input" accept="image/png,image/jpeg,image/webp" class="absolute inset-0 opacity-0 cursor-pointer z-10"/>
+                            <div id="banner-placeholder">
+                                <span class="material-symbols-outlined text-[48px] text-on-surface-variant group-hover:text-primary transition-colors block mx-auto text-center">add_photo_alternate</span>
+                                <p class="font-body-md text-body-md mt-space-sm font-semibold text-center">Click or drag banner image here</p>
+                                <p class="font-label-sm text-label-sm text-on-surface-variant text-center">PNG, JPG or WEBP (Max 2MB). Ideal size 1200×400px</p>
+                            </div>
+                            <div id="banner-preview-container" class="hidden w-full">
+                                <img id="banner-preview-img" src="" alt="Banner preview" class="w-full rounded-lg max-h-[180px] object-cover"/>
+                                <button id="banner-remove-btn" type="button" onclick="removeBanner(event)" class="mt-2 text-error font-label-sm text-label-sm flex items-center gap-1 hover:underline">
+                                    <span class="material-symbols-outlined text-[14px]">delete</span> Remove banner
+                                </button>
+                            </div>
+                        </div>
+                        <div id="banner-upload-status" class="hidden flex items-center gap-2 text-primary font-label-sm text-label-sm">
+                            <span class="material-symbols-outlined text-[14px] animate-spin">progress_activity</span>
+                            Uploading banner...
+                        </div>
+                    </div>
+
+                    <!-- Rich Text Editor -->
+                    <div class="space-y-space-xs">
+                        <label class="font-label-sm text-label-sm text-on-surface-variant">Email Body Content <span class="text-error">*</span></label>
+                        <div class="border border-border-subtle rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:border-primary transition-all">
+                            <div class="bg-surface-container-high p-2 flex flex-wrap gap-1 border-b border-border-subtle">
+                                <button type="button" class="toolbar-btn p-1.5 hover:bg-surface-dim rounded transition-colors" onclick="execCmd('bold')" title="Bold">
+                                    <span class="material-symbols-outlined text-body-md">format_bold</span>
+                                </button>
+                                <button type="button" class="toolbar-btn p-1.5 hover:bg-surface-dim rounded transition-colors" onclick="execCmd('italic')" title="Italic">
+                                    <span class="material-symbols-outlined text-body-md">format_italic</span>
+                                </button>
+                                <button type="button" class="toolbar-btn p-1.5 hover:bg-surface-dim rounded transition-colors" onclick="execCmd('underline')" title="Underline">
+                                    <span class="material-symbols-outlined text-body-md">format_underlined</span>
+                                </button>
+                                <div class="w-[1px] h-6 bg-border-subtle mx-1 self-center"></div>
+                                <button type="button" class="toolbar-btn p-1.5 hover:bg-surface-dim rounded transition-colors" onclick="insertLink()" title="Insert Link">
+                                    <span class="material-symbols-outlined text-body-md">link</span>
+                                </button>
+                                <div class="w-[1px] h-6 bg-border-subtle mx-1 self-center"></div>
+                                <button type="button" class="toolbar-btn p-1.5 hover:bg-surface-dim rounded transition-colors" onclick="execCmd('insertUnorderedList')" title="Bullet List">
+                                    <span class="material-symbols-outlined text-body-md">format_list_bulleted</span>
+                                </button>
+                                <button type="button" class="toolbar-btn p-1.5 hover:bg-surface-dim rounded transition-colors" onclick="execCmd('insertOrderedList')" title="Numbered List">
+                                    <span class="material-symbols-outlined text-body-md">format_list_numbered</span>
+                                </button>
+                                <div class="w-[1px] h-6 bg-border-subtle mx-1 self-center"></div>
+                                <button type="button" class="toolbar-btn p-1.5 hover:bg-surface-dim rounded transition-colors" onclick="execCmd('removeFormat')" title="Clear Formatting">
+                                    <span class="material-symbols-outlined text-body-md">format_clear</span>
+                                </button>
+                                <div class="flex-1"></div>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant self-center px-2" id="char-count">0 chars</span>
+                            </div>
+                            <div
+                                id="email-body-editor"
+                                contenteditable="true"
+                                data-placeholder="Draft your civic address here. Be formal, constructive, and aligned with the 8 Pillars of ASCO..."
+                                class="w-full p-space-md text-body-md focus:ring-0 text-on-surface leading-relaxed"
+                                style="min-height: 220px;"
+                            ></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Audience Targeting Section -->
+            <section class="bg-surface-container-lowest border border-border-subtle rounded-xl p-space-lg">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-space-md gap-3">
+                    <h3 class="font-h3 text-h3 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">groups</span>
+                        Audience Targeting
+                    </h3>
+                    <div class="bg-primary-fixed/30 px-3 py-1.5 rounded-lg border border-primary-fixed self-start sm:self-auto">
+                        <p class="font-label-sm text-label-sm text-primary">Estimated Reach: <span class="font-bold" id="audience-count">—</span> members</p>
+                    </div>
+                </div>
+
+                <!-- Send to All Toggle -->
+                <div class="flex items-center justify-between p-space-md bg-surface-muted border border-border-subtle rounded-lg mb-space-md">
+                    <div>
+                        <p class="font-body-md text-body-md font-semibold">Send to All Members</p>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant">Overrides specific municipality targeting</p>
+                    </div>
+                    <button class="w-10 h-6 bg-border-subtle rounded-full relative transition-colors" id="toggleSwitch" aria-label="Toggle send to all">
+                        <span class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform translate-x-0 shadow-sm"></span>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+                    <!-- Ward/Municipality chips -->
+                    <div class="space-y-space-sm">
+                        <label class="font-label-sm text-label-sm text-on-surface-variant">Filter by Municipality</label>
+                        <div id="ward-chips-container" class="w-full border border-border-subtle rounded-lg p-space-sm flex flex-wrap gap-2 items-start min-h-[52px] bg-white">
+                            <!-- Chips loaded dynamically from DB -->
+                            <div id="ward-chips-loading" class="w-full flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm py-1">
+                                <span class="material-symbols-outlined text-[14px] animate-spin">progress_activity</span>
+                                Loading municipalities...
+                            </div>
+                        </div>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant" id="ward-hint">Select one or more municipalities to target, or use "Send to All".</p>
+                    </div>
+
+                    <!-- Reach Breakdown -->
+                    <div class="space-y-space-md">
+                        <div class="p-space-md bg-primary-container/5 border border-primary-container/20 rounded-lg">
+                            <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-3">Reach Breakdown</p>
+                            <div class="space-y-3">
+                                <div>
+                                    <div class="flex justify-between items-center text-body-md mb-1">
+                                        <span>Email Subscribers</span>
+                                        <span class="font-bold" id="stat-subscribers">—</span>
+                                    </div>
+                                    <div class="w-full bg-border-subtle h-1.5 rounded-full">
+                                        <div class="bg-primary h-full audience-bar-fill rounded-full" id="bar-subscribers" style="width:0%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-center text-body-md mb-1">
+                                        <span>Active Members</span>
+                                        <span class="font-bold" id="stat-active">—</span>
+                                    </div>
+                                    <div class="w-full bg-border-subtle h-1.5 rounded-full">
+                                        <div class="bg-secondary h-full audience-bar-fill rounded-full" id="bar-active" style="width:0%"></div>
+                                    </div>
+                                </div>
+                                <div class="pt-2 border-t border-border-subtle">
+                                    <div class="flex justify-between items-center text-body-md">
+                                        <span class="font-semibold">Will Receive Email</span>
+                                        <span class="font-bold text-primary" id="stat-will-receive">—</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Live Email Preview Section -->
+            <section class="bg-surface-container-lowest border border-border-subtle rounded-xl overflow-hidden shadow-sm">
+                <div class="bg-surface-container-high px-space-lg py-3 border-b border-border-subtle flex items-center justify-between">
+                    <span class="font-label-sm text-label-sm font-bold uppercase text-on-surface-variant">Live Email Preview</span>
+                    <div class="flex gap-2 items-center">
+                        <span class="w-3 h-3 rounded-full bg-error/20 border border-error/40"></span>
+                        <span class="w-3 h-3 rounded-full bg-secondary/20 border border-secondary/40"></span>
+                        <span class="w-3 h-3 rounded-full bg-primary/20 border border-primary/40"></span>
+                    </div>
+                </div>
+                <!-- Inbox meta preview -->
+                <div class="px-space-lg py-2 bg-surface-muted border-b border-border-subtle flex items-center gap-3">
+                    <span class="material-symbols-outlined text-on-surface-variant text-[16px]">inbox</span>
+                    <div class="min-w-0">
+                        <span class="font-label-sm text-label-sm font-bold text-on-surface" id="preview-sender-display">ASIHLANGANENI CIVIC MOVEMENT</span>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant ml-2" id="preview-subject-meta">← subject appears here</span>
+                    </div>
+                    <span class="ml-auto font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap">Just now</span>
+                </div>
+                <div class="p-space-xl bg-[#F9F9F9] min-h-[400px]">
+                    <div class="max-w-[560px] mx-auto bg-white border border-border-subtle shadow-sm rounded-lg overflow-hidden">
+                        <!-- Email header bar -->
+                        <div class="bg-primary px-6 py-4 flex justify-center items-center">
+                            <h4 class="font-bold text-white text-sm tracking-wide">ASIHLANGANENI CIVIC MOVEMENT</h4>
+                            
+                        </div>
+                        <!-- Banner -->
+                        <div id="preview-banner-container">
+                            <div id="preview-banner-placeholder" class="w-full h-[80px] bg-surface-container-high flex items-center justify-center text-on-surface-variant italic text-label-sm text-center px-4">
+                                Banner image will appear here
+                            </div>
+                            <img id="preview-banner-img" src="" alt="Campaign banner" class="hidden w-full object-cover max-h-[160px]"/>
+                        </div>
+                        <div class="p-8">
+                            <h1 id="preview-title" class="text-h2 font-h2 mb-4 text-on-surface">Untitled Campaign</h1>
+                            <div class="space-y-3 text-body-md text-on-surface-variant">
+                                <p>Dear Member,</p>
+                                <div id="preview-body-content" class="leading-relaxed">
+                                    <p><em>Your email body will appear here as you type...</em></p>
+                                </div>
+                            </div>
+                            <div class="mt-8 pt-6 border-t border-border-subtle text-center">
+                                <button class="bg-primary text-on-primary px-8 py-2 rounded-lg font-bold text-label-sm">Visit ASCO Website</button>
+                            </div>
+                        </div>
+                        <div class="bg-surface-muted p-4 text-center text-[10px] text-on-surface-variant leading-relaxed border-t border-border-subtle">
+                            You are receiving this as a registered member of the ASCO Civic Movement.<br/>
+                            Kwaggafontein, Mpumalanga, South Africa.<br/>
+                            Sent by <span id="preview-sender-footer">ASIHLANGANENI CIVIC MOVEMENT</span> via campaigns.asco.org.za
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Sidebar Column -->
+        <div class="col-span-12 lg:col-span-4 space-y-space-lg">
+            <!-- Scheduling & Launch Card -->
+            <div class="bg-surface-container-lowest border border-border-subtle rounded-xl p-space-lg sticky-sidebar sticky">
+                <h3 class="font-label-sm text-label-sm font-bold uppercase text-on-surface-variant mb-space-md">Scheduling &amp; Launch</h3>
+                <div class="space-y-space-md">
+                    <div class="space-y-space-xs">
+                        <label for="deployment-type" class="font-label-sm text-label-sm text-on-surface-variant">Deployment Type</label>
+                        <select id="deployment-type" class="w-full border border-border-subtle rounded-lg p-space-sm text-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none bg-white transition-all">
+                            <option value="now">Send Immediately</option>
+                            <option value="scheduled">Schedule for Later</option>
+                        </select>
+                    </div>
+
+                    <!-- Schedule datetime (shown only when scheduled) -->
+                    <div id="schedule-datetime-wrapper" class="space-y-space-xs hidden">
+                        <label for="schedule-datetime" class="font-label-sm text-label-sm text-on-surface-variant">Scheduled Date &amp; Time</label>
+                        <input id="schedule-datetime" class="w-full border border-border-subtle rounded-lg p-space-sm text-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none bg-white transition-all" type="datetime-local"/>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant">Time is in your local timezone.</p>
+                    </div>
+
+                    <!-- Campaign type -->
+                    <div class="space-y-space-xs">
+                        <label for="campaign-type" class="font-label-sm text-label-sm text-on-surface-variant">Campaign Type</label>
+                        <select id="campaign-type" class="w-full border border-border-subtle rounded-lg p-space-sm text-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none bg-white transition-all">
+                            <option value="announcement">Announcement</option>
+                            <option value="event">Event</option>
+                            <option value="volunteer">Volunteer</option>
+                            <option value="fundraising">Fundraising</option>
+                        </select>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="pt-space-md border-t border-border-subtle space-y-3">
+                        <button id="btn-launch" onclick="handleLaunchCampaign()" class="w-full bg-primary text-on-primary py-3 rounded-lg font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2 text-body-md">
+                            <span class="material-symbols-outlined text-body-lg">send</span>
+                            Launch Campaign
+                        </button>
+                        <button id="btn-test" onclick="sendTestEmail()" class="w-full bg-white border border-primary text-primary py-2.5 rounded-lg font-bold hover:bg-primary/5 transition-all flex items-center justify-center gap-2 text-body-md">
+                            <span class="material-symbols-outlined text-[18px]">science</span>
+                            Send Test Email
+                        </button>
+                        <button id="btn-draft" onclick="saveDraft()" class="w-full bg-white border border-border-subtle text-on-surface py-2.5 rounded-lg font-bold hover:bg-surface-container transition-all text-body-md">
+                            Save as Draft
+                        </button>
+                        <button onclick="discardCampaign()" class="w-full text-error font-bold text-label-sm py-2 hover:underline">
+                            Discard Campaign
+                        </button>
+                    </div>
+
+                    <!-- Draft save indicator -->
+                    <div id="draft-saved-indicator" class="hidden flex items-center gap-2 text-primary font-label-sm text-label-sm justify-center">
+                        <span class="material-symbols-outlined text-[14px]">check_circle</span>
+                        Draft saved
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campaign ID card (shown after save) -->
+            <div id="campaign-id-card" class="hidden bg-surface-container-lowest border border-border-subtle rounded-xl p-space-md">
+                <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Campaign ID</p>
+                <p class="font-body-md text-body-md text-on-surface font-mono break-all" id="campaign-id-display">—</p>
+                <p class="font-label-sm text-label-sm text-on-surface-variant mt-1" id="campaign-status-display">Draft</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+    <footer class="w-full bg-surface-container border-t border-border-subtle">
+        <div
+            class="w-full py-space-xl px-space-lg flex flex-col md:flex-row justify-between items-start gap-space-lg max-w-max-container mx-auto">
+            <div class="flex flex-col gap-space-sm max-w-sm">
+                <div class="font-h3 text-h3 font-bold text-primary">ASCO</div>
+                <p class="font-body-md text-body-md text-on-surface-variant">
+                    ASIHLANGANENI CIVIC MOVEMENT is a non-partisan organization dedicated to community empowerment
+                    through ethical governance.
+                </p>
+                <p class="font-label-sm text-label-sm text-primary mt-space-sm">
+                    © 2024 ASIHLANGANENI CIVIC MOVEMENT. Community • Accountability • Development
+                </p>
+            </div>
+            <div class="grid grid-cols-2 gap-space-xl">
+                <div class="flex flex-col gap-space-sm">
+                    <span
+                        class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Movement</span>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Mission Statement</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Quick Links</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Volunteer</a>
+                </div>
+                <div class="flex flex-col gap-space-sm">
+                    <span
+                        class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Legal</span>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Privacy Policy</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Terms of Service</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Constitution</a>
+                </div>
+            </div>
+            <div class="flex flex-col gap-space-sm">
+                <span class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Contact
+                    Us</span>
+                <div class="flex items-center gap-space-sm text-on-surface-variant">
+                    <span class="material-symbols-outlined text-[18px]">mail</span>
+                    <span class="font-body-md text-body-md">info@asco.org.za</span>
+                </div>
+                <div class="flex items-center gap-space-sm text-on-surface-variant">
+                    <span class="material-symbols-outlined text-[18px]">location_on</span>
+                    <span class="font-body-md text-body-md">Kwaggafontein, Mpumalanga, South Africa</span>
+                </div>
+                <div class="flex gap-space-sm mt-space-sm">
+                    <a class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center hover:bg-primary-fixed transition-colors"
+                        href="#">
+                        <img alt="FB" class="w-4 h-4 opacity-70"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0uwROLCN0_CB1xncjON4AMmdsAs4xdMtZgp973LQ5KFE7v1r7Ye94-G-7OcGPzCct-O6jvaSFCMfl2RbWXzfPBgpQ9uHpnz-J-Tn8kAiOXIGae5KXTbTDjRsixeriXhean8mHOES5aV1uJVZrS_PIC2OlGH-zgpxuCI5A1KCuwZeohLHlHNA3vq9ia1mR6pVfKwqTHZWTFfS4-7W91MX35h7TEYg7zPjDT1YascgKZrEdJ4cj2UC3BXODdh0zdaXdbjXmdXiAalU" />
+                    </a>
+                    <a class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center hover:bg-primary-fixed transition-colors"
+                        href="#">
+                        <img alt="TW" class="w-4 h-4 opacity-70"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1JW7LeoW0mrmoDZTs3VBlYJcMdayoLHDelyOldvL1kIQPaUb_IHRp6-PqEZv8jgrBYGboRkTS9mTqtzYQ9l_W8TDEj1Ijb24zgwlpLNM_7YzVOPjaOKC0hwJ4rrwapvSHYh9tFp_zemEoa-vYerty-SWUOQ4ZhqSaPqAhXONpcGeqPuCkgdkZUO8--ZI5Mj95OuwsLglitPy1n3CnaBhWVfzPmYXceYSIEjgkhkGFRvUmvg8fmdVD_UNbAT1S2KzNvpxT3Pmt6z8" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script src="Script.js"></script>
+</body></html>

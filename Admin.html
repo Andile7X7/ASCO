@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>ASCO Admin Dashboard | ASIHLANGANENI CIVIC MOVEMENT</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Material Symbols -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Supabase JS Client CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Theme Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#ffe088",
+                        "tertiary-fixed-dim": "#ffb1c8",
+                        "on-secondary-fixed": "#241a00",
+                        "on-primary-fixed": "#002203",
+                        "outline": "#717a6d",
+                        "tertiary-container": "#883454",
+                        "tertiary": "#6b1d3d",
+                        "surface-dim": "#dcd9d9",
+                        "primary": "#00450d",
+                        "on-surface-variant": "#41493e",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e5e2e1",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f6f3f2",
+                        "inverse-on-surface": "#f3f0ef",
+                        "secondary-container": "#fed65b",
+                        "inverse-primary": "#91d78a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#1c1b1b",
+                        "background": "#fcf9f8",
+                        "surface-variant": "#e5e2e1",
+                        "on-secondary-fixed-variant": "#574500",
+                        "on-tertiary-fixed-variant": "#7a2949",
+                        "inverse-surface": "#313030",
+                        "border-subtle": "#E0E0E0",
+                        "primary-fixed-dim": "#91d78a",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#2a6b2c",
+                        "surface-container": "#f0edec",
+                        "on-tertiary-container": "#ffaec6",
+                        "secondary": "#735c00",
+                        "on-primary-container": "#90d689",
+                        "on-secondary-container": "#745c00",
+                        "text-primary": "#121212",
+                        "primary-container": "#1b5e20",
+                        "on-error": "#ffffff",
+                        "background-main": "#FFFFFF",
+                        "secondary-fixed-dim": "#e9c349",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#ebe7e7",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c0c9bb",
+                        "primary-fixed": "#acf4a4",
+                        "surface": "#fcf9f8",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed-variant": "#0c5216",
+                        "text-secondary": "#424242",
+                        "tertiary-fixed": "#ffd9e2",
+                        "on-tertiary-fixed": "#3e001d",
+                        "on-surface": "#1c1b1b",
+                        "surface-muted": "#F5F5F5",
+                        "surface-bright": "#fcf9f8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "space-md": "16px",
+                        "space-lg": "24px",
+                        "space-sm": "8px",
+                        "space-xs": "4px",
+                        "max-container": "1200px",
+                        "sidebar-width": "260px",
+                        "space-xl": "32px",
+                        "gutter": "20px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Hanken Grotesk"],
+                        "h2": ["Hanken Grotesk"],
+                        "h3": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "label-sm": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "h1": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "h2": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "h3": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background font-body-md text-on-surface">
+  
+     <style>
+        @media (max-width:770px) {
+            .Buttons{
+                display: flex;
+                flex-direction: row;
+            }
+        }
+     </style>
+    <main class="min-h-screen">
+        <!-- TopNavBar Component (Shared Anchor) -->
+        <header
+            class="fixed top-0  left-0 right-0 bg-surface border-b border-border-subtle z-30 h-[56px]">
+            <div class="flex justify-between items-center h-full px-space-lg max-w-max-container mx-auto">
+                <div class="flex items-center gap-space-sm">
+                    <img src="Assets/ASCO_logo.jpeg" alt="ASCO logo" class="logo w-[34px] h-[34px]">
+                    <span class="font-h2 text-h2 font-bold text-primary">ASIHLANGANENI CIVIC MOVEMENT</span>
+                </div>
+                <div class="flex items-center gap-space-md">
+                    <div class="flex items-center gap-space-xs">
+                        <div
+                            class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center border border-border-subtle">
+                            <span class="material-symbols-outlined text-primary text-[18px]">person</span>
+                        </div>
+                        <span class="font-label-sm text-label-sm text-on-surface font-semibold" id="AdminName">Admin</span>
+                    </div>
+                    <button id="logout-btn"
+                        class="flex items-center gap-space-xs text-on-surface-variant hover:text-error transition-colors">
+                        <span class="material-symbols-outlined text-[20px]">logout</span>
+                        <span class="font-label-sm text-label-sm">Logout</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <!-- Page Content -->
+        <div class="pt-[56px] pb-space-xl px-space-lg max-w-max-container mx-auto">
+            <!-- Dashboard Header Section -->
+            <div class="py-space-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-space-md">
+                <div>
+                    <h2 class="font-h1 text-h1 text-on-surface">Admin Dashboard</h2>
+                    <p class="font-body-md text-body-md text-on-surface-variant">Overseeing organizational growth and
+                        community accountability.</p>
+                </div>
+                <div class="Buttons">
+                <button
+                    class="bg-primary m-1 text-on-primary flex items-center gap-space-sm px-space-lg py-space-sm rounded-lg font-label-sm text-label-sm hover:opacity-90 transition-all" onclick="goToCreateCampaign()">
+                    <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                    Create Campaign
+                </button>
+                <button
+                    class="bg-primary m-1 text-on-primary flex items-center gap-space-sm px-space-lg py-space-sm rounded-lg font-label-sm text-label-sm hover:opacity-90 transition-all" onclick="goToCreateBlog()">
+                    <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                    Create Blog
+                </button>
+                <button
+                    class="bg-primary m-1 text-on-primary flex items-center gap-space-sm px-space-lg py-space-sm rounded-lg font-label-sm text-label-sm hover:opacity-90 transition-all" onclick="goToBlogs()">
+                    <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+                    View Blogs
+                </button>
+                                <button
+                    class="bg-primary m-1 text-on-primary flex items-center gap-space-sm px-space-lg py-space-sm rounded-lg font-label-sm text-label-sm hover:opacity-90 transition-all" onclick="goToCampaigns()">
+                    <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+                    View Campaigns
+                </button>
+                </div>
+            </div>
+            <!-- Bento Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-space-lg mb-space-xl">
+                <!-- Total Members Card -->
+                <div
+                    class="md:col-span-4 bg-background-main border border-border-subtle p-space-lg rounded-xl flex flex-col justify-between h-[160px]">
+                    <div class="flex justify-between items-start">
+                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total
+                            Members</span>
+                        <div class="bg-primary-container/10 p-2 rounded-lg">
+                            <span class="material-symbols-outlined text-primary" data-icon="groups">groups</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-h1 text-h1 text-on-surface" id="total-members">---</div>
+                        <div class="flex items-center gap-1 text-[#1B5E20]">
+                            <span class="material-symbols-outlined text-[16px]">trending_up</span>
+                            <span class="font-label-sm text-label-sm">Live data feed</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- New Signups Card -->
+                <div
+                    class="md:col-span-4 bg-background-main border border-border-subtle p-space-lg rounded-xl flex flex-col justify-between h-[160px]">
+                    <div class="flex justify-between items-start">
+                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">New
+                            Signups (Week)</span>
+                        <div class="bg-secondary-container/10 p-2 rounded-lg">
+                            <span class="material-symbols-outlined text-secondary"
+                                data-icon="person_add">person_add</span>
+                        </div>
+                    </div>
+                    <div id="new-signups-container">
+                        <div class="font-h1 text-h1 text-on-surface" id="new-signups">---</div>
+                        <div class="flex items-center gap-1 text-[#1B5E20]">
+                            <span class="material-symbols-outlined text-[16px]">arrow_upward</span>
+                            <span class="font-label-sm text-label-sm" id="new-signups-subtext">Calculating...</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Decorative Asset/Visual Context Card -->
+                <div
+                    class="md:col-span-4 bg-surface-container border border-border-subtle rounded-xl overflow-hidden relative group">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                    <img alt="Community Meeting"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        data-alt="A professional, institutional photograph of a community town hall meeting in a brightly lit modern civic center. People are seated in organized rows, listening intently to a speaker. The color palette is natural and grounded, featuring soft greens and warm wood tones, reflecting a sense of formal governance, transparency, and organized civic participation. High-key lighting fills the space, creating an atmosphere of honesty and public service."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZaLxVc2XZxJMPcbF4NLoZ9gPCswLIheYVUglla6zORe4ZS9YWxntHheNL7edddcC5GKzMsp-bFYZLqgLIPBsfEawz-z_FXRo2eApAKq6OrsqTeC3Pb-YazNOnrbyEgmTXMqVK6wuj0gdI0eXbUvOv9MsbnIMd5q53LrnSS2Huyj4P95H2BlHjIp0715vJDmXyqwvwK1d-1y6GRbombbabqTPuVUjfnwnOCMtPIS1L8YnYoT_k2gYFmbEvIf0AVt1GDdrHPvdvHqU" />
+                    <div class="absolute bottom-space-md left-space-md z-20 text-white">
+                        <p class="font-label-sm text-label-sm opacity-80">Next General Assembly</p>
+                        <h4 class="font-h3 text-h3">August 15, 2024</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- Activity Log Section -->
+            <div class="bg-background-main border border-border-subtle rounded-xl">
+                <div class="px-space-lg py-space-md border-b border-border-subtle flex justify-between items-center">
+                    <h3 class="font-h3 text-h3 text-on-surface">Recent Activity</h3>
+                    <button class="text-primary font-label-sm text-label-sm hover:underline">View All Log</button>
+                </div>
+                <div class="divide-y divide-border-subtle" id="activity-list">
+                    <!-- Activity Item 1 -->
+                    <div
+                        class="px-space-lg py-space-md flex items-center justify-between hover:bg-surface-container-low transition-colors">
+                        <div class="flex items-center gap-space-md">
+                            <div
+                                class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[20px]"
+                                    data-icon="person_add">person_add</span>
+                            </div>
+                            <div>
+                                <p class="font-body-md text-body-md text-on-surface"><span class="font-semibold">John
+                                        Doe</span> signed up</p>
+                                <p class="font-label-sm text-label-sm text-on-surface-variant">Membership #ASCO-9982</p>
+                            </div>
+                        </div>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant">2 hours ago</span>
+                    </div>
+                    <!-- Activity Item 2 -->
+                    <div
+                        class="px-space-lg py-space-md flex items-center justify-between hover:bg-surface-container-low transition-colors">
+                        <div class="flex items-center gap-space-md">
+                            <div
+                                class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[20px]"
+                                    data-icon="person_add">person_add</span>
+                            </div>
+                            <div>
+                                <p class="font-body-md text-body-md text-on-surface"><span class="font-semibold">Jane
+                                        Smith</span> signed up</p>
+                                <p class="font-label-sm text-label-sm text-on-surface-variant">Membership #ASCO-9981</p>
+                            </div>
+                        </div>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant">5 hours ago</span>
+                    </div>
+                    <!-- Activity Item 3 -->
+                    <div
+                        class="px-space-lg py-space-md flex items-center justify-between hover:bg-surface-container-low transition-colors">
+                        <div class="flex items-center gap-space-md">
+                            <div
+                                class="w-10 h-10 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[20px]" data-icon="mail">mail</span>
+                            </div>
+                            <div>
+                                <p class="font-body-md text-body-md text-on-surface">Campaign email sent to <span
+                                        class="font-semibold">340 members</span></p>
+                                <p class="font-label-sm text-label-sm text-on-surface-variant">Subject: Community Bylaw
+                                    Update</p>
+                            </div>
+                        </div>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant">1 day ago</span>
+                    </div>
+                    <!-- Activity Item 4 (Additional to fill space) -->
+                    <div
+                        class="px-space-lg py-space-md flex items-center justify-between hover:bg-surface-container-low transition-colors">
+                        <div class="flex items-center gap-space-md">
+                            <div
+                                class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[20px]" data-icon="campaign">campaign</span>
+                            </div>
+                            <div>
+                                <p class="font-body-md text-body-md text-on-surface">Strategic Pillar <span
+                                        class="font-semibold">"Transparency"</span> updated</p>
+                                <p class="font-label-sm text-label-sm text-on-surface-variant">Updated by Admin</p>
+                            </div>
+                        </div>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant">1 day ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer Component (Shared Anchor) -->
+    <footer class="w-full bg-surface-container border-t border-border-subtle">
+    <div class="w-full py-space-xl px-space-lg flex flex-col md:flex-row justify-between items-start gap-space-lg max-w-max-container mx-auto">
+        <div class="flex flex-col gap-space-sm max-w-sm">
+            <div class="font-h3 text-h3 font-bold text-primary">ASCO</div>
+            <p class="font-body-md text-body-md text-on-surface-variant">
+                ASIHLANGANENI CIVIC MOVEMENT is a non-partisan organization dedicated to community empowerment
+                through ethical governance.
+            </p>
+            <p class="font-label-sm text-label-sm text-primary mt-space-sm">
+                © 2024 ASIHLANGANENI CIVIC MOVEMENT. Community • Accountability • Development
+            </p>
+        </div>
+        <div class="grid grid-cols-2 gap-space-xl">
+            <div class="flex flex-col gap-space-sm">
+                <span class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Movement</span>
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all" href="#">Mission Statement</a>
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all" href="#">Quick Links</a>
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all" href="#">Volunteer</a>
+            </div>
+            <div class="flex flex-col gap-space-sm">
+                <span class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Legal</span>
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all" href="#">Privacy Policy</a>
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all" href="#">Terms of Service</a>
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all" href="#">Constitution</a>
+            </div>
+        </div>
+        <div class="flex flex-col gap-space-sm">
+            <span class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Contact Us</span>
+            <div class="flex items-center gap-space-sm text-on-surface-variant">
+                <span class="material-symbols-outlined text-[18px]">email</span>
+                <span class="font-body-md text-body-md">info@asco.org.za</span>
+            </div>
+            <div class="flex items-center gap-space-sm text-on-surface-variant">
+                <span class="material-symbols-outlined text-[18px]">location_on</span>
+                <span class="font-body-md text-body-md">Kwaggafontein, Mpumalanga, South Africa</span>
+            </div>
+            <div class="flex gap-space-sm mt-space-sm">
+                <a class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center hover:bg-primary-fixed transition-colors" href="#">
+                    <img alt="FB" class="w-4 h-4 opacity-70" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0uwROLCN0_CB1xncjON4AMmdsAs4xdMtZgp973LQ5KFE7v1r7Ye94-G-7OcGPzCct-O6jvaSFCMfl2RbWXzfPBgpQ9uHpnz-J-Tn8kAiOXIGae5KXTbTDjRsixeriXhean8mHOES5aV1uJVZrS_PIC2OlGH-zgpxuCI5A1KCuwZeohLHlHNA3vq9ia1mR6pVfKwqTHZWTFfS4-7W91MX35h7TEYg7zPjDT1YascgKZrEdJ4cj2UC3BXODdh0zdaXdbjXmdXiAalU"/>
+                </a>
+                <a class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center hover:bg-primary-fixed transition-colors" href="#">
+                    <img alt="TW" class="w-4 h-4 opacity-70" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1JW7LeoW0mrmoDZTs3VBlYJcMdayoLHDelyOldvL1kIQPaUb_IHRp6-PqEZv8jgrBYGboRkTS9mTqtzYQ9l_W8TDEj1Ijb24zgwlpLNM_7YzVOPjaOKC0hwJ4rrwapvSHYh9tFp_zemEoa-vYerty-SWUOQ4ZhqSaPqAhXONpcGeqPuCkgdkZUO8--ZI5Mj95OuwsLglitPy1n3CnaBhWVfzPmYXceYSIEjgkhkGFRvUmvg8fmdVD_UNbAT1S2KzNvpxT3Pmt6z8"/>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+    </main>
+<script src="Script.js"></script>
+</body>
+
+</html>

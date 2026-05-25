@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Create New Blog Post | ASCO Admin</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#745c00",
+                        "surface-container-high": "#ebe7e7",
+                        "on-tertiary-fixed": "#3e001d",
+                        "tertiary-fixed-dim": "#ffb1c8",
+                        "on-primary-container": "#90d689",
+                        "on-secondary-fixed": "#241a00",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#acf4a4",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#2a6b2c",
+                        "on-secondary-fixed-variant": "#574500",
+                        "tertiary-container": "#883454",
+                        "surface": "#fcf9f8",
+                        "secondary": "#735c00",
+                        "tertiary-fixed": "#ffd9e2",
+                        "on-tertiary-container": "#ffaec6",
+                        "surface-muted": "#F5F5F5",
+                        "border-subtle": "#E0E0E0",
+                        "on-primary-fixed-variant": "#0c5216",
+                        "inverse-on-surface": "#f3f0ef",
+                        "surface-variant": "#e5e2e1",
+                        "on-background": "#1c1b1b",
+                        "surface-bright": "#fcf9f8",
+                        "inverse-primary": "#91d78a",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#313030",
+                        "background-main": "#FFFFFF",
+                        "primary": "#00450d",
+                        "on-surface-variant": "#41493e",
+                        "on-primary-fixed": "#002203",
+                        "secondary-fixed": "#ffe088",
+                        "primary-container": "#1b5e20",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#7a2949",
+                        "on-error": "#ffffff",
+                        "outline": "#717a6d",
+                        "surface-dim": "#dcd9d9",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-low": "#f6f3f2",
+                        "on-surface": "#1c1b1b",
+                        "text-secondary": "#424242",
+                        "surface-container": "#f0edec",
+                        "secondary-fixed-dim": "#e9c349",
+                        "background": "#fcf9f8",
+                        "secondary-container": "#fed65b",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#91d78a",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c0c9bb",
+                        "text-primary": "#121212",
+                        "tertiary": "#6b1d3d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.8px",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "space-sm": "8px",
+                        "sidebar-width": "260px",
+                        "space-xs": "4px",
+                        "space-xl": "32px",
+                        "space-md": "16px",
+                        "gutter": "20px",
+                        "space-lg": "24px",
+                        "max-container": "1200px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Hanken Grotesk"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "h1": ["Hanken Grotesk"],
+                        "h1-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "h3": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "h2": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "h1": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "h1-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "h3": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            background-color: #fcf9f8;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .form-input-focus:focus {
+            border-color: #00450d;
+            ring: 2px solid #00450d;
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface">
+    <!-- TopNavBar -->
+    <nav class="fixed top-0 w-full z-50 bg-surface dark:bg-on-background border-b border-border-subtle h-[56px]">
+        <div class="flex justify-between items-center h-full px-space-lg max-w-max-container mx-auto">
+            <span class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim">ASIHLANGANENI CIVIC
+                MOVEMENT</span>
+            <div class="hidden md:flex items-center gap-space-lg">
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors"
+                    href="#">Home</a>
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors"
+                    href="#">About</a>
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors"
+                    href="#">Strategic Planning</a>
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors"
+                    href="#">Service Delivery</a>
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors"
+                    href="#">8 Pillars</a>
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors"
+                    href="#">Contact</a>
+                <button
+                    class="bg-primary-container text-on-primary px-space-md py-space-xs rounded-lg font-body-md">Join
+                    Movement</button>
+            </div>
+        </div>
+    </nav>
+    <!-- SideNavBar -->
+    <!-- <aside
+        class="fixed inset-y-0 left-0 w-sidebar-width bg-surface-muted dark:bg-inverse-surface border-r border-border-subtle hidden md:flex flex-col h-full overflow-y-auto py-space-md z-40 mt-[56px]">
+        <div class="px-space-md mb-space-lg">
+            <div class="flex items-center gap-space-sm mb-space-xs">
+                <div class="w-10 h-10 bg-primary-container rounded flex items-center justify-center text-on-primary">
+                    <span class="material-symbols-outlined">account_balance</span>
+                </div>
+                <div>
+                    <p class="font-h3 text-h3 font-bold text-primary dark:text-primary-fixed-dim">ASCO</p>
+                    <p class="font-label-sm text-label-sm text-on-surface-variant">Community • Accountability</p>
+                </div>
+            </div>
+        </div>
+        <nav class="flex-1 px-space-sm space-y-1">
+            <a class="flex items-center gap-space-sm px-space-md py-space-sm font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-container-low transition-colors"
+                href="#">
+                <span class="material-symbols-outlined text-[20px]">home</span> Home
+            </a>
+            <a class="flex items-center gap-space-sm px-space-md py-space-sm font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-container-low transition-colors"
+                href="#">
+                <span class="material-symbols-outlined text-[20px]">info</span> About
+            </a>
+            <a class="flex items-center gap-space-sm px-space-md py-space-sm font-label-sm text-label-sm text-primary bg-surface-container border-l-4 border-primary"
+                href="#">
+                <span class="material-symbols-outlined text-[20px]">military_tech</span> Strategic Planning
+            </a>
+            <a class="flex items-center gap-space-sm px-space-md py-space-sm font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-container-low transition-colors"
+                href="#">
+                <span class="material-symbols-outlined text-[20px]">package_2</span> Service Delivery
+            </a>
+            <a class="flex items-center gap-space-sm px-space-md py-space-sm font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-container-low transition-colors"
+                href="#">
+                <span class="material-symbols-outlined text-[20px]">account_tree</span> 8 Pillars
+            </a>
+            <a class="flex items-center gap-space-sm px-space-md py-space-sm font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-container-low transition-colors"
+                href="#">
+                <span class="material-symbols-outlined text-[20px]">contact_support</span> Contact
+            </a>
+        </nav>
+        <div class="p-space-md">
+            <button
+                class="w-full py-space-sm bg-primary text-on-primary font-label-sm rounded-lg hover:opacity-90 transition-opacity">
+                Get Involved
+            </button>
+        </div>
+    </aside> -->
+    <!-- Main Content -->
+    <main class="md:ml-sidebar-width pt-[88px] pb-space-xl px-space-lg min-h-screen">
+        <div class="max-w-max-container mx-auto">
+            <!-- Breadcrumbs / Return Link -->
+            <div class="mb-space-md flex items-center gap-space-xs text-on-surface-variant">
+                <a class="flex items-center hover:text-primary transition-colors font-body-md" href="#">
+                    <span class="material-symbols-outlined text-[18px] mr-1">arrow_back</span>
+                    Return to Dashboard
+                </a>
+            </div>
+            <!-- Page Header -->
+            <div class="mb-space-xl">
+                <h1 class="font-h1 text-h1 text-on-surface">Create New Blog Post</h1>
+                <p class="font-body-md text-on-surface-variant mt-1">Draft a new civic movement update or educational
+                    article for the community.</p>
+            </div>
+            <!-- Form Content -->
+            <form class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl" id="blogForm">
+                <!-- Left Column: Content Details -->
+                <div class="lg:col-span-8 space-y-space-lg">
+                    <!-- Text Content Card -->
+                    <div class="bg-background-main border border-border-subtle p-space-lg rounded-lg shadow-sm">
+                        <div class="space-y-space-md">
+                            <div>
+                                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-space-xs"
+                                    for="title">Title</label>
+                                <input
+                                    class="w-full border border-[#BDBDBD] p-space-sm rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-md"
+                                    id="title" placeholder="Enter post title" type="text" required />
+                            </div>
+                            <div>
+                                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-space-xs"
+                                    for="subtitle">Subtitle</label>
+                                <input
+                                    class="w-full border border-[#BDBDBD] p-space-sm rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-md"
+                                    id="subtitle" placeholder="Secondary heading or key summary" type="text" required />
+                            </div>
+                            <div>
+                                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-space-xs"
+                                    for="tagline">Tagline</label>
+                                <input
+                                    class="w-full border border-[#BDBDBD] p-space-sm rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-md"
+                                    id="tagline" placeholder="Brief catchphrase or category" type="text" required />
+                            </div>
+                             <div>
+                                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-space-xs"
+                                    for="tagline">Category</label>
+                                <input
+                                    class="w-full border border-[#BDBDBD] p-space-sm rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-md"
+                                    id="category" placeholder="Category of blog, eg service Delivery" type="text" required />
+                            </div>
+                            <div>
+                                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-space-xs"
+                                    for="paragraph1">Paragraph 1</label>
+                                <textarea
+                                    class="w-full border border-[#BDBDBD] p-space-sm rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-md"
+                                    id="paragraph1" placeholder="Write the main body content here..."
+                                    rows="6" required></textarea>
+                            </div>
+                            <div>
+                                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-space-xs"
+                                    for="paragraph2">Paragraph 2 (Optional)</label>
+                                <textarea
+                                    class="w-full border border-[#BDBDBD] p-space-sm rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-md"
+                                    id="paragraph2" placeholder="Continue the article if needed..." rows="6"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Media & Assets Card -->
+                    <div class="bg-background-main border border-border-subtle p-space-lg rounded-lg shadow-sm">
+                        <h2
+                            class="font-h3 text-h3 text-on-surface mb-space-md border-b border-border-subtle pb-space-sm flex items-center">
+                            <span class="material-symbols-outlined mr-2">image</span> Gallery structure
+                        </h2>
+                        <div class="space-y-space-lg">
+                            <!-- Main Image -->
+                            <div class="flex flex-col md:flex-row gap-space-lg items-start">
+                                <div class="flex-1 w-full">
+                                    <label
+                                        class="block font-label-sm text-label-sm text-on-surface-variant mb-space-xs">Front
+                                        Page Image</label>
+                                    <div
+                                        class="relative group border-2 border-dashed border-[#BDBDBD] rounded-lg p-space-md text-center hover:bg-surface-muted transition-colors cursor-pointer" id="MainImageDiv">
+                                        <span
+                                            class="material-symbols-outlined text-primary text-[32px] mb-space-xs">upload_file</span>
+                                        <p class="font-body-md text-on-surface-variant">Click to upload or drag &amp;
+                                            drop</p>
+                                        <p class="font-label-sm text-outline-variant mt-1">SVG, PNG, JPG (max. 10MB)</p>
+                                        
+                                    </div>
+                                    <input class="absolute inset-0 opacity-0 cursor-pointer hidden" type="file" required id="MainImage" />
+                                </div>
+                             
+                            </div>
+                            <hr class="border-border-subtle" />
+                            <!-- Secondary Image Gallery -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+                                <div class="space-y-space-md">
+                                    <div class="flex flex-col">
+                                        <label
+                                            class="block font-label-sm text-label-sm text-on-surface-variant mb-space-xs">Image
+                                            2</label>
+                                        <div
+                                            class="border-2 border-dashed border-[#BDBDBD] rounded-lg p-space-md text-center hover:bg-surface-muted transition-colors cursor-pointer" id="img2div">
+                                            <span
+                                                class="material-symbols-outlined text-primary text-[24px]">add_photo_alternate</span>
+                                            
+                                        </div>
+                                        <input class="hidden" type="file" required id="img2"/>
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="block font-label-sm text-label-sm text-on-surface-variant mb-space-xs"
+                                            for="img2Label">Image 2 Label (Optional)</label>
+                                        <input
+                                            class="w-full border border-[#BDBDBD] p-space-sm rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-md"
+                                            id="img2Label" placeholder="Add a caption..." type="text" />
+                                    </div>
+                                </div>
+                                <div class="space-y-space-md">
+                                    <div class="flex flex-col">
+                                        <label
+                                            class="block font-label-sm text-label-sm text-on-surface-variant mb-space-xs">Image
+                                            3</label>
+                                        <div
+                                            class="border-2 border-dashed border-[#BDBDBD] rounded-lg p-space-md text-center hover:bg-surface-muted transition-colors cursor-pointer" id="img3div">
+                                            <span
+                                                class="material-symbols-outlined text-primary text-[24px]">add_photo_alternate</span>
+                                            
+                                        </div>
+                                        <input class="hidden" type="file" required id="img3"/>
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="block font-label-sm text-label-sm text-on-surface-variant mb-space-xs"
+                                            for="img3Label">Image 3 Label (Optional)</label>
+                                        <input
+                                            class="w-full border border-[#BDBDBD] p-space-sm rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-md"
+                                            id="img3Label" placeholder="Add a caption..." type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    <div class="bg-background-main border border-border-subtle p-space-lg rounded-lg shadow-sm flex flex-col">
+            <div>
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-space-xs"
+                    for="paragraph2">Publish Now?</label>
+                <select name="PublishNow" id="PublishNow" class="w-full border border-[#BDBDBD] p- ">
+                    <option value="Now">Publish Now</option>
+                    <option value="Later">Publish Later</option>
+                </select>
+            </div>
+  <button type="submit" id="BtnSubmit"
+    class="w-full bg-primary m-1 text-on-primary flex items-center justify-center gap-space-sm px-space-lg py-space-sm rounded-lg font-label-sm text-label-sm hover:opacity-90 transition-all">
+    create
+  </button>
+</div>
+                </div>
+                
+                
+                <!-- Right Column: Sidebar Actions & Settings -->
+                
+            </form>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full bg-surface-container border-t border-border-subtle">
+        <div
+            class="w-full py-space-xl px-space-lg flex flex-col md:flex-row justify-between items-start gap-space-lg max-w-max-container mx-auto">
+            <div class="flex flex-col gap-space-sm max-w-sm">
+                <div class="font-h3 text-h3 font-bold text-primary">ASCO</div>
+                <p class="font-body-md text-body-md text-on-surface-variant">
+                    ASIHLANGANENI CIVIC MOVEMENT is a non-partisan organization dedicated to community empowerment
+                    through ethical governance.
+                </p>
+                <p class="font-label-sm text-label-sm text-primary mt-space-sm">
+                    © 2024 ASIHLANGANENI CIVIC MOVEMENT. Community • Accountability • Development
+                </p>
+            </div>
+            <div class="grid grid-cols-2 gap-space-xl">
+                <div class="flex flex-col gap-space-sm">
+                    <span
+                        class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Movement</span>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Mission Statement</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Quick Links</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Volunteer</a>
+                </div>
+                <div class="flex flex-col gap-space-sm">
+                    <span
+                        class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Legal</span>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Privacy Policy</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Terms of Service</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Constitution</a>
+                </div>
+            </div>
+            <div class="flex flex-col gap-space-sm">
+                <span class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Contact
+                    Us</span>
+                <div class="flex items-center gap-space-sm text-on-surface-variant">
+                    <span class="material-symbols-outlined text-[18px]">mail</span>
+                    <span class="font-body-md text-body-md">info@asco.org.za</span>
+                </div>
+                <div class="flex items-center gap-space-sm text-on-surface-variant">
+                    <span class="material-symbols-outlined text-[18px]">location_on</span>
+                    <span class="font-body-md text-body-md">Kwaggafontein, Mpumalanga, South Africa</span>
+                </div>
+                <div class="flex gap-space-sm mt-space-sm">
+                    <a class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center hover:bg-primary-fixed transition-colors"
+                        href="#">
+                        <img alt="FB" class="w-4 h-4 opacity-70"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0uwROLCN0_CB1xncjON4AMmdsAs4xdMtZgp973LQ5KFE7v1r7Ye94-G-7OcGPzCct-O6jvaSFCMfl2RbWXzfPBgpQ9uHpnz-J-Tn8kAiOXIGae5KXTbTDjRsixeriXhean8mHOES5aV1uJVZrS_PIC2OlGH-zgpxuCI5A1KCuwZeohLHlHNA3vq9ia1mR6pVfKwqTHZWTFfS4-7W91MX35h7TEYg7zPjDT1YascgKZrEdJ4cj2UC3BXODdh0zdaXdbjXmdXiAalU" />
+                    </a>
+                    <a class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center hover:bg-primary-fixed transition-colors"
+                        href="#">
+                        <img alt="TW" class="w-4 h-4 opacity-70"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1JW7LeoW0mrmoDZTs3VBlYJcMdayoLHDelyOldvL1kIQPaUb_IHRp6-PqEZv8jgrBYGboRkTS9mTqtzYQ9l_W8TDEj1Ijb24zgwlpLNM_7YzVOPjaOKC0hwJ4rrwapvSHYh9tFp_zemEoa-vYerty-SWUOQ4ZhqSaPqAhXONpcGeqPuCkgdkZUO8--ZI5Mj95OuwsLglitPy1n3CnaBhWVfzPmYXceYSIEjgkhkGFRvUmvg8fmdVD_UNbAT1S2KzNvpxT3Pmt6z8" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="Script.js">
+    </script>
+</body>
+
+</html>

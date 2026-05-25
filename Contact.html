@@ -16,6 +16,7 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -158,6 +159,8 @@
             <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle" href="StrategicPlan.html">Strategic Planning</a>
             <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle" href="ServiceDelivery.html">Service Delivery</a>
             <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle" href="8Pillars.html">8 Pillars</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle"
+                href="Blogs.html">Blogs</a>
             <a class="text-primary font-semibold font-body-lg text-body-lg pb-space-sm border-b-2 border-primary" href="Contact.html">Contact</a>
         </nav>
         <button class="mt-space-xl bg-primary-container text-on-primary py-space-sm rounded-xl font-body-md text-body-md hover:opacity-90 transition-all uppercase tracking-wider font-semibold">
@@ -285,7 +288,7 @@
                         <p class="font-body-md text-body-md text-on-surface-variant">Fill out the form below to become
                             an active participant in the ASCO movement.</p>
                     </div>
-                    <form class="space-y-space-lg">
+                    <form id="contactForm" class="space-y-space-lg">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
                             <div class="flex flex-col gap-space-xs">
                                 <label class="font-label-sm text-label-sm text-on-surface-variant" for="full-name">Full
@@ -312,29 +315,17 @@
                             </div>
                             <div class="flex flex-col gap-space-xs">
                                 <label class="font-label-sm text-label-sm text-on-surface-variant"
-                                    for="province">Province</label>
+                                    for="province">Municiplaity</label>
                                 <select
                                     class="border border-outline-variant rounded-lg px-space-md py-space-sm font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none"
-                                    id="province">
-                                    <option value="">Select Province</option>
-                                    <option value="gauteng">Gauteng</option>
-                                    <option value="kwazulu-natal">KwaZulu-Natal</option>
-                                    <option value="western-cape">Western Cape</option>
-                                    <option value="eastern-cape">Eastern Cape</option>
-                                    <option value="free-state">Free State</option>
-                                    <option value="limpopo">Limpopo</option>
-                                    <option value="mpumalanga">Mpumalanga</option>
-                                    <option value="northern-cape">Northern Cape</option>
-                                    <option value="north-west">North West</option>
+                                    id="Municipality">
+                                    <option value="">Select Municiplaity</option>
+                                    <option value="Elias Motswaledi">Elias Motswaledi</option>
+                                    <option value="Thembisile Hani">Thembisile Hani</option>
+                                    <option value="JS Moroka">JS Moroka</option>
+                                    
                                 </select>
                             </div>
-                        </div>
-                        <div class="flex flex-col gap-space-xs">
-                            <label class="font-label-sm text-label-sm text-on-surface-variant"
-                                for="message">Message</label>
-                            <textarea
-                                class="border border-outline-variant rounded-lg px-space-md py-space-sm font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none resize-none"
-                                id="message" placeholder="How would you like to contribute?" rows="4"></textarea>
                         </div>
                         <div
                             class="flex items-center gap-space-md p-space-md bg-surface-container-low rounded-lg border border-border-subtle">
@@ -345,9 +336,10 @@
                         </div>
                         <div class="flex gap-space-md pt-space-md border-t border-border-subtle">
                             <button
-                                class="bg-primary text-on-primary px-space-xl py-space-sm rounded-lg font-h3 text-h3 hover:bg-opacity-90 transition-all flex-1 md:flex-none"
+                                class="bg-primary text-on-primary px-space-xl py-space-sm rounded-lg font-h3 text-h3 hover:bg-opacity-90 transition-all flex-1 md:flex-none flex items-center justify-center gap-2"
                                 type="submit">
-                                Submit Application
+                                <span class="btn-text">Submit Application</span>
+                                <span class="btn-spinner material-symbols-outlined hidden animate-spin text-[20px]">progress_activity</span>
                             </button>
                             <button
                                 class="bg-white border border-primary text-primary px-space-xl py-space-sm rounded-lg font-h3 text-h3 hover:bg-surface-container transition-all flex-1 md:flex-none"
@@ -364,41 +356,68 @@
     <footer class="w-full bg-surface-container border-t border-border-subtle">
         <div
             class="w-full py-space-xl px-space-lg flex flex-col md:flex-row justify-between items-start gap-space-lg max-w-max-container mx-auto">
-            <div class="flex flex-col gap-space-sm max-w-[400px]">
-                <div class="font-h3 text-h3 font-bold text-primary">ASIHLANGANENI CIVIC MOVEMENT</div>
-                <p class="font-body-md text-body-md text-on-surface-variant">A movement dedicated to accountability,
-                    service delivery, and the restoration of constitutional order in our communities.</p>
+            <div class="flex flex-col gap-space-sm max-w-sm">
+                <div class="font-h3 text-h3 font-bold text-primary">ASCO</div>
+                <p class="font-body-md text-body-md text-on-surface-variant">
+                    ASIHLANGANENI CIVIC MOVEMENT is a non-partisan organization dedicated to community empowerment
+                    through ethical governance.
+                </p>
+                <p class="font-label-sm text-label-sm text-primary mt-space-sm">
+                    © 2024 ASIHLANGANENI CIVIC MOVEMENT. Community • Accountability • Development
+                </p>
             </div>
-            <div class="flex flex-col md:flex-row gap-space-xl">
-                <div class="flex flex-col gap-space-xs">
-                    <h4 class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest mb-space-sm">
-                        Resources</h4>
-                    <a class="text-on-surface-variant hover:text-primary transition-all font-body-md text-body-md hover:underline"
-                        href="">Mission Statement</a>
-                    <a class="text-on-surface-variant hover:text-primary transition-all font-body-md text-body-md hover:underline"
-                        href="#">8 Pillars</a>
-                    <a class="text-on-surface-variant hover:text-primary transition-all font-body-md text-body-md hover:underline"
+            <div class="grid grid-cols-2 gap-space-xl">
+                <div class="flex flex-col gap-space-sm">
+                    <span
+                        class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Movement</span>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Mission Statement</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
                         href="#">Quick Links</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Volunteer</a>
                 </div>
-                <div class="flex flex-col gap-space-xs">
-                    <h4 class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest mb-space-sm">Legal
-                    </h4>
-                    <a class="text-on-surface-variant hover:text-primary transition-all font-body-md text-body-md hover:underline"
+                <div class="flex flex-col gap-space-sm">
+                    <span
+                        class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Legal</span>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
                         href="#">Privacy Policy</a>
-                    <a class="text-on-surface-variant hover:text-primary transition-all font-body-md text-body-md hover:underline"
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
                         href="#">Terms of Service</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Constitution</a>
                 </div>
             </div>
-        </div>
-        <div
-            class="max-w-max-container mx-auto px-space-lg py-space-md border-t border-border-subtle text-center md:text-left">
-            <p class="font-body-md text-body-md text-on-surface-variant">
-                © 2024 ASIHLANGANENI CIVIC MOVEMENT. Community • Accountability • Development
-            </p>
+            <div class="flex flex-col gap-space-sm">
+                <span
+                    class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Contact
+                    Us</span>
+                <div class="flex items-center gap-space-sm text-on-surface-variant">
+                    <span class="material-symbols-outlined text-[18px]">mail</span>
+                    <span class="font-body-md text-body-md">info@asco.org.za</span>
+                </div>
+                <div class="flex items-center gap-space-sm text-on-surface-variant">
+                    <span class="material-symbols-outlined text-[18px]">location_on</span>
+                    <span class="font-body-md text-body-md">Kwaggafontein, Mpumalanga, South Africa</span>
+                </div>
+                <div class="flex gap-space-sm mt-space-sm">
+                    <a class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center hover:bg-primary-fixed transition-colors"
+                        href="#">
+                        <img alt="FB" class="w-4 h-4 opacity-70"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0uwROLCN0_CB1xncjON4AMmdsAs4xdMtZgp973LQ5KFE7v1r7Ye94-G-7OcGPzCct-O6jvaSFCMfl2RbWXzfPBgpQ9uHpnz-J-Tn8kAiOXIGae5KXTbTDjRsixeriXhean8mHOES5aV1uJVZrS_PIC2OlGH-zgpxuCI5A1KCuwZeohLHlHNA3vq9ia1mR6pVfKwqTHZWTFfS4-7W91MX35h7TEYg7zPjDT1YascgKZrEdJ4cj2UC3BXODdh0zdaXdbjXmdXiAalU" />
+                    </a>
+                    <a class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center hover:bg-primary-fixed transition-colors"
+                        href="#">
+                        <img alt="TW" class="w-4 h-4 opacity-70"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1JW7LeoW0mrmoDZTs3VBlYJcMdayoLHDelyOldvL1kIQPaUb_IHRp6-PqEZv8jgrBYGboRkTS9mTqtzYQ9l_W8TDEj1Ijb24zgwlpLNM_7YzVOPjaOKC0hwJ4rrwapvSHYh9tFp_zemEoa-vYerty-SWUOQ4ZhqSaPqAhXONpcGeqPuCkgdkZUO8--ZI5Mj95OuwsLglitPy1n3CnaBhWVfzPmYXceYSIEjgkhkGFRvUmvg8fmdVD_UNbAT1S2KzNvpxT3Pmt6z8" />
+                    </a>
+                </div>
+            </div>
         </div>
     </footer>
 </div>
 
+    <script src="Script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const burgerBtn = document.getElementById('burger-menu-btn');

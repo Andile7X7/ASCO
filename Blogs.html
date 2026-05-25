@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Movement Updates | ASIHLANGANENI CIVIC MOVEMENT</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#acf4a4",
+                        "surface-bright": "#fcf9f8",
+                        "secondary-container": "#fed65b",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#883454",
+                        "secondary": "#735c00",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed": "#002203",
+                        "on-surface": "#1c1b1b",
+                        "outline-variant": "#c0c9bb",
+                        "background": "#fcf9f8",
+                        "surface-container-highest": "#e5e2e1",
+                        "surface-variant": "#e5e2e1",
+                        "inverse-primary": "#91d78a",
+                        "primary": "#00450d",
+                        "on-secondary-fixed": "#241a00",
+                        "tertiary-fixed": "#ffd9e2",
+                        "on-primary-container": "#90d689",
+                        "surface-container-low": "#f6f3f2",
+                        "on-tertiary-fixed-variant": "#7a2949",
+                        "secondary-fixed": "#ffe088",
+                        "on-background": "#1c1b1b",
+                        "border-subtle": "#E0E0E0",
+                        "on-tertiary-container": "#ffaec6",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#41493e",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb1c8",
+                        "on-tertiary-fixed": "#3e001d",
+                        "surface-muted": "#F5F5F5",
+                        "tertiary": "#6b1d3d",
+                        "text-secondary": "#424242",
+                        "on-secondary-fixed-variant": "#574500",
+                        "on-secondary-container": "#745c00",
+                        "surface": "#fcf9f8",
+                        "inverse-surface": "#313030",
+                        "secondary-fixed-dim": "#e9c349",
+                        "text-primary": "#121212",
+                        "on-primary": "#ffffff",
+                        "outline": "#717a6d",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#f3f0ef",
+                        "primary-container": "#1b5e20",
+                        "surface-tint": "#2a6b2c",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-high": "#ebe7e7",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#91d78a",
+                        "surface-container": "#f0edec",
+                        "background-main": "#FFFFFF",
+                        "on-primary-fixed-variant": "#0c5216"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "space-xs": "4px",
+                        "space-sm": "8px",
+                        "sidebar-width": "260px",
+                        "max-container": "1200px",
+                        "space-md": "16px",
+                        "unit": "4px",
+                        "space-lg": "24px",
+                        "space-xl": "32px",
+                        "gutter": "20px"
+                    },
+                    "fontFamily": {
+                        "h1-mobile": ["Hanken Grotesk"],
+                        "h3": ["Hanken Grotesk"],
+                        "h1": ["Hanken Grotesk"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "h2": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "h1-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "h1": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "h2": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        @media (min-width: 1140px) {
+            .nav-links-desktop {
+                display: flex !important;
+            }
+
+            .burger-menu-btn {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 1139px) {
+            .nav-links-desktop {
+                display: none !important;
+            }
+
+            .burger-menu-btn {
+                display: flex !important;
+            }
+        }
+    
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+    <div id="menu-overlay"
+        class="fixed inset-0 bg-on-background/40 z-40 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out">
+    </div>
+
+    <!-- Sliding Side Menu Drawer -->
+    <div id="side-menu"
+        class="fixed top-0 right-0 h-full w-[300px] bg-surface shadow-2xl border-l border-border-subtle z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-space-lg">
+        <button id="close-menu-btn" class="self-end text-primary hover:opacity-80 transition-opacity mb-space-lg">
+            <span class="material-symbols-outlined text-[28px]">close</span>
+        </button>
+        <nav class="flex flex-col gap-space-md">
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle"
+                href="index.html">Home</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle"
+                href="About.html">About</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle"
+                href="StrategicPlan.html">Strategic Planning</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle"
+                href="ServiceDelivery.html">Service Delivery</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle"
+                href="8Pillars.html">8 Pillars</a>
+                <a class="text-primary font-semibold font-body-lg text-body-lg pb-space-sm border-b-2 border-primary"
+                href="Blogs.html">Blogs</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle"
+                href="Contact.html">Contact</a>
+        </nav>
+        <button
+            class="mt-space-xl bg-primary-container text-on-primary py-space-sm rounded-xl font-body-md text-body-md hover:opacity-90 transition-all uppercase tracking-wider font-semibold">
+            Join Movement
+        </button>
+    </div>
+
+
+
+<!-- TopNavBar -->
+ <div id="page-wrapper" class="w-full min-h-screen transition-transform duration-300 ease-in-out flex flex-col">
+<header class="fixed top-0 w-full z-30 bg-surface border-b border-border-subtle">
+            <div class="flex justify-between items-center h-[56px] px-space-lg max-w-max-container mx-auto">
+                <div class="flex items-center">
+                    <img src="Assets/ASCO_logo.jpeg" alt="ASCO Logo" width="36" height="36" class="mr-2" />
+                    <div
+                        class="text-sm xs:text-base sm:text-lg md:text-xl lg:text-h2 font-bold text-primary whitespace-nowrap overflow-hidden text-ellipsis">
+                        ASIHLANGANENI CIVIC MOVEMENT</div>
+                </div>
+                <div class="nav-links-desktop items-center gap-space-lg">
+                    <!-- Desktop Navigation -->
+                    <nav class="flex gap-space-lg items-center">
+                        <a class="text-primary font-semibold border-b-2 border-primary pb-1 font-body-md text-body-md"
+                            href="index.html">Home</a>
+                        <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md"
+                            href="About.html">About</a>
+                        <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md"
+                            href="StrategicPlan.html">Strategic Planning</a>
+                        <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md"
+                            href="ServiceDelivery.html">Service Delivery</a>
+                        <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md"
+                            href="8Pillars.html">8 Pillars</a>
+                        <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md"
+                            href="Contact.html">Contact</a>
+                    </nav>
+                    <button
+                        class="bg-primary-container text-on-primary px-space-md py-space-xs rounded-lg font-label-sm text-label-sm uppercase tracking-wider hover:opacity-90 transition-all">
+                        Join Movement
+                    </button>
+                </div>
+                <button id="burger-menu-btn" class="burger-menu-btn text-primary hover:opacity-80 transition-opacity">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="w-6 h-6 stroke-primary fill-primary">
+                        <path
+                            d="M1 12C1 11.4477 1.44772 11 2 11H22C22.5523 11 23 11.4477 23 12C23 12.5523 22.5523 13 22 13H2C1.44772 13 1 12.5523 1 12Z"
+                            fill="currentColor" />
+                        <path
+                            d="M1 4C1 3.44772 1.44772 3 2 3H22C22.5523 3 23 3.44772 23 4C23 4.55228 22.5523 5 22 5H2C1.44772 5 1 4.55228 1 4Z"
+                            fill="currentColor" />
+                        <path
+                            d="M1 20C1 19.4477 1.44772 19 2 19H22C22.5523 19 23 19.4477 23 20C23 20.5523 22.5523 21 22 21H2C1.44772 21 1 20.5523 1 20Z"
+                            fill="currentColor" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+<main class="pt-[56px]">
+<!-- Hero Header -->
+<section class="bg-surface-container-low border-b border-border-subtle py-space-xl">
+<div class="max-w-max-container mx-auto px-space-lg">
+<div class="max-w-3xl">
+<span class="text-primary font-label-sm text-label-sm uppercase tracking-wider block mb-space-sm">Official Communinty</span>
+<h1 class="font-h1 text-h1 text-on-surface mb-space-md">Movement Updates</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                        Stay informed on our progress toward accountability, service delivery, and local economic development. Transparent reporting is the cornerstone of our constitutional order.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Blog Feed Section -->
+<section class="py-space-xl max-w-max-container mx-auto px-space-lg" id="blog-list">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl">
+<!-- Main Feed (Left) -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- Blog Item 1 -->
+<article class="flex flex-col md:flex-row gap-space-lg p-space-lg bg-surface border border-border-subtle rounded-xl hover:border-primary transition-colors group">
+<div class="w-full md:w-1/3 aspect-[4/3] overflow-hidden rounded-lg bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A professional photograph of a local community hall meeting with residents sitting in structured rows, focused on a speaker at a podium. The lighting is bright and natural, emphasizing a professional and transparent atmosphere. The color palette is dominated by deep forest greens and clean white surfaces, reflecting the ASIHLANGANENI movement colors. The visual style is grounded, institutional, and high-contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3Y6U3pIzIDtfehdcrYXCPTDWYX4dCdLvV9S2AzUix5M5BItiU3tTgAaOrE2cRptTODJbkCQF6jPw4dUlgT706uOcHdO1SMRY4KsGLAC964TqgDcJQH-XA3Q2CuVZGRrElAzkTxlg2f4fIkKp-KoZpZbkXIYXBITH9QVkf0DGTbmd86ol1eXtskcuz1z6lVfH4f9Ro5X9ebyg6ipH8x323GUyleoFE4H73LRRYq2pRuK66gz2744_bDn6swBtUlv54ejijtGWS6TU"/>
+</div>
+<div class="w-full md:w-2/3 flex flex-col">
+<div class="flex items-center gap-space-sm mb-space-sm">
+<span class="bg-primary-fixed text-on-primary-fixed-variant px-space-sm py-1 rounded text-label-sm font-label-sm">WARD BUDGETING</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Oct 24, 2024</span>
+</div>
+<h2 class="font-h2 text-h2 text-on-surface mb-space-sm group-hover:text-primary transition-colors">Framework for Ward-Based Accountability Launched</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-lg line-clamp-2">
+                                We are introducing a new oversight mechanism that allows residents to track municipal expenditure at the ward level, ensuring every cent is accounted for.
+                            </p>
+<div class="mt-auto">
+<a class="inline-flex items-center gap-space-xs text-primary font-label-sm text-label-sm hover:underline" href="#">
+                                    READ MORE 
+                                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</article>
+<!-- Blog Item 2 -->
+<article class="flex flex-col md:flex-row gap-space-lg p-space-lg bg-surface border border-border-subtle rounded-xl hover:border-primary transition-colors group">
+<div class="w-full md:w-1/3 aspect-[4/3] overflow-hidden rounded-lg bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A clean, close-up shot of a modern water infrastructure project in a developing community. The scene features bright, high-contrast daylight with focused technical workers in professional safety gear inspecting hardware. The environment is orderly and suggests progress and reliability. The aesthetic follows a strict corporate civic standard with deep green accents and white tonal backgrounds." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWtSiHBVTXQMNb6CRQPlfQ_gtLeUw6QN24lVhECCJbrV5T9f92mgdxN9T9cNSzCqXopTRwyg3z4eGKSmDaUMRUsG9vPRtzun2Yb0j3JPSpz1na3x2EDGHXdPJvztbUOgowS7DIWtp7PxmGSpRBlhtPcPt3qnJ2ktPuaQu840PYoLg8GyeVTt-FYNqtdQVTT2Ycpnv5ThqG44IxyKh44vxKDdUWD_5jLDgQkJ4CFbeadx6ycvxknClKiET8LiCsne9cthPbIcpeN0I"/>
+</div>
+<div class="w-full md:w-2/3 flex flex-col">
+<div class="flex items-center gap-space-sm mb-space-sm">
+<span class="bg-secondary-container text-on-secondary-container px-space-sm py-1 rounded text-label-sm font-label-sm">SERVICE OVERSIGHT</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Oct 20, 2024</span>
+</div>
+<h2 class="font-h2 text-h2 text-on-surface mb-space-sm group-hover:text-primary transition-colors">Water Infrastructure Audit: Identifying Critical Gaps</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-lg line-clamp-2">
+                                Our technical committee has completed the first phase of the regional water audit, uncovering vital areas where maintenance has been neglected for years.
+                            </p>
+<div class="mt-auto">
+<a class="inline-flex items-center gap-space-xs text-primary font-label-sm text-label-sm hover:underline" href="#">
+                                    READ MORE 
+                                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</article>
+<!-- Blog Item 3 -->
+<article class="flex flex-col md:flex-row gap-space-lg p-space-lg bg-surface border border-border-subtle rounded-xl hover:border-primary transition-colors group">
+<div class="w-full md:w-1/3 aspect-[4/3] overflow-hidden rounded-lg bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A group of diverse community leaders gathered around a large table with architectural blueprints and strategic documents. The setting is a formal, well-lit boardroom with a clean, institutional design. The lighting is crisp, emphasizing professional collaboration and civic duty. The color palette incorporates deep greens and neutral whites, avoiding decorative elements in favor of functional clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCH6B8CoX044_F_82MX6TaXcqPuLf5UjgEI53Q_6I3vkmSsgWm2WROlfhiVHhnwQMrecqRqpxAuUDIuXsbshOPGR7Jv_hO5VZ-q5OjncQxV3OuFUWF9aXU735Jle3a97bYPV9-tre4FqBqO7C_RT3FY6NwI9rRU6nGG3wzXMnGOsTGs-9Wz2V_Oe3c_yULc7dtyzyD_1a3WtUWorOehm9vPYFym-B5xoFCvvkHi-7ejtiy1udYQlb4EcEJvHwLFUHhLh-zZZP1Y1BQ"/>
+</div>
+<div class="w-full md:w-2/3 flex flex-col">
+<div class="flex items-center gap-space-sm mb-space-sm">
+<span class="bg-surface-container-high text-on-surface-variant px-space-sm py-1 rounded text-label-sm font-label-sm">COMMUNITY EMPOWERMENT</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Oct 15, 2024</span>
+</div>
+<h2 class="font-h2 text-h2 text-on-surface mb-space-sm group-hover:text-primary transition-colors">Strategic Planning for Local Economic Zones</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-lg line-clamp-2">
+                                ASCO is partnering with local businesses to draft a roadmap for special economic development zones that prioritize resident employment.
+                            </p>
+<div class="mt-auto">
+<a class="inline-flex items-center gap-space-xs text-primary font-label-sm text-label-sm hover:underline" href="#">
+                                    READ MORE 
+                                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</article>
+<!-- Pagination -->
+<div class="flex justify-center items-center gap-space-sm pt-space-md">
+<button class="w-10 h-10 flex items-center justify-center border border-border-subtle rounded-xl text-on-surface-variant hover:bg-surface-container">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center bg-primary text-on-primary rounded-xl font-label-sm text-label-sm">1</button>
+<button class="w-10 h-10 flex items-center justify-center border border-border-subtle rounded-xl font-label-sm text-label-sm hover:bg-surface-container">2</button>
+<button class="w-10 h-10 flex items-center justify-center border border-border-subtle rounded-xl font-label-sm text-label-sm hover:bg-surface-container">3</button>
+<button class="w-10 h-10 flex items-center justify-center border border-border-subtle rounded-xl text-on-surface-variant hover:bg-surface-container">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Sidebar (Right) -->
+<aside class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Search Widget -->
+<div class="p-space-lg bg-surface border border-border-subtle rounded-xl">
+<h3 class="font-h3 text-h3 text-on-surface mb-space-md">Search Updates</h3>
+<div class="relative">
+<input class="w-full border-border-subtle rounded-lg focus:ring-primary focus:border-primary px-space-md py-space-sm pr-10 font-body-md" placeholder="Keywords..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+</div>
+</div>
+<!-- Categories -->
+<div class="p-space-lg bg-surface border border-border-subtle rounded-xl">
+<h3 class="font-h3 text-h3 text-on-surface mb-space-md">8 Pillars</h3>
+<div class="flex flex-col gap-space-sm">
+<a class="flex justify-between items-center py-2 border-b border-surface-container hover:text-primary transition-colors group" href="#">
+<span class="font-body-md text-body-md">Economic Growth</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm group-hover:text-primary">(12)</span>
+</a>
+<a class="flex justify-between items-center py-2 border-b border-surface-container hover:text-primary transition-colors group" href="#">
+<span class="font-body-md text-body-md">Civic Accountability</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm group-hover:text-primary">(8)</span>
+</a>
+<a class="flex justify-between items-center py-2 border-b border-surface-container hover:text-primary transition-colors group" href="#">
+<span class="font-body-md text-body-md">Public Infrastructure</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm group-hover:text-primary">(15)</span>
+</a>
+<a class="flex justify-between items-center py-2 border-b border-surface-container hover:text-primary transition-colors group" href="#">
+<span class="font-body-md text-body-md">Youth Empowerment</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm group-hover:text-primary">(6)</span>
+</a>
+</div>
+</div>
+<!-- CTA Widget -->
+<div class="p-space-lg bg-primary-container text-on-primary rounded-xl">
+<h3 class="font-h3 text-h3 mb-space-sm">Be the Watchdog</h3>
+<p class="font-body-md text-body-md mb-space-lg opacity-90">
+                            Join our oversight committees and help us monitor service delivery in your ward.
+                        </p>
+<button class="w-full bg-on-primary text-primary py-space-sm rounded-lg font-label-sm text-label-sm font-bold hover:bg-surface-bright transition-colors">
+                            GET INVOLVED
+                        </button>
+</div>
+</aside>
+</div>
+</section>
+</main>
+<!-- Footer -->
+    <footer class="w-full bg-surface-container border-t border-border-subtle">
+            <div
+                class="w-full py-space-xl px-space-lg flex flex-col md:flex-row justify-between items-start gap-space-lg max-w-max-container mx-auto">
+                <div class="flex flex-col gap-space-sm max-w-sm">
+                    <div class="font-h3 text-h3 font-bold text-primary">ASCO</div>
+                    <p class="font-body-md text-body-md text-on-surface-variant">
+                        ASIHLANGANENI CIVIC MOVEMENT is a non-partisan organization dedicated to community empowerment
+                        through ethical governance.
+                    </p>
+                    <p class="font-label-sm text-label-sm text-primary mt-space-sm">
+                        © 2024 ASIHLANGANENI CIVIC MOVEMENT. Community • Accountability • Development
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-space-xl">
+                    <div class="flex flex-col gap-space-sm">
+                        <span
+                            class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Movement</span>
+                        <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                            href="#">Mission Statement</a>
+                        <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                            href="#">Quick Links</a>
+                        <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                            href="#">Volunteer</a>
+                    </div>
+                    <div class="flex flex-col gap-space-sm">
+                        <span
+                            class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Legal</span>
+                        <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                            href="#">Privacy Policy</a>
+                        <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                            href="#">Terms of Service</a>
+                        <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                            href="#">Constitution</a>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-space-sm">
+                    <span
+                        class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Contact
+                        Us</span>
+                    <div class="flex items-center gap-space-sm text-on-surface-variant">
+                        <span class="material-symbols-outlined text-[18px]">mail</span>
+                        <span class="font-body-md text-body-md">info@asco.org.za</span>
+                    </div>
+                    <div class="flex items-center gap-space-sm text-on-surface-variant">
+                        <span class="material-symbols-outlined text-[18px]">location_on</span>
+                        <span class="font-body-md text-body-md">Kwaggafontein, Mpumalanga, South Africa</span>
+                    </div>
+                    <div class="flex gap-space-sm mt-space-sm">
+                        <a class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center hover:bg-primary-fixed transition-colors"
+                            href="#">
+                            <img alt="FB" class="w-4 h-4 opacity-70"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0uwROLCN0_CB1xncjON4AMmdsAs4xdMtZgp973LQ5KFE7v1r7Ye94-G-7OcGPzCct-O6jvaSFCMfl2RbWXzfPBgpQ9uHpnz-J-Tn8kAiOXIGae5KXTbTDjRsixeriXhean8mHOES5aV1uJVZrS_PIC2OlGH-zgpxuCI5A1KCuwZeohLHlHNA3vq9ia1mR6pVfKwqTHZWTFfS4-7W91MX35h7TEYg7zPjDT1YascgKZrEdJ4cj2UC3BXODdh0zdaXdbjXmdXiAalU" />
+                        </a>
+                        <a class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center hover:bg-primary-fixed transition-colors"
+                            href="#">
+                            <img alt="TW" class="w-4 h-4 opacity-70"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1JW7LeoW0mrmoDZTs3VBlYJcMdayoLHDelyOldvL1kIQPaUb_IHRp6-PqEZv8jgrBYGboRkTS9mTqtzYQ9l_W8TDEj1Ijb24zgwlpLNM_7YzVOPjaOKC0hwJ4rrwapvSHYh9tFp_zemEoa-vYerty-SWUOQ4ZhqSaPqAhXONpcGeqPuCkgdkZUO8--ZI5Mj95OuwsLglitPy1n3CnaBhWVfzPmYXceYSIEjgkhkGFRvUmvg8fmdVD_UNbAT1S2KzNvpxT3Pmt6z8" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        </div>
+        <script src="Blogs.js"></script>
+<script>
+ document.addEventListener('DOMContentLoaded', () => {
+            const burgerBtn = document.getElementById('burger-menu-btn');
+            const closeBtn = document.getElementById('close-menu-btn');
+            const sideMenu = document.getElementById('side-menu');
+            const pageWrapper = document.getElementById('page-wrapper');
+            const menuOverlay = document.getElementById('menu-overlay');
+
+            function openMenu() {
+                sideMenu.classList.remove('translate-x-full');
+                pageWrapper.classList.add('-translate-x-[300px]');
+                menuOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                document.body.classList.add('overflow-hidden');
+            }
+
+            function closeMenu() {
+                sideMenu.classList.add('translate-x-full');
+                pageWrapper.classList.remove('-translate-x-[300px]');
+                menuOverlay.classList.add('opacity-0', 'pointer-events-none');
+                document.body.classList.remove('overflow-hidden');
+            }
+
+            burgerBtn.addEventListener('click', openMenu);
+            closeBtn.addEventListener('click', closeMenu);
+            menuOverlay.addEventListener('click', closeMenu);
+        });
+
+
+
+        // Simple active state interaction for nav
+        const navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                navLinks.forEach(l => {
+                    l.classList.remove('text-primary', 'font-semibold', 'border-b-2', 'border-primary', 'pb-1');
+                    l.classList.add('text-on-surface-variant');
+                });
+                link.classList.remove('text-on-surface-variant');
+                link.classList.add('text-primary', 'font-semibold', 'border-b-2', 'border-primary', 'pb-1');
+            });
+        });
+    </script>
+
+</body></html>

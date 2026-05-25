@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Campaign Details | ASIHLANGANENI CIVIC MOVEMENT</title>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#574500",
+                        "inverse-primary": "#91d78a",
+                        "on-primary-fixed-variant": "#0c5216",
+                        "surface-container-highest": "#e5e2e1",
+                        "secondary-container": "#fed65b",
+                        "on-primary-container": "#90d689",
+                        "tertiary-container": "#883454",
+                        "on-tertiary-container": "#ffaec6",
+                        "surface-container": "#f0edec",
+                        "border-subtle": "#E0E0E0",
+                        "surface-container-low": "#f6f3f2",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#241a00",
+                        "primary": "#00450d",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#6b1d3d",
+                        "on-tertiary-fixed": "#3e001d",
+                        "on-primary-fixed": "#002203",
+                        "primary-fixed": "#acf4a4",
+                        "outline": "#717a6d",
+                        "primary-container": "#1b5e20",
+                        "secondary": "#735c00",
+                        "background-main": "#FFFFFF",
+                        "secondary-fixed-dim": "#e9c349",
+                        "surface-variant": "#e5e2e1",
+                        "surface-dim": "#dcd9d9",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed-dim": "#91d78a",
+                        "tertiary-fixed": "#ffd9e2",
+                        "on-surface-variant": "#41493e",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-tertiary-fixed-variant": "#7a2949",
+                        "text-secondary": "#424242",
+                        "tertiary-fixed-dim": "#ffb1c8",
+                        "surface-bright": "#fcf9f8",
+                        "on-error": "#ffffff",
+                        "text-primary": "#121212",
+                        "background": "#fcf9f8",
+                        "on-secondary-container": "#745c00",
+                        "outline-variant": "#c0c9bb",
+                        "surface-container-high": "#ebe7e7",
+                        "surface": "#fcf9f8",
+                        "secondary-fixed": "#ffe088",
+                        "surface-muted": "#F5F5F5",
+                        "on-background": "#1c1b1b",
+                        "inverse-surface": "#313030",
+                        "surface-tint": "#2a6b2c",
+                        "on-surface": "#1c1b1b",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "space-xl": "32px",
+                        "space-lg": "24px",
+                        "space-xs": "4px",
+                        "space-sm": "8px",
+                        "gutter": "20px",
+                        "space-md": "16px",
+                        "sidebar-width": "260px",
+                        "max-container": "1200px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Hanken Grotesk"],
+                        "h1": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "h3": ["Hanken Grotesk"],
+                        "h2": ["Hanken Grotesk"],
+                        "label-sm": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "h1": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "h2": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; background-color: #fcf9f8; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        .sidebar-border { border-right: 1px solid #E0E0E0; }
+        .card-border { border: 1px solid #E0E0E0; }
+        .engagement-bar { transition: height 0.6s ease; }
+        #loading-overlay { backdrop-filter: blur(4px); }
+        #toast { transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); transform: translateY(100px); opacity: 0; pointer-events: none; }
+        #toast.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+    </style>
+</head>
+<body class="text-on-surface">
+
+<!-- Toast Notification -->
+<div id="toast" class="fixed bottom-6 right-6 z-[9999] flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl max-w-sm">
+    <span id="toast-icon" class="material-symbols-outlined text-[20px]">check_circle</span>
+    <p id="toast-message" class="font-body-md text-body-md font-semibold"></p>
+    <button onclick="hideToast()" class="ml-2 opacity-60 hover:opacity-100"><span class="material-symbols-outlined text-[16px]">close</span></button>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loading-overlay" class="fixed inset-0 bg-white/70 z-[9998] flex-col items-center justify-center hidden">
+    <div class="bg-white border border-border-subtle rounded-2xl shadow-2xl p-8 flex flex-col items-center gap-4 max-w-xs w-full mx-4">
+        <span class="material-symbols-outlined text-primary text-[48px] animate-spin">progress_activity</span>
+        <p class="font-h3 text-h3 text-on-surface text-center" id="loading-text">Loading Campaign...</p>
+        <p class="font-body-md text-body-md text-on-surface-variant text-center" id="loading-sub">Fetching campaign details.</p>
+    </div>
+</div>
+
+<!-- Main Content Area -->
+<main class="min-h-screen bg-background-main pb-space-xl">
+<!-- Top Header Navigation -->
+        <header
+            class="fixed top-0 left-0 right-0 bg-surface border-b border-border-subtle z-30 h-[56px]">
+            <div class="flex justify-between items-center h-full px-space-lg max-w-max-container mx-auto">
+                <div class="flex items-center gap-space-sm">
+                    <img src="Assets/ASCO_logo.jpeg" alt="ASCO logo" class="logo w-[34px] h-[34px]">
+                    <span class="font-h2 text-h2 font-bold text-primary">ASIHLANGANENI CIVIC MOVEMENT</span>
+                </div>
+                <div class="flex items-center gap-space-md">
+                    <div class="flex items-center gap-space-xs">
+                        <div
+                            class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center border border-border-subtle">
+                            <span class="material-symbols-outlined text-primary text-[18px]">person</span>
+                        </div>
+                        <span class="font-label-sm text-label-sm text-on-surface font-semibold" id="AdminName">Admin</span>
+                    </div>
+                    <button id="logout-btn"
+                        class="flex items-center gap-space-xs text-on-surface-variant hover:text-error transition-colors">
+                        <span class="material-symbols-outlined text-[20px]">logout</span>
+                        <span class="font-label-sm text-label-sm">Logout</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+<div class="max-w-max-container mx-auto p-space-xl pt-[56px]">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-space-md mb-space-xl">
+<div class="flex-1">
+<div class="flex items-center gap-space-sm mb-space-xs">
+<a href="Campaigns.html" id="btn-back" class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</a>
+<h2 id="campaign-title" class="font-h1 text-h1 text-primary">Loading Campaign...</h2>
+<span id="campaign-status-badge" class="px-space-sm py-[2px] bg-surface-container-high text-on-surface-variant rounded font-label-sm text-label-sm uppercase tracking-wider">LOADING</span>
+</div>
+<div id="campaign-meta" class="flex flex-wrap gap-x-space-lg gap-y-1 text-on-surface-variant font-body-md text-body-md">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]" data-icon="calendar_today">calendar_today</span> Sent Date: <span id="campaign-sent-date">—</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]" data-icon="person">person</span> Sent by: <span id="campaign-sender-name">—</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]" data-icon="group">group</span> Total Recipients: <span id="campaign-recipient-count">—</span></div>
+</div>
+</div>
+<div class="flex gap-space-sm">
+<button id="btn-duplicate" class="px-space-md py-space-sm border border-primary text-primary bg-white hover:bg-surface-container-low rounded-xl font-label-sm text-label-sm font-semibold transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="content_copy">content_copy</span> Duplicate
+                    </button>
+<button id="btn-export" class="px-space-md py-space-sm border border-primary text-primary bg-white hover:bg-surface-container-low rounded-xl font-label-sm text-label-sm font-semibold transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="file_download">file_download</span> Export Report
+                    </button>
+<button id="btn-archive" class="px-space-md py-space-sm bg-tertiary text-on-tertiary hover:opacity-90 rounded-xl font-label-sm text-label-sm font-semibold transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="archive">archive</span> Archive
+                    </button>
+</div>
+</div>
+<!-- Key Metrics Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md mb-space-xl">
+<div class="bg-white p-space-lg card-border rounded-xl">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Total Reach</p>
+<div class="flex items-end justify-between">
+<h3 id="metric-total-reach" class="font-h1 text-h1 text-on-surface">—</h3>
+<span id="metric-total-reach-change" class="text-primary font-label-sm text-label-sm flex items-center"><span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span> 100%</span>
+</div>
+</div>
+<div class="bg-white p-space-lg card-border rounded-xl">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Open Rate</p>
+<div class="flex items-end justify-between">
+<h3 id="metric-open-rate" class="font-h1 text-h1 text-on-surface">—</h3>
+<span id="metric-open-rate-change" class="text-primary font-label-sm text-label-sm flex items-center"><span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span> —</span>
+</div>
+</div>
+<div class="bg-white p-space-lg card-border rounded-xl">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Click-Through Rate</p>
+<div class="flex items-end justify-between">
+<h3 id="metric-click-rate" class="font-h1 text-h1 text-on-surface">—</h3>
+<span id="metric-click-rate-change" class="text-tertiary font-label-sm text-label-sm flex items-center"><span class="material-symbols-outlined text-[14px]" data-icon="trending_down">trending_down</span> —</span>
+</div>
+</div>
+<div class="bg-white p-space-lg card-border rounded-xl">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Bounce Rate</p>
+<div class="flex items-end justify-between">
+<h3 id="metric-bounce-rate" class="font-h1 text-h1 text-on-surface">—</h3>
+<span id="metric-bounce-rate-status" class="text-primary font-label-sm text-label-sm flex items-center"><span class="material-symbols-outlined text-[14px]" data-icon="check_circle">check_circle</span> —</span>
+</div>
+</div>
+</div>
+<!-- Analytics Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-xl mb-space-xl">
+<!-- Engagement by Ward -->
+<div class="lg:col-span-1 bg-white p-space-lg card-border rounded-xl flex flex-col">
+<div class="flex justify-between items-center mb-space-lg">
+<h4 class="font-h3 text-h3 text-primary">Engagement by Municipality</h4>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="more_vert">more_vert</span>
+</div>
+<div id="ward-engagement-container" class="space-y-space-md">
+<div class="text-center text-on-surface-variant font-body-md py-4">Loading ward data...</div>
+</div>
+<button id="view-all-wards-btn" class="mt-auto pt-space-md text-primary font-label-sm text-label-sm font-semibold hover:underline text-left">View All Municipalities</button>
+</div>
+<!-- Engagement Timeline -->
+<div class="lg:col-span-2 bg-white p-space-lg card-border rounded-xl">
+<div class="flex justify-between items-center mb-space-lg">
+<h4 class="font-h3 text-h3 text-primary">24h Engagement Timeline</h4>
+<div class="flex gap-space-sm">
+<span class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="w-3 h-3 bg-primary rounded-full"></span> Opens
+                            </span>
+<span class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="w-3 h-3 bg-secondary rounded-full"></span> Clicks
+                            </span>
+</div>
+</div>
+<!-- Timeline Chart -->
+<div id="timeline-container" class="h-48 flex items-end justify-between gap-1 border-b border-border-subtle pb-2">
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="00:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="01:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="02:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="03:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="04:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="05:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="06:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="07:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="08:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="09:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="10:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="11:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="12:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="13:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="14:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="15:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="16:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="17:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="18:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="19:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="20:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="21:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="22:00"></div>
+<div class="flex-1 bg-primary/20 h-[5%] rounded-t-sm" title="23:00"></div>
+</div>
+<div class="flex justify-between mt-2 font-label-sm text-label-sm text-on-surface-variant">
+<span>00</span><span>03</span><span>06</span><span>09</span><span>12</span><span>15</span><span>18</span><span>21</span>
+</div>
+</div>
+</div>
+<!-- Campaign Preview Container -->
+<div class="bg-white card-border rounded-xl overflow-hidden shadow-sm">
+<div class="bg-surface-container-high px-space-lg py-3 border-b border-border-subtle flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-bold uppercase text-on-surface-variant">Live Email Preview</span>
+<div class="flex gap-2 items-center">
+<span class="w-3 h-3 rounded-full bg-error/20 border border-error/40"></span>
+<span class="w-3 h-3 rounded-full bg-secondary/20 border border-secondary/40"></span>
+<span class="w-3 h-3 rounded-full bg-primary/20 border border-primary/40"></span>
+</div>
+</div>
+<!-- Inbox meta preview -->
+<div class="px-space-lg py-2 bg-surface-muted border-b border-border-subtle flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">inbox</span>
+<div class="min-w-0">
+<span class="font-label-sm text-label-sm font-bold text-on-surface" id="preview-sender-display">Loading...</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant ml-2" id="preview-subject-meta">← subject appears here</span>
+</div>
+<span class="ml-auto font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap">Sent <span id="preview-sent-date-label">—</span></span>
+</div>
+<div class="p-space-xl bg-[#F9F9F9] min-h-[400px]">
+<div class="max-w-[560px] mx-auto bg-white border border-border-subtle shadow-sm rounded-lg overflow-hidden">
+<!-- Email header bar -->
+<div class="bg-primary px-6 py-4 flex justify-center items-center">
+<h4 class="font-bold text-white text-sm tracking-wide">ASIHLANGANENI CIVIC MOVEMENT</h4>
+</div>
+<!-- Banner -->
+<div id="preview-banner-container">
+<div id="preview-banner-placeholder" class="w-full h-[80px] bg-surface-container-high flex items-center justify-center text-on-surface-variant italic text-label-sm text-center px-4">
+Banner image will appear here
+</div>
+<img id="preview-banner-img" src="" alt="Campaign banner" class="hidden w-full object-cover max-h-[160px]"/>
+</div>
+<div class="p-8">
+<h1 id="preview-title" class="text-h2 font-h2 mb-4 text-on-surface">Untitled Campaign</h1>
+<div class="space-y-3 text-body-md text-on-surface-variant">
+<p>Dear Member,</p>
+<div id="preview-body-content" class="leading-relaxed">
+<p><em>Loading campaign content...</em></p>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-border-subtle text-center">
+<button class="bg-primary text-on-primary px-8 py-2 rounded-lg font-bold text-label-sm">Visit ASCO Website</button>
+</div>
+</div>
+<div class="bg-surface-muted p-4 text-center text-[10px] text-on-surface-variant leading-relaxed border-t border-border-subtle">
+You are receiving this as a registered member of the ASCO Civic Movement.<br/>
+Kwaggafontein, Mpumalanga, South Africa.<br/>
+Sent by <span id="preview-sender-footer">ASIHLANGANENI CIVIC MOVEMENT</span> via campaigns.asco.org.za
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+ <footer class="w-full bg-surface-container border-t border-border-subtle">
+        <div
+            class="w-full py-space-xl px-space-lg flex flex-col md:flex-row justify-between items-start gap-space-lg max-w-max-container mx-auto">
+            <div class="flex flex-col gap-space-sm max-w-sm">
+                <div class="font-h3 text-h3 font-bold text-primary">ASCO</div>
+                <p class="font-body-md text-body-md text-on-surface-variant">
+                    ASIHLANGANENI CIVIC MOVEMENT is a non-partisan organization dedicated to community empowerment
+                    through ethical governance.
+                </p>
+                <p class="font-label-sm text-label-sm text-primary mt-space-sm">
+                    © 2024 ASIHLANGANENI CIVIC MOVEMENT. Community • Accountability • Development
+                </p>
+            </div>
+            <div class="grid grid-cols-2 gap-space-xl">
+                <div class="flex flex-col gap-space-sm">
+                    <span
+                        class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Movement</span>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Mission Statement</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Quick Links</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Volunteer</a>
+                </div>
+                <div class="flex flex-col gap-space-sm">
+                    <span
+                        class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Legal</span>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Privacy Policy</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Terms of Service</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all"
+                        href="#">Constitution</a>
+                </div>
+            </div>
+            <div class="flex flex-col gap-space-sm">
+                <span class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Contact
+                    Us</span>
+                <div class="flex items-center gap-space-sm text-on-surface-variant">
+                    <span class="material-symbols-outlined text-[18px]">mail</span>
+                    <span class="font-body-md text-body-md">info@asco.org.za</span>
+                </div>
+                <div class="flex items-center gap-space-sm text-on-surface-variant">
+                    <span class="material-symbols-outlined text-[18px]">location_on</span>
+                    <span class="font-body-md text-body-md">Kwaggafontein, Mpumalanga, South Africa</span>
+                </div>
+                <div class="flex gap-space-sm mt-space-sm">
+                    <a class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center hover:bg-primary-fixed transition-colors"
+                        href="#">
+                        <img alt="FB" class="w-4 h-4 opacity-70"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0uwROLCN0_CB1xncjON4AMmdsAs4xdMtZgp973LQ5KFE7v1r7Ye94-G-7OcGPzCct-O6jvaSFCMfl2RbWXzfPBgpQ9uHpnz-J-Tn8kAiOXIGae5KXTbTDjRsixeriXhean8mHOES5aV1uJVZrS_PIC2OlGH-zgpxuCI5A1KCuwZeohLHlHNA3vq9ia1mR6pVfKwqTHZWTFfS4-7W91MX35h7TEYg7zPjDT1YascgKZrEdJ4cj2UC3BXODdh0zdaXdbjXmdXiAalU" />
+                    </a>
+                    <a class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center hover:bg-primary-fixed transition-colors"
+                        href="#">
+                        <img alt="TW" class="w-4 h-4 opacity-70"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1JW7LeoW0mrmoDZTs3VBlYJcMdayoLHDelyOldvL1kIQPaUb_IHRp6-PqEZv8jgrBYGboRkTS9mTqtzYQ9l_W8TDEj1Ijb24zgwlpLNM_7YzVOPjaOKC0hwJ4rrwapvSHYh9tFp_zemEoa-vYerty-SWUOQ4ZhqSaPqAhXONpcGeqPuCkgdkZUO8--ZI5Mj95OuwsLglitPy1n3CnaBhWVfzPmYXceYSIEjgkhkGFRvUmvg8fmdVD_UNbAT1S2KzNvpxT3Pmt6z8" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</main>
+<script>
+// ═════════════════════════════════════════════════════════════════════════════
+// VIEW CAMPAIGN DETAILS PAGE LOGIC
+// ═════════════════════════════════════════════════════════════════════════════
+
+if (window.location.pathname.includes('ViewCampaigns.html')) {
+
+    // ── Supabase Client ──────────────────────────────────────────────────────
+    const supabaseUrl = 'https://sfdozziezseywauuqddk.supabase.co';
+    const supabaseKey = 'sb_publishable_xTaqAs_Dg1akwQ5QumtXbA_eJ5N2vtp';
+    const client = supabase.createClient(supabaseUrl, supabaseKey);
+
+    // ── State ────────────────────────────────────────────────────────────────
+    let campaignId = null;
+    let campaignData = null;
+    let recipientData = [];
+    let eventData = [];
+
+    // ── Init ─────────────────────────────────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', async () => {
+        await checkAuth();
+
+        const params = new URLSearchParams(window.location.search);
+        campaignId = params.get('id');
+
+        if (!campaignId) {
+            showToast('No campaign ID specified.', 'error');
+            document.getElementById('campaign-title').textContent = 'No Campaign Selected';
+            return;
+        }
+
+        await loadCampaign();
+        await loadRecipients();
+        await loadEvents();
+        await loadWardEngagement();
+        hideLoading();
+
+        setupButtons();
+    });
+
+    // ── Auth ─────────────────────────────────────────────────────────────────
+    async function checkAuth() {
+        const { data: { session }, error } = await client.auth.getSession();
+        if (error || !session) {
+            window.location.href = 'Login.html';
+            return;
+        }
+        const { data: member, error: memberError } = await client
+            .from('members')
+            .select('role, name')
+            .eq('email', session.user.email)
+            .maybeSingle();
+        if (memberError || !member || member.role !== 'admin') {
+            await client.auth.signOut();
+            window.location.href = 'Login.html';
+            return;
+        }
+        document.getElementById('AdminName').textContent = member.name || 'Admin';
+    }
+
+    // ── Toast ────────────────────────────────────────────────────────────────
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        const icon = document.getElementById('toast-icon');
+        const msg = document.getElementById('toast-message');
+        msg.textContent = message;
+        if (type === 'success') {
+            toast.className = 'fixed bottom-6 right-6 z-[9999] flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl max-w-sm bg-primary text-on-primary show';
+            icon.textContent = 'check_circle';
+        } else if (type === 'error') {
+            toast.className = 'fixed bottom-6 right-6 z-[9999] flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl max-w-sm bg-error text-on-error show';
+            icon.textContent = 'error';
+        } else {
+            toast.className = 'fixed bottom-6 right-6 z-[9999] flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl max-w-sm bg-surface-container-high text-on-surface show';
+            icon.textContent = 'info';
+        }
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 4000);
+    }
+
+    function hideToast() {
+        document.getElementById('toast').classList.remove('show');
+    }
+
+    // ── Loading ──────────────────────────────────────────────────────────────
+    function showLoading(text, sub) {
+        const overlay = document.getElementById('loading-overlay');
+        document.getElementById('loading-text').textContent = text || 'Loading Campaign...';
+        document.getElementById('loading-sub').textContent = sub || 'Fetching campaign details.';
+        overlay.classList.remove('hidden');
+        overlay.classList.add('flex');
+    }
+
+    function hideLoading() {
+        const overlay = document.getElementById('loading-overlay');
+        overlay.classList.add('hidden');
+        overlay.classList.remove('flex');
+    }
+
+    // ── Load Campaign Data ──────────────────────────────────────────────────
+    async function loadCampaign() {
+        showLoading('Loading Campaign...', 'Fetching campaign details.');
+
+        try {
+            const { data: campaign, error } = await client
+                .from('campaigns')
+                .select(`
+                    *,
+                    members!created_by (
+                        name,
+                        surname
+                    )
+                `)
+                .eq('id', campaignId)
+                .single();
+
+            if (error) throw error;
+            campaignData = campaign;
+
+            // Render Header
+            document.getElementById('campaign-title').textContent = campaign.title || 'Untitled Campaign';
+            document.getElementById('campaign-recipient-count').textContent = campaign.recipient_count
+                ? Number(campaign.recipient_count).toLocaleString()
+                : '—';
+
+            // Sent date
+            const sentDate = campaign.sent_at
+                ? new Date(campaign.sent_at).toLocaleDateString('en-ZA', {
+                    day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                  })
+                : (campaign.scheduled_for ? 'Scheduled' : 'Not sent yet');
+            document.getElementById('campaign-sent-date').textContent = sentDate;
+
+            // Sender name (will be reused below)
+            let senderName = 'ASIHLANGANENI CIVIC MOVEMENT';
+            if (campaign.sender_name) {
+                senderName = campaign.sender_name;
+            } else if (campaign.members) {
+                const mName = `${campaign.members.name || ''} ${campaign.members.surname || ''}`.trim();
+                if (mName) senderName = mName;
+            }
+            document.getElementById('campaign-sender-name').textContent = senderName;
+
+            // Status badge
+            const badge = document.getElementById('campaign-status-badge');
+            const status = (campaign.status || 'draft').toLowerCase();
+            const statusConfig = {
+                sent: { cls: 'bg-primary-fixed text-on-primary-fixed-variant', label: 'SENT' },
+                draft: { cls: 'bg-surface-container-high text-on-surface-variant', label: 'DRAFT' },
+                scheduled: { cls: 'bg-secondary-fixed text-on-secondary-container', label: 'SCHEDULED' },
+                failed: { cls: 'bg-error-container text-on-error-container', label: 'FAILED' },
+                archived: { cls: 'bg-surface-dim text-on-surface-variant', label: 'ARCHIVED' },
+            };
+            const cfg = statusConfig[status] || statusConfig.draft;
+            badge.className = `px-space-sm py-[2px] rounded font-label-sm text-label-sm uppercase tracking-wider ${cfg.cls}`;
+            badge.textContent = cfg.label;
+
+            // Render Content Preview (matching CreateCampaign.html design)
+            // Banner
+            if (campaign.banner_url) {
+                document.getElementById('preview-banner-img').src = campaign.banner_url;
+                document.getElementById('preview-banner-img').classList.remove('hidden');
+                document.getElementById('preview-banner-placeholder').classList.add('hidden');
+            }
+
+            // Title
+            document.getElementById('preview-title').textContent = campaign.title || 'Untitled Campaign';
+
+            // Sender display name (reuse senderName from above)
+            document.getElementById('preview-sender-display').textContent = senderName;
+            document.getElementById('preview-sender-footer').textContent = senderName;
+
+            // Subject meta
+            document.getElementById('preview-subject-meta').textContent = '← ' + (campaign.subject_line || 'No subject line');
+
+            // Sent date label
+            const sentDateLabel = document.getElementById('preview-sent-date-label');
+            if (campaign.sent_at) {
+                sentDateLabel.textContent = new Date(campaign.sent_at).toLocaleDateString('en-ZA', {
+                    day: 'numeric', month: 'short', year: 'numeric'
+                });
+            } else {
+                sentDateLabel.textContent = 'Draft';
+            }
+
+            // Body content
+            const bodyContainer = document.getElementById('preview-body-content');
+            if (campaign.html_content) {
+                bodyContainer.innerHTML = campaign.html_content;
+            } else if (campaign.text) {
+                bodyContainer.innerHTML = campaign.text;
+            } else {
+                bodyContainer.innerHTML = '<p><em>No content available for this campaign.</em></p>';
+            }
+
+        } catch (err) {
+            console.error('Error loading campaign:', err);
+            showToast('Failed to load campaign: ' + err.message, 'error');
+            document.getElementById('campaign-title').textContent = 'Error Loading Campaign';
+        }
+    }
+
+    // ── Load Recipients & Compute Metrics ────────────────────────────────────
+    async function loadRecipients() {
+        try {
+            const { data: recipients, error } = await client
+                .from('campaign_recipients')
+                .select('id, open_count, click_count, status')
+                .eq('campaign_id', campaignId);
+
+            if (error) throw error;
+            recipientData = recipients || [];
+
+            const total = recipientData.length;
+
+            // Total Reach
+            document.getElementById('metric-total-reach').textContent = total.toLocaleString();
+            document.getElementById('campaign-recipient-count').textContent = total.toLocaleString();
+
+            // Open Rate
+            const opened = recipientData.filter(r => r.open_count > 0).length;
+            const openRate = total > 0 ? ((opened / total) * 100).toFixed(1) : '0.0';
+            document.getElementById('metric-open-rate').textContent = openRate + '%';
+            document.getElementById('metric-open-rate-change').innerHTML =
+                `<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span> ${openRate}%`;
+
+            // Click-Through Rate
+            const clicked = recipientData.filter(r => r.click_count > 0).length;
+            const clickRate = total > 0 ? ((clicked / total) * 100).toFixed(1) : '0.0';
+            document.getElementById('metric-click-rate').textContent = clickRate + '%';
+            document.getElementById('metric-click-rate-change').innerHTML =
+                `<span class="material-symbols-outlined text-[14px]" data-icon="trending_down">trending_down</span> ${clickRate}%`;
+
+            // Bounce Rate
+            const bounced = recipientData.filter(r => r.status === 'bounced').length;
+            const bounceRate = total > 0 ? ((bounced / total) * 100).toFixed(1) : '0.0';
+            document.getElementById('metric-bounce-rate').textContent = bounceRate + '%';
+            const bounceStatus = bounceRate < 3 ? 'Healthy' : 'Needs Review';
+            const bounceIcon = bounceRate < 3 ? 'check_circle' : 'warning';
+            document.getElementById('metric-bounce-rate-status').innerHTML =
+                `<span class="material-symbols-outlined text-[14px]" data-icon="${bounceIcon}">${bounceIcon}</span> ${bounceStatus}`;
+
+        } catch (err) {
+            console.error('Error loading recipients:', err);
+        }
+    }
+
+    // ── Load Engagement Events for Timeline ──────────────────────────────────
+    async function loadEvents() {
+        try {
+            const { data: recipients, error: recErr } = await client
+                .from('campaign_recipients')
+                .select('id')
+                .eq('campaign_id', campaignId);
+
+            if (recErr) throw recErr;
+            if (!recipients || recipients.length === 0) return;
+
+            const recipientIds = recipients.map(r => r.id);
+
+            const { data: events, error: evtErr } = await client
+                .from('campaign_events')
+                .select('event_type, created_at')
+                .in('campaign_recipient_id', recipientIds)
+                .in('event_type', ['opened', 'clicked']);
+
+            if (evtErr) throw evtErr;
+            eventData = events || [];
+
+            renderTimeline();
+
+        } catch (err) {
+            console.error('Error loading events:', err);
+        }
+    }
+
+    // ── Render 24h Timeline ──────────────────────────────────────────────────
+    function renderTimeline() {
+        const container = document.getElementById('timeline-container');
+        if (!container) return;
+
+        // If no campaign sent_at, use a reference point
+        const sentAt = campaignData && campaignData.sent_at
+            ? new Date(campaignData.sent_at).getTime()
+            : Date.now() - 24 * 60 * 60 * 1000;
+
+        const hourEnd = sentAt + 24 * 60 * 60 * 1000;
+
+        // Initialize 24 buckets
+        const opensByHour = new Array(24).fill(0);
+        const clicksByHour = new Array(24).fill(0);
+
+        eventData.forEach(evt => {
+            const evtTime = new Date(evt.created_at).getTime();
+            if (evtTime < sentAt || evtTime > hourEnd) return;
+
+            const hourIndex = Math.floor((evtTime - sentAt) / (60 * 60 * 1000));
+            const idx = Math.min(Math.max(hourIndex, 0), 23);
+
+            if (evt.event_type === 'opened') opensByHour[idx]++;
+            else if (evt.event_type === 'clicked') clicksByHour[idx]++;
+        });
+
+        const maxOpen = Math.max(...opensByHour, 1);
+        const maxClick = Math.max(...clicksByHour, 1);
+
+        container.innerHTML = '';
+        for (let i = 0; i < 24; i++) {
+            const openH = (opensByHour[i] / maxOpen) * 100;
+            const clickH = (clicksByHour[i] / maxClick) * 100;
+
+            const bar = document.createElement('div');
+            bar.className = 'flex-1 flex flex-col justify-end gap-[1px]';
+            bar.title = `${String(i).padStart(2, '0')}:00 - Opens: ${opensByHour[i]}, Clicks: ${clicksByHour[i]}`;
+
+            const clickBar = document.createElement('div');
+            clickBar.className = 'bg-secondary rounded-t-sm transition-all engagement-bar';
+            clickBar.style.height = `${Math.max(clickH, 3)}%`;
+
+            const openBar = document.createElement('div');
+            openBar.className = 'bg-primary rounded-t-sm transition-all engagement-bar';
+            openBar.style.height = `${Math.max(openH, 3)}%`;
+
+            bar.appendChild(clickBar);
+            bar.appendChild(openBar);
+            container.appendChild(bar);
+        }
+    }
+
+    // ── Load Ward Engagement ─────────────────────────────────────────────────
+    async function loadWardEngagement() {
+        const container = document.getElementById('ward-engagement-container');
+        if (!container) return;
+
+        try {
+            // Get campaign targets to know which municipalities were targeted
+            const { data: targets, error: tErr } = await client
+                .from('campaign_targets')
+                .select('municipality')
+                .eq('campaign_id', campaignId);
+
+            if (tErr) throw tErr;
+
+            // Get recipients joined with members for municipality info
+            const { data: recipientsWithMembers, error: rErr } = await client
+                .from('campaign_recipients')
+                .select(`
+                    open_count,
+                    click_count,
+                    members (
+                        municipality
+                    )
+                `)
+                .eq('campaign_id', campaignId);
+
+            if (rErr) throw rErr;
+
+            // If no targets found, try to infer from recipients' municipalities
+            let municipalities = [];
+            if (targets && targets.length > 0) {
+                municipalities = [...new Set(targets.map(t => t.municipality).filter(Boolean))];
+            }
+
+            const recipientMunicipalities = {};
+            (recipientsWithMembers || []).forEach(r => {
+                const munic = r.members ? r.members.municipality : null;
+                if (!munic) return;
+                if (!recipientMunicipalities[munic]) {
+                    recipientMunicipalities[munic] = { total: 0, opened: 0, clicked: 0 };
+                }
+                recipientMunicipalities[munic].total++;
+                if (r.open_count > 0) recipientMunicipalities[munic].opened++;
+                if (r.click_count > 0) recipientMunicipalities[munic].clicked++;
+            });
+
+            // If we had targets, use those; otherwise use all municipalities found in recipients
+            const municToShow = municipalities.length > 0
+                ? municipalities
+                : Object.keys(recipientMunicipalities);
+
+            if (municToShow.length === 0) {
+                container.innerHTML = '<div class="text-center text-on-surface-variant font-body-md py-4">No municipality data available for this campaign.</div>';
+                return;
+            }
+
+            // Compute engagement rate = (opened / total) * 100 for each municipality
+            const municData = municToShow.map(munic => {
+                const stats = recipientMunicipalities[munic] || { total: 0, opened: 0, clicked: 0 };
+                const rate = stats.total > 0 ? ((stats.opened / stats.total) * 100).toFixed(0) : '0';
+                return {
+                    name: munic,
+                    total: stats.total,
+                    opened: stats.opened,
+                    clicked: stats.clicked,
+                    rate: parseInt(rate),
+                };
+            }).sort((a, b) => b.rate - a.rate).slice(0, 10); // Top 10
+
+            container.innerHTML = municData.map(m => `
+                <div class="space-y-1">
+                    <div class="flex justify-between font-label-sm text-label-sm">
+                        <span>${m.name}</span>
+                        <span class="font-bold">${m.rate}%</span>
+                    </div>
+                    <div class="w-full bg-surface-container rounded-full h-2">
+                        <div class="bg-primary h-2 rounded-full transition-all" style="width: ${m.rate}%"></div>
+                    </div>
+                    <div class="text-[11px] text-on-surface-variant">${m.opened} opens / ${m.total} recipients</div>
+                </div>
+            `).join('');
+
+            const viewBtn = document.getElementById('view-all-wards-btn');
+            if (municData.length > 0) {
+                viewBtn.classList.remove('hidden');
+                viewBtn.textContent = `View All ${municToShow.length} Municipalities`;
+            } else {
+                viewBtn.classList.add('hidden');
+            }
+
+        } catch (err) {
+            console.error('Error loading ward engagement:', err);
+            container.innerHTML = '<div class="text-center text-error font-body-md py-4">Failed to load engagement data.</div>';
+        }
+    }
+
+    // ── Setup Buttons ────────────────────────────────────────────────────────
+    function setupButtons() {
+        // Logout
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                await client.auth.signOut();
+                window.location.href = 'Login.html';
+            });
+        }
+
+        // Duplicate - create a new campaign pre-filled with this one's data
+        const duplicateBtn = document.getElementById('btn-duplicate');
+        if (duplicateBtn) {
+            duplicateBtn.addEventListener('click', () => {
+                if (campaignData && campaignData.id) {
+                    window.location.href = `CreateCampaign.html?duplicate=${campaignData.id}`;
+                } else {
+                    showToast('Cannot duplicate: campaign data not loaded.', 'error');
+                }
+            });
+        }
+
+        // Export Report - generate CSV of recipients
+        const exportBtn = document.getElementById('btn-export');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', async () => {
+                await exportCampaignReport();
+            });
+        }
+
+        // Archive - mark campaign as archived
+        const archiveBtn = document.getElementById('btn-archive');
+        if (archiveBtn) {
+            archiveBtn.addEventListener('click', async () => {
+                await archiveCampaign();
+            });
+        }
+    }
+
+    // ── Export Report (CSV) ──────────────────────────────────────────────────
+    async function exportCampaignReport() {
+        showLoading('Generating Report...', 'Preparing CSV export.');
+
+        try {
+            const { data: recipients, error } = await client
+                .from('campaign_recipients')
+                .select(`
+                    id,
+                    status,
+                    sent_at,
+                    opened_at,
+                    clicked_at,
+                    open_count,
+                    click_count,
+                    members (
+                        name,
+                        surname,
+                        email,
+                        municipality,
+                        phone
+                    )
+                `)
+                .eq('campaign_id', campaignId);
+
+            if (error) throw error;
+
+            if (!recipients || recipients.length === 0) {
+                showToast('No recipient data to export.', 'error');
+                hideLoading();
+                return;
+            }
+
+            // Build CSV
+            const headers = ['Name', 'Surname', 'Email', 'Municipality', 'Phone', 'Status', 'Sent At', 'Opened At', 'Clicked At', 'Open Count', 'Click Count'];
+            const rows = recipients.map(r => {
+                const m = r.members || {};
+                return [
+                    m.name || '',
+                    m.surname || '',
+                    m.email || '',
+                    m.municipality || '',
+                    m.phone || '',
+                    r.status || '',
+                    r.sent_at || '',
+                    r.opened_at || '',
+                    r.clicked_at || '',
+                    r.open_count || 0,
+                    r.click_count || 0,
+                ];
+            });
+
+            let csv = headers.join(',') + '\n';
+            rows.forEach(row => {
+                csv += row.map(val => {
+                    const str = String(val).replace(/"/g, '""');
+                    return `"${str}"`;
+                }).join(',') + '\n';
+            });
+
+            // Trigger download
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `campaign_${campaignId.slice(0, 8)}_report.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showToast('Report exported successfully.', 'success');
+        } catch (err) {
+            console.error('Export error:', err);
+            showToast('Failed to export report: ' + err.message, 'error');
+        } finally {
+            hideLoading();
+        }
+    }
+
+    // ── Archive Campaign ─────────────────────────────────────────────────────
+    async function archiveCampaign() {
+        if (!confirm('Archive this campaign? It will be moved to the Archived section and hidden from the main view.')) {
+            return;
+        }
+
+        showLoading('Archiving...', 'Updating campaign status.');
+
+        try {
+            const { error } = await client
+                .from('campaigns')
+                .update({ status: 'archived', updated_at: new Date().toISOString() })
+                .eq('id', campaignId);
+
+            if (error) throw error;
+
+            showToast('Campaign archived successfully.', 'success');
+
+            // Update status badge
+            const badge = document.getElementById('campaign-status-badge');
+            badge.className = 'px-space-sm py-[2px] bg-surface-dim text-on-surface-variant rounded font-label-sm text-label-sm uppercase tracking-wider';
+            badge.textContent = 'ARCHIVED';
+
+            // Disable archive button
+            document.getElementById('btn-archive').disabled = true;
+            document.getElementById('btn-archive').classList.add('opacity-50', 'cursor-not-allowed');
+
+            setTimeout(() => {
+                window.location.href = 'Campaigns.html';
+            }, 1500);
+        } catch (err) {
+            console.error('Archive error:', err);
+            showToast('Failed to archive: ' + err.message, 'error');
+        } finally {
+            hideLoading();
+        }
+    }
+
+    // ── Attach hideToast to window ──────────────────────────────────────────
+    window.hideToast = hideToast;
+}
+</script>
+</body></html>
