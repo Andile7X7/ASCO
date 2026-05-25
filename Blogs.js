@@ -149,7 +149,7 @@ function attachArticleListeners() {
     article.addEventListener("click", () => {
       const blogId = article.getAttribute("id");
       // Redirect to viewBlog.html with the blog ID
-      window.location.href = `viewBlog.html?id=${blogId}`;
+      window.location.href = `ViewBlog.html?id=${blogId}`;
     });
   });
 }
