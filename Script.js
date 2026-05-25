@@ -556,60 +556,78 @@ if (isViewBlogPage) {
             console.error("Error fetching blog images:", imgError.message);
         }
 
-        // Map data into HTML structure
-        const titleEl = document.getElementById("title");
-        if (titleEl) titleEl.textContent = blog.title;
+        // Helper: remove skeleton spans inside an element and set text
+        function setContent(el, text) {
+            if (!el) return;
+            // Remove skeleton placeholder children
+            el.querySelectorAll('.animate-pulse').forEach(s => s.remove());
+            el.textContent = text;
+            el.classList.remove('animate-pulse');
+        }
 
-        const subtitleEl = document.getElementById("subtitle");
-        if (subtitleEl) subtitleEl.textContent = blog.subtitle;
+        // Helper: reveal an image and remove skeleton from its container
+        function revealImage(container, imgEl, src) {
+            if (!container || !imgEl || !src) return;
+            container.classList.remove('animate-pulse', 'bg-surface-container-low');
+            imgEl.classList.remove('hidden');
+            imgEl.src = src;
+        }
 
-        const categoryEl = document.getElementById("Category");
-        if (categoryEl) categoryEl.textContent = blog.category;
-
-        const dateEl = document.getElementById("Date");
-        if (dateEl) dateEl.textContent = new Date(blog.created_at).toLocaleDateString();
+        setContent(document.getElementById("title"), blog.title);
+        setContent(document.getElementById("subtitle"), blog.subtitle);
+        setContent(document.getElementById("Category"), blog.category);
+        setContent(document.getElementById("Date"), new Date(blog.created_at).toLocaleDateString());
 
         // Featured image
         const featuredContainer = document.getElementById("featured_image");
         if (featuredContainer) {
             const img = featuredContainer.querySelector("img");
-            if (img) img.src = blog.featured_image;
+            revealImage(featuredContainer, img, blog.featured_image);
         }
 
         // Paragraphs and tagline
-        const p1 = document.getElementById("paragraph1");
-        if (p1) p1.textContent = blog.paragraph1;
-
-        const p2 = document.getElementById("paragraph2");
-        if (p2) p2.textContent = blog.paragraph2;
-
-        const taglineEl = document.getElementById("tagline");
-        if (taglineEl) taglineEl.textContent = blog.tagline;
+        setContent(document.getElementById("paragraph1"), blog.paragraph1);
+        setContent(document.getElementById("paragraph2"), blog.paragraph2);
+        setContent(document.getElementById("tagline"), blog.tagline);
 
         // Image gallery labels
         const img2El = document.getElementById("img2Label");
         if (img2El) {
-            img2El.textContent = blog.img2Label;
+            setContent(img2El, blog.img2Label);
         }
 
         const img3El = document.getElementById("img3Label");
         if (img3El) {
-            img3El.textContent = blog.img3Label;
+            setContent(img3El, blog.img3Label);
         }
 
         // Set image URLs from blog_images
         if (blogImages && blogImages.length > 0) {
-            blogImages.forEach((img, index) => {
+            blogImages.forEach((imgData, index) => {
                 if (index === 0 && img2El) {
-                    const siblingImg = img2El.previousElementSibling ? img2El.previousElementSibling.querySelector("img") : null;
-                    if (siblingImg) siblingImg.src = img.image_url;
+                    const container = img2El.previousElementSibling;
+                    const imgTag = container ? container.querySelector("img") : null;
+                    if (imgTag) {
+                        container.classList.remove('animate-pulse', 'bg-surface-container-low');
+                        imgTag.classList.remove('hidden');
+                        imgTag.src = imgData.image_url;
+                    }
                 }
                 if (index === 1 && img3El) {
-                    const siblingImg = img3El.previousElementSibling ? img3El.previousElementSibling.querySelector("img") : null;
-                    if (siblingImg) siblingImg.src = img.image_url;
+                    const container = img3El.previousElementSibling;
+                    const imgTag = container ? container.querySelector("img") : null;
+                    if (imgTag) {
+                        container.classList.remove('animate-pulse', 'bg-surface-container-low');
+                        imgTag.classList.remove('hidden');
+                        imgTag.src = imgData.image_url;
+                    }
                 }
             });
         }
+
+        // Remove skeleton from avatar
+        const avatarEl = document.querySelector('.rounded-full.animate-pulse');
+        if (avatarEl) avatarEl.classList.remove('animate-pulse', 'bg-surface-container-low');
 
         console.log("Blog loaded successfully:", blog.title);
     }
