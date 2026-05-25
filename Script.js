@@ -1,5 +1,4 @@
-
-        // Initialize Supabase Client
+// Initialize Supabase Client
     const supabaseUrl = 'https://sfdozziezseywauuqddk.supabase.co';
     const supabaseKey = 'sb_publishable_xTaqAs_Dg1akwQ5QumtXbA_eJ5N2vtp';
     const client = supabase.createClient(supabaseUrl, supabaseKey);
@@ -85,7 +84,7 @@ if (window.location.pathname === '/Login.html') {
 
                 // Success! Redirect to Admin.html
                 console.log(member)
-                // localStorage.setItem('role',member.role)
+                localStorage.setItem('role', member.role)
                 window.location.href = 'Admin.html';
 
             } catch (err) {
@@ -497,106 +496,179 @@ if (window.location.pathname === '/CreateBlog.html') {
 }
      
 
-if(window.location.pathname.includes('viewBlog.html')){
-    
+// ═════════════════════════════════════════════════════════════════════════════
+// VIEW BLOG PAGE LOGIC
+// ═════════════════════════════════════════════════════════════════════════════
 
+// Use multiple detection strategies for robustness across environments
+const isViewBlogPage = window.location.pathname.toLowerCase().includes('viewblog') || 
+                       window.location.href.toLowerCase().includes('viewblog.html');
+
+if (isViewBlogPage) {
 
     async function loadBlog() {
-    const params = new URLSearchParams(window.location.search);
-    const blogId = params.get("id");
-    if (!blogId) {
-      console.error("No blog ID provided");
-      return;
-    }
-
-    // Fetch main blog row
-    const { data: blog, error: blogError } = await clientBlog
-      .from("blogs")
-      .select("*")
-      .eq("id", blogId)
-      .single();
-
-    if (blogError) {
-      console.error("Error fetching blog:", blogError.message);
-      return;
-    }
-    
-
-    if(blog.published === false){
-        document.getElementById('UnpublishButton').style.display = 'none';
-    }
-    else {
-        document.getElementById('UnpublishButton').style.display = 'flex';  
-        document.getElementById('PublishButton').style.display = 'none'
-    }
-
-    // Fetch related blog_images row(s)
-    const { data: blogImages, error: imgError } = await clientBlog
-      .from("blog_images")
-      .select("*")
-      .eq("blog_id", blogId)
-    
-
-    if (imgError) {
-      console.error("Error fetching blog images:", imgError.message);
-      return;
-    }
-
-    
-
-    // Map data into your HTML structure
-    
-    
-    document.getElementById("title").textContent = blog.title;
-    document.getElementById("subtitle").textContent = blog.subtitle;
-    document.getElementById("Category").textContent = blog.category;
-    document.getElementById("Date").textContent = new Date(blog.created_at).toLocaleDateString();
-
-    // Featured image
-    const featuredContainer = document.getElementById("featured_image");
-    featuredContainer.querySelector("img").src = blog.featured_image;
-
-    // Paragraphs and tagline
-    document.getElementById("paragraph1").textContent = blog.paragraph1;
-    document.getElementById("paragraph2").textContent = blog.paragraph2;
-    document.getElementById("tagline").textContent = blog.tagline;
-
-    // Image gallery
-    const img2 = document.getElementById("img2Label");
-    
-    img2.textContent = blog.img2Label;
-
-    const img3 = document.getElementById("img3Label");
-    
-    img3.textContent = blog.img3Label;
-
-    blogImages.forEach((img, index) => {
-    if (index === 0) {
-    img2.previousElementSibling.querySelector("img").src = img.image_url;
+        const params = new URLSearchParams(window.location.search);
+        const blogId = params.get("id");
+        if (!blogId) {
+            console.error("No blog ID provided in URL. Redirecting to Blogs page.");
+            // Optionally show a user-friendly message on the page
+            document.getElementById("title").textContent = "Blog Not Found";
+            document.getElementById("subtitle").textContent = "Please select a blog from the Blogs page.";
+            document.getElementById("AdminButtons").style.display = 'none';
+            return;
         }
-        if (index === 1) {  
-            img3.previousElementSibling.querySelector("img").src = img.image_url;
+
+        console.log("Loading blog with ID:", blogId);
+
+        // Fetch main blog row
+        const { data: blog, error: blogError } = await clientBlog
+            .from("blogs")
+            .select("*")
+            .eq("id", blogId)
+            .single();
+
+        if (blogError) {
+            console.error("Error fetching blog:", blogError.message);
+            document.getElementById("title").textContent = "Blog Not Found or Error Loading";
+            document.getElementById("subtitle").textContent = "The blog may have been deleted or there was a connection error.";
+            document.getElementById("AdminButtons").style.display = 'none';
+            return;
         }
-        });
 
-        
-       
-  }
+        // Toggle admin buttons based on publish state
+        if (blog.published === false) {
+            const unpublishBtn = document.getElementById('UnpublishButton');
+            if (unpublishBtn) unpublishBtn.style.display = 'none';
+        } else {
+            const unpublishBtn = document.getElementById('UnpublishButton');
+            if (unpublishBtn) unpublishBtn.style.display = 'flex';
+            const publishBtn = document.getElementById('PublishButton');
+            if (publishBtn) publishBtn.style.display = 'none';
+        }
 
-  loadBlog();
- 
+        // Fetch related blog_images row(s)
+        const { data: blogImages, error: imgError } = await clientBlog
+            .from("blog_images")
+            .select("*")
+            .eq("blog_id", blogId);
 
-  const role = localStorage.getItem('role');
+        if (imgError) {
+            console.error("Error fetching blog images:", imgError.message);
+        }
 
-    console.log(role);
-    if(role !== 'admin'){
-        document.getElementById('AdminButtons').style.display = 'none';
-        console.log('user is not an admin')
+        // Map data into HTML structure
+        const titleEl = document.getElementById("title");
+        if (titleEl) titleEl.textContent = blog.title;
+
+        const subtitleEl = document.getElementById("subtitle");
+        if (subtitleEl) subtitleEl.textContent = blog.subtitle;
+
+        const categoryEl = document.getElementById("Category");
+        if (categoryEl) categoryEl.textContent = blog.category;
+
+        const dateEl = document.getElementById("Date");
+        if (dateEl) dateEl.textContent = new Date(blog.created_at).toLocaleDateString();
+
+        // Featured image
+        const featuredContainer = document.getElementById("featured_image");
+        if (featuredContainer) {
+            const img = featuredContainer.querySelector("img");
+            if (img) img.src = blog.featured_image;
+        }
+
+        // Paragraphs and tagline
+        const p1 = document.getElementById("paragraph1");
+        if (p1) p1.textContent = blog.paragraph1;
+
+        const p2 = document.getElementById("paragraph2");
+        if (p2) p2.textContent = blog.paragraph2;
+
+        const taglineEl = document.getElementById("tagline");
+        if (taglineEl) taglineEl.textContent = blog.tagline;
+
+        // Image gallery labels
+        const img2El = document.getElementById("img2Label");
+        if (img2El) {
+            img2El.textContent = blog.img2Label;
+        }
+
+        const img3El = document.getElementById("img3Label");
+        if (img3El) {
+            img3El.textContent = blog.img3Label;
+        }
+
+        // Set image URLs from blog_images
+        if (blogImages && blogImages.length > 0) {
+            blogImages.forEach((img, index) => {
+                if (index === 0 && img2El) {
+                    const siblingImg = img2El.previousElementSibling ? img2El.previousElementSibling.querySelector("img") : null;
+                    if (siblingImg) siblingImg.src = img.image_url;
+                }
+                if (index === 1 && img3El) {
+                    const siblingImg = img3El.previousElementSibling ? img3El.previousElementSibling.querySelector("img") : null;
+                    if (siblingImg) siblingImg.src = img.image_url;
+                }
+            });
+        }
+
+        console.log("Blog loaded successfully:", blog.title);
     }
-    else{
-        document.getElementById('AdminButtons').style.display = 'flex';
-        
-    }
+
+    loadBlog();
+
+    // Show/hide admin buttons based on role (with Supabase session fallback)
+    (async function checkViewBlogAdmin() {
+        let role = localStorage.getItem('role');
+        console.log('ViewBlog role from localStorage:', role);
+
+        if (!role) {
+            // Fallback: check Supabase session
+            try {
+                const { data: { session }, error: sessionError } = await clientBlog.auth.getSession();
+                if (session && !sessionError) {
+                    const { data: member, error: memberError } = await clientBlog
+                        .from('members')
+                        .select('role')
+                        .eq('email', session.user.email)
+                        .maybeSingle();
+                    if (!memberError && member) {
+                        role = member.role;
+                        localStorage.setItem('role', member.role);
+                    }
+                }
+            } catch (err) {
+                console.error('Error checking admin role:', err);
+            }
+        }
+
+        const adminButtons = document.getElementById('AdminButtons');
+        if (adminButtons) {
+            if (role !== 'admin') {
+                adminButtons.style.display = 'none';
+            } else {
+                adminButtons.style.display = 'flex';
+                // Also re-evaluate publish button visibility if blog was loaded
+                const blogParams = new URLSearchParams(window.location.search);
+                const blogId = blogParams.get("id");
+                if (blogId) {
+                    const { data: blog } = await clientBlog.from("blogs").select("published").eq("id", blogId).maybeSingle();
+                    if (blog) {
+                        if (blog.published === true) {
+                            const unpublishBtn = document.getElementById('UnpublishButton');
+                            const publishBtn = document.getElementById('PublishButton');
+                            if (unpublishBtn) unpublishBtn.style.display = 'flex';
+                            if (publishBtn) publishBtn.style.display = 'none';
+                        } else {
+                            const unpublishBtn = document.getElementById('UnpublishButton');
+                            const publishBtn = document.getElementById('PublishButton');
+                            if (unpublishBtn) unpublishBtn.style.display = 'none';
+                            if (publishBtn) publishBtn.style.display = 'flex';
+                        }
+                    }
+                }
+            }
+        }
+    })();
 
 }
 function goToBlogs(){

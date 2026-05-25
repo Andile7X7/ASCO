@@ -332,7 +332,7 @@ serve(async (req: Request) => {
       if (!resendRes.ok) throw new Error(`Resend batch error: ${resendData.message || JSON.stringify(resendData)}`);
 
       // Collect resend IDs and create campaign_recipients rows
-      const resendIds = resendData.data || [];
+      const resendIds = Array.isArray(resendData) ? resendData : (resendData.data || []);
       const recipientRows = batch.map((r: any, idx: number) => ({
         campaign_id,
         member_id: r.id,

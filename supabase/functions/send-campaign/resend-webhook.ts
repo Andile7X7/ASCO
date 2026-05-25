@@ -100,13 +100,11 @@ serve(async (req: Request) => {
       case 'opened':
         updateData.open_count = (recipientRow.open_count || 0) + 1;
         updateData.opened_at = eventTimestamp;
-        // Don't set status - DB constraint only allows: pending, sent, delivered, bounced, failed
         break;
 
       case 'clicked':
         updateData.click_count = (recipientRow.click_count || 0) + 1;
         updateData.clicked_at = eventTimestamp;
-        // Don't set status - DB constraint only allows: pending, sent, delivered, bounced, failed
         break;
 
       case 'bounced':
@@ -117,12 +115,37 @@ serve(async (req: Request) => {
         break;
 
       case 'complained':
-        // Don't set status - DB constraint only allows: pending, sent, delivered, bounced, failed
         eventLog.metadata.complaint_type = data.complaint_type;
         break;
 
       default:
         console.log('[resend-webhook] Unhandled event type:', eventType);
+    }
+
+    // ── Scheduled Campaign Promotion ─────────────────────────────────────────
+    // If this campaign was scheduled and we're receiving the first delivery event,
+    // move the campaign from 'scheduled' to 'sent' and set sent_at
+    if (normalizedEventType === 'delivered') {
+      // Check if the parent campaign is still in 'scheduled' status
+      const { data: parentCampaign } = await db
+        .from('campaigns')
+        .select('status')
+        .eq('id', recipientRow.campaign_id)
+        .maybeSingle();
+
+      if (parentCampaign && parentCampaign.status === 'scheduled') {
+        console.log('[resend-webhook] Promoting campaign', recipientRow.campaign_id, 'from scheduled to sent');
+        await db.from('campaigns').update({
+          status: 'sent',
+          sent_at: eventTimestamp,
+          updated_at: new Date().toISOString(),
+        }).eq('id', recipientRow.campaign_id);
+      }
+
+      // Update the recipient sent_at if it was null (scheduled)
+      if (!updateData.sent_at) {
+        updateData.sent_at = eventTimestamp;
+      }
     }
 
     // Update campaign_recipients
