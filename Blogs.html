@@ -171,7 +171,7 @@
                 href="Contact.html">Contact</a>
         </nav>
         <button
-            class="mt-space-xl bg-primary-container text-on-primary py-space-sm rounded-xl font-body-md text-body-md hover:opacity-90 transition-all uppercase tracking-wider font-semibold">
+            class="mt-space-xl bg-primary-container text-on-primary py-space-sm rounded-xl font-body-md text-body-md hover:opacity-90 transition-all uppercase tracking-wider font-semibold" id="mjoin4">
             Join Movement
         </button>
     </div>
@@ -205,7 +205,7 @@
                             href="Contact.html">Contact</a>
                     </nav>
                     <button
-                        class="bg-primary-container text-on-primary px-space-md py-space-xs rounded-lg font-label-sm text-label-sm uppercase tracking-wider hover:opacity-90 transition-all">
+                        class="bg-primary-container text-on-primary px-space-md py-space-xs rounded-lg font-label-sm text-label-sm uppercase tracking-wider hover:opacity-90 transition-all" id="join7">
                         Join Movement
                     </button>
                 </div>
@@ -465,6 +465,12 @@
                 link.classList.add('text-primary', 'font-semibold', 'border-b-2', 'border-primary', 'pb-1');
             });
         });
+                document.getElementById('join7').addEventListener('click', () => {
+            window.location.href = 'Contact.html';
+        });
+         document.getElementById('mjoin4').addEventListener('click', function(){
+            window.location.href = 'contact.html'
+        })
     </script>
 
 </body></html>

@@ -177,7 +177,7 @@
                 href="Contact.html">Contact</a>
         </nav>
         <button
-            class="mt-space-xl bg-primary-container text-on-primary py-space-sm rounded-xl font-body-md text-body-md hover:opacity-90 transition-all uppercase tracking-wider font-semibold">
+            class="mt-space-xl bg-primary-container text-on-primary py-space-sm rounded-xl font-body-md text-body-md hover:opacity-90 transition-all uppercase tracking-wider font-semibold" id="mjoin2">
             Join Movement
         </button>
     </div>
@@ -209,7 +209,7 @@
                     <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md"
                         href="Contact.html">Contact</a>
                     <button
-                        class="bg-primary-container text-on-primary px-space-md py-space-xs rounded-xl font-body-md text-body-md">Join
+                        class="bg-primary-container text-on-primary px-space-md py-space-xs rounded-xl font-body-md text-body-md" id="join4">Join
                         Movement</button>
                 </div>
                 <button id="burger-menu-btn" class="burger-menu-btn text-primary hover:opacity-80 transition-opacity">
@@ -452,6 +452,12 @@
             closeBtn.addEventListener('click', closeMenu);
             menuOverlay.addEventListener('click', closeMenu);
         });
+                document.getElementById('join4').addEventListener('click', () => {
+            window.location.href = 'Contact.html';
+        });
+         document.getElementById('mjoin2').addEventListener('click', function(){
+            window.location.href = 'contact.html'
+        })
     </script>
 </body>
 

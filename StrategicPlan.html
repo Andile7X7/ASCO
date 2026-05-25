@@ -163,7 +163,7 @@
                 href="Blogs.html">Blogs</a>
             <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle" href="Contact.html">Contact</a>
         </nav>
-        <button class="mt-space-xl bg-primary-container text-on-primary py-space-sm rounded-xl font-body-md text-body-md hover:opacity-90 transition-all uppercase tracking-wider font-semibold">
+        <button class="mt-space-xl bg-primary-container text-on-primary py-space-sm rounded-xl font-body-md text-body-md hover:opacity-90 transition-all uppercase tracking-wider font-semibold" id="mjoin3">
             Join Movement
         </button>
     </div>
@@ -194,7 +194,7 @@
                         <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors font-body-md text-body-md"
                             href="Contact.html">Contact</a>
                         <button
-                            class="ml-space-md px-space-md py-space-sm bg-primary-container text-on-primary rounded-lg font-label-sm text-label-sm hover:opacity-90 transition-all">
+                            class="ml-space-md px-space-md py-space-sm bg-primary-container text-on-primary rounded-lg font-label-sm text-label-sm hover:opacity-90 transition-all" id="join3">
                             Join Movement
                         </button>
                     </nav>
@@ -485,6 +485,12 @@
             closeBtn.addEventListener('click', closeMenu);
             menuOverlay.addEventListener('click', closeMenu);
         });
+        document.getElementById('join3').addEventListener('click', () => {
+            window.location.href = 'Contact.html';
+        });
+         document.getElementById('mjoin3').addEventListener('click', function(){
+            window.location.href = 'contact.html'
+        })
     </script>
 </body>
 

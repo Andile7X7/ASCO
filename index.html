@@ -175,7 +175,7 @@
                 href="Contact.html">Contact</a>
         </nav>
         <button
-            class="mt-space-xl bg-primary-container text-on-primary py-space-sm rounded-xl font-body-md text-body-md hover:opacity-90 transition-all uppercase tracking-wider font-semibold">
+            class="mt-space-xl bg-primary-container text-on-primary py-space-sm rounded-xl font-body-md text-body-md hover:opacity-90 transition-all uppercase tracking-wider font-semibold" id="mjoin1">
             Join Movement
         </button>
     </div>
@@ -210,7 +210,7 @@
                             href="Contact.html">Contact</a>
                     </nav>
                     <button
-                        class="bg-primary-container text-on-primary px-space-md py-space-xs rounded-lg font-label-sm text-label-sm uppercase tracking-wider hover:opacity-90 transition-all">
+                        class="bg-primary-container text-on-primary px-space-md py-space-xs rounded-lg font-label-sm text-label-sm uppercase tracking-wider hover:opacity-90 transition-all" id="JoinTheMovement">
                         Join Movement
                     </button>
                 </div>
@@ -254,11 +254,11 @@
                         </p>
                         <div class="flex gap-space-md">
                             <button
-                                class="bg-primary text-white px-space-xl py-space-md rounded-lg font-h3 text-h3 hover:bg-primary-container transition-colors">
+                                class="bg-primary text-white px-space-xl py-space-md rounded-lg font-h3 text-h3 hover:bg-primary-container transition-colors" id="JoinTheMovement2">
                                 Join The Movement
                             </button>
                             <button
-                                class="border border-white text-white px-space-xl py-space-md rounded-lg font-h3 text-h3 hover:bg-white/10 transition-colors">
+                                class="border border-white text-white px-space-xl py-space-md rounded-lg font-h3 text-h3 hover:bg-white/10 transition-colors" id="LearnMore">
                                 Learn More
                             </button>
                         </div>
@@ -414,7 +414,7 @@
                                     members.</p>
                             </div>
                             <button
-                                class="bg-white text-primary px-space-lg py-space-sm rounded-lg font-label-sm text-label-sm uppercase tracking-wider whitespace-nowrap">
+                                class="bg-white text-primary px-space-lg py-space-sm rounded-lg font-label-sm text-label-sm uppercase tracking-wider whitespace-nowrap" id="governancePolicy">
                                 Read Governance Policy
                             </button>
                         </div>
@@ -438,13 +438,13 @@
                     </p>
                     <div class="flex flex-col sm:flex-row justify-center gap-space-md">
                         <button
-                            class="bg-primary text-white px-[40px] py-space-md rounded-lg font-h3 text-h3 hover:bg-primary-container transition-all">
+                            class="bg-primary text-white px-[40px] py-space-md rounded-lg font-h3 text-h3 hover:bg-primary-container transition-all" id="register">
                             Register as a Member
                         </button>
-                        <button
+                        <!-- <button
                             class="border border-surface-variant text-white px-[40px] py-space-md rounded-lg font-h3 text-h3 hover:bg-white/10 transition-all">
                             Donate to Cause
-                        </button>
+                        </button> -->
                     </div>
                 </div>
             </section>
@@ -566,8 +566,27 @@
                     const cleanUrl = window.location.pathname + window.location.hash;
                     window.history.replaceState({}, document.title, cleanUrl);
                 }
+            
             }
+        
         })();
+
+        document.getElementById('JoinTheMovement').addEventListener('click', function(){
+            window.location.href = 'contact.html'
+        })
+         document.getElementById('JoinTheMovement2').addEventListener('click', function(){
+            window.location.href = 'contact.html'
+        })
+         document.getElementById('mjoin1').addEventListener('click', function(){
+            window.location.href = 'contact.html'
+        })
+         document.getElementById('register').addEventListener('click', function(){
+            window.location.href = 'contact.html'
+        })
+        document.getElementById('LearnMore').addEventListener('click', function(){
+            window.location.href = 'About.html'})
+        document.getElementById('governancePolicy').addEventListener('click', function(){
+            window.location.href = '8Pillars.html'});
     </script>
 </body>
 

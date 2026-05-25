@@ -162,7 +162,7 @@
                 href="Blogs.html">Blogs</a>
             <a class="text-on-surface-variant hover:text-primary transition-colors font-body-lg text-body-lg pb-space-sm border-b border-border-subtle" href="Contact.html">Contact</a>
         </nav>
-        <button class="mt-space-xl bg-primary-container text-on-primary py-space-sm rounded-xl font-body-md text-body-md hover:opacity-90 transition-all uppercase tracking-wider font-semibold">
+        <button class="mt-space-xl bg-primary-container text-on-primary py-space-sm rounded-xl font-body-md text-body-md hover:opacity-90 transition-all uppercase tracking-wider font-semibold" id="mjoin5">
             Join Movement
         </button>
     </div>
@@ -194,7 +194,7 @@
                             href="Contact.html">Contact</a>
                     </nav>
                     <button
-                        class="bg-primary text-on-primary px-space-md py-space-xs rounded-lg font-label-sm text-label-sm hover:opacity-80 transition-all">Join
+                        class="bg-primary text-on-primary px-space-md py-space-xs rounded-lg font-label-sm text-label-sm hover:opacity-80 transition-all" id="join2">Join
                         Movement</button>
                 </div>
                 <button id="burger-menu-btn" class="burger-menu-btn text-primary hover:opacity-80 transition-opacity">
@@ -394,7 +394,7 @@
                     accountable community.</p>
                 <div class="flex flex-col sm:flex-row justify-center gap-space-md">
                     <button
-                        class="bg-secondary-container text-on-secondary-container px-space-xl py-space-md rounded-lg font-h3 text-h3 hover:opacity-90">Get
+                        class="bg-secondary-container text-on-secondary-container px-space-xl py-space-md rounded-lg font-h3 text-h3 hover:opacity-90" id="GetInvolved">Get
                         Involved Now</button>
                     <button
                         class="border border-on-primary text-on-primary px-space-xl py-space-md rounded-lg font-h3 text-h3 hover:bg-on-primary hover:text-primary transition-colors">Download
@@ -480,6 +480,16 @@
             closeBtn.addEventListener('click', closeMenu);
             menuOverlay.addEventListener('click', closeMenu);
         });
+
+        document.getElementById('GetInvolved').addEventListener('click', () => {
+            window.location.href = 'Contact.html';
+        });
+        document.getElementById('join2').addEventListener('click', () => {
+            window.location.href = 'Contact.html';
+        });
+         document.getElementById('mjoin5').addEventListener('click', function(){
+            window.location.href = 'contact.html'
+        })
     </script>
 </body>
 
