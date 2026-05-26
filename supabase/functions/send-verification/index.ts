@@ -14,10 +14,12 @@ serve(async (req: Request) => {
   try {
     const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
     const VERIFICATION_SECRET = Deno.env.get('VERIFICATION_SECRET');
+    const PROJECT_URL = Deno.env.get('PROJECT_URL');
     const BASE_URL = Deno.env.get('BASE_URL') || 'https://asco.org.za';
 
     if (!RESEND_API_KEY) throw new Error('RESEND_API_KEY is not configured.');
     if (!VERIFICATION_SECRET) throw new Error('VERIFICATION_SECRET is not configured.');
+    if (!PROJECT_URL) throw new Error('PROJECT_URL is not configured.');
 
     const { email, name } = await req.json();
     if (!email) throw new Error('email is required.');
@@ -35,7 +37,7 @@ serve(async (req: Request) => {
       .map(b => b.toString(16).padStart(2, '0'))
       .join('');
 
-    const verifyUrl = `${BASE_URL}/index.html?verified=true&email=${encodeURIComponent(email)}&token=${token}`;
+    const verifyUrl = `${PROJECT_URL}/functions/v1/verify-email?email=${encodeURIComponent(email)}&token=${token}`;
 
     // Build HTML email
     const html = `<!DOCTYPE html>

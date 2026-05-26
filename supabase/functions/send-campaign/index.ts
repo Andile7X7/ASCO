@@ -38,11 +38,8 @@ function buildEmailHtml(campaign: {
   sender_name?: string;
   banner_url?: string;
 }, recipientName: string, unsubscribeUrl?: string): string {
-  const bannerHtml = campaign.banner_url
-    ? `<img src="${campaign.banner_url}" alt="Campaign Banner" style="width:100%;max-width:600px;display:block;border-radius:8px 8px 0 0;" />`
-    : `<div style="width:100%;height:120px;background:linear-gradient(135deg,#00450d,#1b5e20);border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;">
-        <span style="color:#acf4a4;font-size:14px;font-weight:600;letter-spacing:2px;">ASIHLANGANENI CIVIC MOVEMENT</span>
-       </div>`;
+  const bannerUrl = campaign.banner_url || 'https://asco.org.za/Assets/ASCOBANNER.png';
+  const bannerHtml = `<img src="${bannerUrl}" alt="Campaign Banner" style="width:100%;max-width:600px;display:block;border-radius:8px 8px 0 0;" />`;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -66,7 +63,6 @@ function buildEmailHtml(campaign: {
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
             <tr>
               <td style="color:#acf4a4;font-size:18px;font-weight:700;letter-spacing:0.5px;">ASIHLANGANENI</td>
-              <td align="right" style="color:#acf4a4;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;opacity:0.8;">OFFICIAL COMMUNIQUÉ</td>
             </tr>
           </table>
         </td></tr>
