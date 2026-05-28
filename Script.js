@@ -16,7 +16,23 @@ if (window.location.pathname === '/Login.html') {
         console.log(session)
 
         if (session) {
-            window.location.href = 'Admin.html';
+            // Verify the user is actually an admin before redirecting
+            try {
+                const { data: member, error: memberError } = await client
+                    .from('members')
+                    .select('role')
+                    .ilike('email', session.user.email)
+                    .maybeSingle();
+                if (!memberError && member && member.role === 'admin') {
+                    window.location.href = 'Admin.html';
+                } else {
+                    // Not an admin — sign them out to break any loop
+                    await client.auth.signOut();
+                }
+            } catch (err) {
+                console.error('Login auto-redirect check failed:', err);
+                await client.auth.signOut();
+            }
         }
     });
 }
@@ -69,7 +85,7 @@ if (window.location.pathname === '/Login.html') {
                 const { data: member, error: memberError } = await client
                     .from('members')
                     .select('role')
-                    .eq('email', email)
+                    .ilike('email', email)
                     .maybeSingle();
 
                 if (memberError) {
@@ -119,7 +135,7 @@ if (window.location.pathname === '/Login.html') {
                 const { data: member, error: memberError } = await client
                     .from('members')
                     .select('role, name')
-                    .eq('email', session.user.email)
+                    .ilike('email', session.user.email)
                     .maybeSingle();
 
                 if (memberError || !member || member.role !== 'admin') {
@@ -142,7 +158,7 @@ if (window.location.pathname === '/Login.html') {
                 loadActivityLog();
             } catch (err) {
                 console.error('Authentication verification error:', err);
-                await supabase.auth.signOut();
+                await client.auth.signOut();
                 window.location.href = 'Login.html';
             }
         }
@@ -647,7 +663,7 @@ if (isViewBlogPage) {
                     const { data: member, error: memberError } = await clientBlog
                         .from('members')
                         .select('role')
-                        .eq('email', session.user.email)
+                        .ilike('email', session.user.email)
                         .maybeSingle();
                     if (!memberError && member) {
                         role = member.role;
@@ -851,7 +867,7 @@ if (window.location.pathname.includes('CreateCampaign.html')) {
       const { data: member } = await client
         .from('members')
         .select('name, surname, email')
-        .eq('email', session.user.email)
+        .ilike('email', session.user.email)
         .maybeSingle();
       if (member) {
         adminName = `${member.name || ''} ${member.surname || ''}`.trim() || 'Admin';
@@ -874,7 +890,7 @@ if (window.location.pathname.includes('CreateCampaign.html')) {
     const { data: member, error: memberError } = await client
       .from('members')
       .select('role, name')
-      .eq('email', session.user.email)
+      .ilike('email', session.user.email)
       .maybeSingle();
     if (memberError || !member || member.role !== 'admin') {
       await client.auth.signOut();
@@ -1645,7 +1661,7 @@ if (window.location.pathname.includes('Campaigns.html')) {
     const { data: member, error: memberError } = await client
       .from('members')
       .select('role, name')
-      .eq('email', session.user.email)
+      .ilike('email', session.user.email)
       .maybeSingle();
     if (memberError || !member || member.role !== 'admin') {
       await client.auth.signOut();
