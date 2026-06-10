@@ -367,9 +367,442 @@ if (window.location.pathname === '/Login.html') {
             window.location.href = 'CreateBlog.html';
         
         }
-    }
 
+        // ────────────── Members Table ──────────────
+        let currentPage = 1;
+        let totalMembers = 0;
+        const PAGE_SIZE = 15;
+        let debounceTimer = null;
+        let currentOpenMember = null;
+
+        const memberSearchInput = document.getElementById('member-search');
+        const statusFilterSelect = document.getElementById('status-filter');
+        const membersTbody = document.getElementById('members-table-body');
+        const paginationInfo = document.getElementById('pagination-info');
+        const pageIndicator = document.getElementById('page-indicator');
+        const prevPageBtn = document.getElementById('prev-page-btn');
+        const nextPageBtn = document.getElementById('next-page-btn');
+
+        const memberModalOverlay = document.getElementById('member-modal-overlay');
+        const memberDetailContent = document.getElementById('member-detail-content');
+        const memberDetailActions = document.getElementById('member-detail-actions');
+        const closeMemberModalBtn = document.getElementById('close-member-modal');
+        const exportCsvBtn = document.getElementById('export-csv-btn');
+
+        async function loadMembers(page = 1) {
+            currentPage = page;
+            const searchTerm = memberSearchInput ? memberSearchInput.value.trim() : '';
+            const statusFilter = statusFilterSelect ? statusFilterSelect.value : '';
+
+            // Show loading
+            membersTbody.innerHTML = `<tr><td colspan="7" class="px-space-lg py-space-xl text-center">
+                <div class="flex flex-col items-center gap-space-sm">
+                    <span class="material-symbols-outlined animate-spin text-primary text-[32px]">progress_activity</span>
+                    <span class="font-body-md text-body-md text-on-surface-variant">Loading members...</span>
+                </div>
+            </td></tr>`;
+
+            try {
+                // Build query
+                let query = client
+                    .from('members')
+                    .select('*', { count: 'exact' });
+
+                // Apply search filter
+                if (searchTerm) {
+                    // Search in name, surname, or email
+                    query = query.or(`name.ilike.%${searchTerm}%,surname.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%`);
+                }
+
+                // Apply status filter
+                if (statusFilter) {
+                    query = query.eq('status', statusFilter);
+                }
+
+                // Order and paginate
+                const from = (page - 1) * PAGE_SIZE;
+                const to = from + PAGE_SIZE - 1;
+
+                query = query
+                    .order('created_at', { ascending: false })
+                    .range(from, to);
+
+                const { data: members, count, error } = await query;
+
+                if (error) {
+                    console.error('Error loading members:', error);
+                    membersTbody.innerHTML = `<tr><td colspan="7" class="px-space-lg py-space-xl text-center">
+                        <div class="flex flex-col items-center gap-space-sm">
+                            <span class="material-symbols-outlined text-error text-[32px]">error</span>
+                            <span class="font-body-md text-body-md text-on-surface-variant">Failed to load members. Please try again.</span>
+                        </div>
+                    </td></tr>`;
+                    return;
+                }
+
+                totalMembers = count || 0;
+
+                if (!members || members.length === 0) {
+                    membersTbody.innerHTML = `<tr><td colspan="7" class="px-space-lg py-space-xl text-center">
+                        <div class="flex flex-col items-center gap-space-sm">
+                            <span class="material-symbols-outlined text-on-surface-variant text-[32px]">group_off</span>
+                            <span class="font-body-md text-body-md text-on-surface-variant">No members found matching your criteria.</span>
+                        </div>
+                    </td></tr>`;
+                } else {
+                    renderMemberRows(members);
+                }
+
+                updatePagination();
+            } catch (err) {
+                console.error('Unexpected error loading members:', err);
+                membersTbody.innerHTML = `<tr><td colspan="7" class="px-space-lg py-space-xl text-center">
+                    <div class="flex flex-col items-center gap-space-sm">
+                        <span class="material-symbols-outlined text-error text-[32px]">error</span>
+                        <span class="font-body-md text-body-md text-on-surface-variant">An unexpected error occurred.</span>
+                    </div>
+                </td></tr>`;
+            }
+        }
+
+        function renderMemberRows(members) {
+            const rows = members.map(member => {
+                const fullName = `${member.name || ''} ${member.surname || ''}`.trim() || '—';
+                const joinDate = member.created_at 
+                    ? new Date(member.created_at).toLocaleDateString('en-ZA', { year: 'numeric', month: 'short', day: 'numeric' })
+                    : '—';
+                
+                // Status badge
+                let statusBadge = '';
+                const status = member.status || 'active';
+                if (status === 'active') {
+                    statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-primary-fixed-dim/30 text-primary">Active</span>';
+                } else if (status === 'inactive') {
+                    statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-surface-container-high text-on-surface-variant">Inactive</span>';
+                } else {
+                    statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-secondary-fixed-dim/30 text-secondary">Unconfirmed</span>';
+                }
+
+                // Verified icon
+                const verifiedIcon = member.email_verified
+                    ? '<span class="material-symbols-outlined text-primary text-[18px]" title="Email Verified">check_circle</span>'
+                    : '<span class="material-symbols-outlined text-on-surface-variant text-[18px]" title="Not Verified">cancel</span>';
+
+                return `
+                <tr class="hover:bg-surface-container-low transition-colors cursor-pointer" onclick="window._openMemberModal && window._openMemberModal('${member.id}')" data-member-id="${member.id}">
+                    <td class="px-space-lg py-space-sm whitespace-nowrap">
+                        <span class="font-body-md text-body-md font-semibold text-on-surface">${escapeHtml(fullName)}</span>
+                    </td>
+                    <td class="px-space-lg py-space-sm whitespace-nowrap hidden md:table-cell">
+                        <span class="font-body-md text-body-md text-on-surface-variant">${escapeHtml(member.email || '—')}</span>
+                    </td>
+                    <td class="px-space-lg py-space-sm whitespace-nowrap hidden lg:table-cell">
+                        <span class="font-body-md text-body-md text-on-surface-variant">${escapeHtml(member.phone || '—')}</span>
+                    </td>
+                    <td class="px-space-lg py-space-sm whitespace-nowrap hidden lg:table-cell">
+                        <span class="font-body-md text-body-md text-on-surface-variant">${escapeHtml(member.municipality || '—')}</span>
+                    </td>
+                    <td class="px-space-lg py-space-sm whitespace-nowrap">${statusBadge}</td>
+                    <td class="px-space-lg py-space-sm whitespace-nowrap hidden sm:table-cell text-center">${verifiedIcon}</td>
+                    <td class="px-space-lg py-space-sm whitespace-nowrap hidden xl:table-cell">
+                        <span class="font-label-sm text-label-sm text-on-surface-variant">${joinDate}</span>
+                    </td>
+                </tr>`;
+            });
+
+            membersTbody.innerHTML = rows.join('');
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function updatePagination() {
+            const totalPages = Math.ceil(totalMembers / PAGE_SIZE) || 1;
+            const showing = totalMembers === 0 ? 0 : Math.min(currentPage * PAGE_SIZE, totalMembers);
+            const from = totalMembers === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
+
+            paginationInfo.textContent = `Showing ${from}–${showing} of ${totalMembers} members`;
+            pageIndicator.textContent = `Page ${currentPage} of ${totalPages}`;
+
+            prevPageBtn.disabled = currentPage <= 1;
+            nextPageBtn.disabled = currentPage >= totalPages;
+        }
+
+        // Search/filter event handlers
+        if (memberSearchInput) {
+            memberSearchInput.addEventListener('input', function() {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    loadMembers(1);
+                }, 400);
+            });
+        }
+
+        if (statusFilterSelect) {
+            statusFilterSelect.addEventListener('change', function() {
+                loadMembers(1);
+            });
+        }
+
+        // Pagination handlers
+        if (prevPageBtn) {
+            prevPageBtn.addEventListener('click', function() {
+                if (currentPage > 1) {
+                    loadMembers(currentPage - 1);
+                }
+            });
+        }
+
+        if (nextPageBtn) {
+            nextPageBtn.addEventListener('click', function() {
+                const totalPages = Math.ceil(totalMembers / PAGE_SIZE) || 1;
+                if (currentPage < totalPages) {
+                    loadMembers(currentPage + 1);
+                }
+            });
+        }
+
+        // ────────────── Member Detail Modal ──────────────
+        function openMemberModal(memberId) {
+            // Find the member from the cached data
+            const member = currentOpenMember && currentOpenMember.id === memberId 
+                ? currentOpenMember 
+                : null;
+            
+            if (!memberId) return;
+
+            // Fetch single member
+            client
+                .from('members')
+                .select('*')
+                .eq('id', memberId)
+                .single()
+                .then(({ data: member, error }) => {
+                    if (error || !member) {
+                        console.error('Error loading member detail:', error);
+                        return;
+                    }
+
+                    currentOpenMember = member;
+                    renderMemberDetail(member);
+                    memberModalOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                });
+        }
+
+        function renderMemberDetail(member) {
+            const fullName = `${member.name || ''} ${member.surname || ''}`.trim() || '—';
+            const joinDate = member.created_at 
+                ? new Date(member.created_at).toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' })
+                : '—';
+            const updatedDate = member.updated_at 
+                ? new Date(member.updated_at).toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' })
+                : '—';
+
+            let statusClass = 'text-primary';
+            let statusLabel = 'Active';
+            if (member.status === 'inactive') {
+                statusClass = 'text-on-surface-variant';
+                statusLabel = 'Inactive';
+            } else if (member.status === 'unconfirmed') {
+                statusClass = 'text-secondary';
+                statusLabel = 'Unconfirmed';
+            }
+
+            const detailFields = [
+                { label: 'Full Name', value: fullName },
+                { label: 'Email', value: member.email || '—' },
+                { label: 'Phone', value: member.phone || '—' },
+                { label: 'Municipality', value: member.municipality || '—' },
+                { label: 'Role', value: capitalize(member.role || 'member') },
+                { label: 'Status', value: `<span class="${statusClass} font-semibold">${statusLabel}</span>`, html: true },
+                { label: 'Email Verified', value: member.email_verified ? 'Yes' : 'No' },
+                { label: 'Wants Emails', value: member.wants_emails ? 'Yes' : 'No' },
+                { label: 'Source', value: capitalize(member.source || 'website') },
+                { label: 'Joined', value: joinDate },
+                { label: 'Last Updated', value: updatedDate },
+            ];
+
+            memberDetailContent.innerHTML = detailFields.map(f => `
+                <div class="flex justify-between items-start gap-space-md pb-space-sm border-b border-border-subtle">
+                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">${f.label}</span>
+                    <span class="font-body-md text-body-md text-on-surface text-right">${f.html ? f.value : escapeHtml(f.value)}</span>
+                </div>
+            `).join('');
+
+            // Action buttons
+            memberDetailActions.innerHTML = `
+                <a href="mailto:${escapeHtml(member.email || '')}" 
+                   class="flex items-center gap-1 px-space-md py-space-sm bg-primary text-on-primary rounded-lg font-label-sm text-label-sm hover:opacity-90 transition-all">
+                    <span class="material-symbols-outlined text-[18px]">mail</span>
+                    Send Email
+                </a>
+                <button onclick="navigator.clipboard.writeText('${escapeHtml(member.email || '')}').then(() => alert('Email copied!'))"
+                    class="flex items-center gap-1 px-space-md py-space-sm border border-border-subtle text-on-surface rounded-lg font-label-sm text-label-sm hover:bg-surface-container-low transition-all">
+                    <span class="material-symbols-outlined text-[18px]">content_copy</span>
+                    Copy Email
+                </button>
+                <button onclick="window._toggleMemberStatus && window._toggleMemberStatus('${member.id}', '${member.status}')"
+                    class="flex items-center gap-1 px-space-md py-space-sm border border-border-subtle text-on-surface rounded-lg font-label-sm text-label-sm hover:bg-surface-container-low transition-all ml-auto">
+                    <span class="material-symbols-outlined text-[18px]">${member.status === 'active' ? 'block' : 'check_circle'}</span>
+                    ${member.status === 'active' ? 'Mark Inactive' : 'Mark Active'}
+                </button>
+            `;
+        }
+
+        function capitalize(str) {
+            if (!str) return '';
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function closeMemberModal() {
+            memberModalOverlay.classList.add('opacity-0', 'pointer-events-none');
+            currentOpenMember = null;
+        }
+
+        // Close modal on overlay click or close button
+        if (memberModalOverlay) {
+            memberModalOverlay.addEventListener('click', function(e) {
+                if (e.target === memberModalOverlay) {
+                    closeMemberModal();
+                }
+            });
+        }
+
+        if (closeMemberModalBtn) {
+            closeMemberModalBtn.addEventListener('click', closeMemberModal);
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && memberModalOverlay && !memberModalOverlay.classList.contains('pointer-events-none')) {
+                closeMemberModal();
+            }
+        });
+
+        // Expose to window for onclick attributes in rendered rows
+        window._openMemberModal = openMemberModal;
+
+        // ────────────── Toggle Member Status ──────────────
+        window._toggleMemberStatus = async function(memberId, currentStatus) {
+            const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+            try {
+                const { error } = await client
+                    .from('members')
+                    .update({ status: newStatus, updated_at: new Date().toISOString() })
+                    .eq('id', memberId);
+
+                if (error) {
+                    console.error('Error updating member status:', error);
+                    alert('Failed to update member status.');
+                    return;
+                }
+
+                closeMemberModal();
+                loadMembers(currentPage);
+                alert(`Member marked as ${newStatus}.`);
+            } catch (err) {
+                console.error('Unexpected error:', err);
+                alert('An error occurred while updating member status.');
+            }
+        };
+
+        // ────────────── CSV Export ──────────────
+        if (exportCsvBtn) {
+            exportCsvBtn.addEventListener('click', async function() {
+                try {
+                    exportCsvBtn.disabled = true;
+                    exportCsvBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[16px]">progress_activity</span> Exporting...';
+
+                    // Fetch all members (for export, we fetch all)
+                    let allMembers = [];
+                    let page = 0;
+                    const batchSize = 1000;
+                    let hasMore = true;
+
+                    while (hasMore) {
+                        const from = page * batchSize;
+                        const to = from + batchSize - 1;
+
+                        const searchTerm = memberSearchInput ? memberSearchInput.value.trim() : '';
+                        const statusFilter = statusFilterSelect ? statusFilterSelect.value : '';
+
+                        let query = client
+                            .from('members')
+                            .select('name,surname,email,phone,municipality,status,role,email_verified,wants_emails,source,created_at,updated_at')
+                            .order('created_at', { ascending: false })
+                            .range(from, to);
+
+                        if (searchTerm) {
+                            query = query.or(`name.ilike.%${searchTerm}%,surname.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%`);
+                        }
+                        if (statusFilter) {
+                            query = query.eq('status', statusFilter);
+                        }
+
+                        const { data, error } = await query;
+                        if (error) throw error;
+                        if (!data || data.length === 0) {
+                            hasMore = false;
+                        } else {
+                            allMembers = allMembers.concat(data);
+                            page++;
+                            if (data.length < batchSize) hasMore = false;
+                        }
+                    }
+
+                    // Build CSV
+                    const headers = ['Name', 'Surname', 'Email', 'Phone', 'Municipality', 'Status', 'Role', 'Email Verified', 'Wants Emails', 'Source', 'Joined', 'Updated'];
+                    const rows = allMembers.map(m => [
+                        csvEscape(m.name || ''),
+                        csvEscape(m.surname || ''),
+                        csvEscape(m.email || ''),
+                        csvEscape(m.phone || ''),
+                        csvEscape(m.municipality || ''),
+                        csvEscape(m.status || ''),
+                        csvEscape(m.role || ''),
+                        m.email_verified ? 'Yes' : 'No',
+                        m.wants_emails ? 'Yes' : 'No',
+                        csvEscape(m.source || ''),
+                        m.created_at ? new Date(m.created_at).toISOString().split('T')[0] : '',
+                        m.updated_at ? new Date(m.updated_at).toISOString().split('T')[0] : '',
+                    ]);
+
+                    const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `asco-members-export-${new Date().toISOString().split('T')[0]}.csv`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                } catch (err) {
+                    console.error('Export error:', err);
+                    alert('Failed to export CSV.');
+                } finally {
+                    exportCsvBtn.disabled = false;
+                    exportCsvBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">download</span> Export CSV';
+                }
+            });
+        }
+
+        function csvEscape(str) {
+            if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+                return '"' + str.replace(/"/g, '""') + '"';
+            }
+            return str;
+        }
+
+        // Load members on page init
+        loadMembers(1);
+    }
    
+    
 if (window.location.pathname === '/CreateBlog.html') {
 
   // Hover effect for file upload areas

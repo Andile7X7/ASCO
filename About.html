@@ -344,44 +344,316 @@
                     </div>
                     <div class="md:col-span-8">
                         <div class="border border-border-subtle rounded-xl overflow-hidden bg-background-main">
-                            <div class="p-space-lg bg-surface-muted border-b border-border-subtle text-center">
+                            <div class="p-space-lg bg-surface-muted border-b border-border-subtle flex flex-col sm:flex-row justify-between items-center gap-space-sm">
                                 <h3 class="font-h3 text-h3 uppercase tracking-wider text-on-surface-variant">
                                     Hierarchical Governance</h3>
+                                <a href="public/Oganogram2.pdf" download class="inline-flex items-center gap-space-xs text-primary font-label-sm text-label-sm hover:underline">
+                                    <span class="material-symbols-outlined text-[16px]">download</span>
+                                    Download PDF
+                                </a>
                             </div>
-                            <div class="p-space-lg flex flex-col gap-space-lg items-center">
-                                <!-- GENCO -->
-                                <div
-                                    class="w-full max-w-sm text-center p-space-md border-2 border-primary rounded-lg bg-primary-container/10">
-                                    <span class="font-label-sm text-label-sm text-primary uppercase block mb-1">Top
-                                        Tier</span>
-                                    <h4 class="font-h3 text-h3 font-bold text-primary">GENCO (General Council)</h4>
-                                    <p class="font-body-md text-body-md mt-2">The highest decision-making body of the
-                                        movement.</p>
-                                </div>
-                                <span class="material-symbols-outlined text-primary">arrow_downward</span>
-                                <!-- EXCO -->
-                                <div
-                                    class="w-full max-w-sm text-center p-space-md border border-outline rounded-lg bg-surface">
-                                    <span
-                                        class="font-label-sm text-label-sm text-on-surface-variant uppercase block mb-1">Executive</span>
-                                    <h4 class="font-h3 text-h3 font-bold">EXCO (Executive Committee)</h4>
-                                    <p class="font-body-md text-body-md mt-2">Responsible for daily operations and
-                                        strategic implementation.</p>
-                                </div>
-                                <span class="material-symbols-outlined text-primary">arrow_downward</span>
-                                <!-- Regional/Ward -->
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md w-full">
-                                    <div class="text-center p-space-md border border-border-subtle rounded-lg">
-                                        <h4 class="font-h3 text-h3 font-bold text-on-surface">Regional Structures</h4>
-                                        <p class="font-body-md text-body-md text-on-surface-variant">Coordinating
-                                            efforts across municipal boundaries.</p>
-                                    </div>
-                                    <div class="text-center p-space-md border border-border-subtle rounded-lg">
-                                        <h4 class="font-h3 text-h3 font-bold text-on-surface">Ward Structures</h4>
-                                        <p class="font-body-md text-body-md text-on-surface-variant">Direct grassroots
-                                            engagement and street-level representation.</p>
-                                    </div>
-                                </div>
+                            <div class="p-space-lg" id="organogram-tree">
+                                <!-- GENCO Root -->
+                                <ul class="organogram-root space-y-0">
+                                    <li class="organogram-node">
+                                        <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                            <span class="material-symbols-outlined text-primary text-[20px] transition-transform duration-200 expand-icon">expand_more</span>
+                                            <div class="p-space-md border-2 border-primary rounded-lg bg-primary-container/10 flex-1">
+                                                <span class="font-label-sm text-label-sm text-primary uppercase block mb-1">Top Tier</span>
+                                                <h4 class="font-h3 text-h3 font-bold text-primary">GENCO (General Council)</h4>
+                                                <p class="font-body-md text-body-md mt-1 text-on-surface-variant">The highest decision-making body of the movement.</p>
+                                            </div>
+                                        </div>
+                                        <ul class="pl-space-xl mt-space-sm space-y-space-xs border-l-2 border-primary/30 ml-2">
+                                            <!-- Chairperson & Secretary -->
+                                            <li>
+                                                <div class="p-space-sm bg-surface-container-low border border-border-subtle rounded-lg">
+                                                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Office</span>
+                                                    <h4 class="font-body-lg text-body-lg font-bold text-on-surface">Chairperson</h4>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="p-space-sm bg-surface-container-low border border-border-subtle rounded-lg">
+                                                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Office</span>
+                                                    <h4 class="font-body-lg text-body-lg font-bold text-on-surface">Secretary</h4>
+                                                </div>
+                                            </li>
+                                            <!-- Portfolio Committees -->
+                                            <li class="organogram-node mt-space-sm">
+                                                <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                    <span class="material-symbols-outlined text-primary text-[20px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                    <div class="p-space-sm bg-surface border border-outline rounded-lg flex-1">
+                                                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Portfolio</span>
+                                                        <h4 class="font-body-lg text-body-lg font-bold text-on-surface">Portfolio Committees</h4>
+                                                    </div>
+                                                </div>
+                                                <ul class="pl-space-xl mt-space-xs space-y-space-xs border-l-2 border-outline/40 ml-2 grid grid-cols-1 sm:grid-cols-2 gap-space-xs">
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">Disability</div></li>
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">Campaign</div></li>
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">Women</div></li>
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">Traditional Leader</div></li>
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">Religious</div></li>
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">Economic Healers</div></li>
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">Taxi Industry</div></li>
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">Youth</div></li>
+                                                </ul>
+                                            </li>
+                                            <!-- Executive Roles -->
+                                            <li class="organogram-node mt-space-sm">
+                                                <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                    <span class="material-symbols-outlined text-primary text-[20px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                    <div class="p-space-sm bg-surface border border-outline rounded-lg flex-1">
+                                                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Executive</span>
+                                                        <h4 class="font-body-lg text-body-lg font-bold text-on-surface">Executive Roles</h4>
+                                                    </div>
+                                                </div>
+                                                <ul class="pl-space-xl mt-space-xs space-y-space-xs border-l-2 border-outline/40 ml-2 grid grid-cols-2 sm:grid-cols-3 gap-space-xs">
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">Deputy Chair</div></li>
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">Deputy Secretary</div></li>
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">DP 1</div></li>
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">DP 2</div></li>
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">Treasurer</div></li>
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">President</div></li>
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">Secretary</div></li>
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">Organizer</div></li>
+                                                    <li><div class="p-space-xs bg-surface-muted rounded text-center font-body-md text-body-md">CLO</div></li>
+                                                </ul>
+                                            </li>
+                                            <!-- Regional Structures -->
+                                            <li class="organogram-node mt-space-sm">
+                                                <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                    <span class="material-symbols-outlined text-primary text-[20px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                    <div class="p-space-sm bg-surface border border-outline rounded-lg flex-1">
+                                                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Regional</span>
+                                                        <h4 class="font-body-lg text-body-lg font-bold text-on-surface">Regional Structures</h4>
+                                                    </div>
+                                                </div>
+                                                <ul class="pl-space-xl mt-space-xs space-y-space-xs border-l-2 border-outline/40 ml-2">
+                                                    <li class="organogram-node">
+                                                        <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                            <span class="material-symbols-outlined text-on-surface-variant text-[18px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                            <div class="p-space-xs bg-surface-container-low border border-border-subtle rounded-lg flex-1">
+                                                                <h4 class="font-body-md text-body-md font-semibold">Sekhukhune Region</h4>
+                                                            </div>
+                                                        </div>
+                                                        <ul class="pl-space-lg mt-space-xs space-y-space-xs border-l-2 border-border-subtle ml-2">
+                                                            <li class="organogram-node">
+                                                                <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                                    <span class="material-symbols-outlined text-on-surface-variant text-[16px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                                    <span class="font-body-md text-body-md">Sub Regions (9)</span>
+                                                                </div>
+                                                                <ul class="pl-space-lg mt-space-xs grid grid-cols-3 gap-space-xs border-l-2 border-border-subtle/50 ml-2">
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 1</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 2</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 3</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 4</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 5</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 6</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 7</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 8</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 9</div></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li class="organogram-node mt-space-xs">
+                                                                <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                                    <span class="material-symbols-outlined text-on-surface-variant text-[16px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                                    <span class="font-body-md text-body-md">Wards (9)</span>
+                                                                </div>
+                                                                <ul class="pl-space-lg mt-space-xs grid grid-cols-3 gap-space-xs border-l-2 border-border-subtle/50 ml-2">
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 1</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 2</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 3</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 4</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 5</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 6</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 7</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 8</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 9</div></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="organogram-node mt-space-sm">
+                                                        <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                            <span class="material-symbols-outlined text-on-surface-variant text-[18px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                            <div class="p-space-xs bg-surface-container-low border border-border-subtle rounded-lg flex-1">
+                                                                <h4 class="font-body-md text-body-md font-semibold">Nkangala Region</h4>
+                                                            </div>
+                                                        </div>
+                                                        <ul class="pl-space-lg mt-space-xs space-y-space-xs border-l-2 border-border-subtle ml-2">
+                                                            <li class="organogram-node">
+                                                                <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                                    <span class="material-symbols-outlined text-on-surface-variant text-[16px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                                    <span class="font-body-md text-body-md">Sub Regions (9)</span>
+                                                                </div>
+                                                                <ul class="pl-space-lg mt-space-xs grid grid-cols-3 gap-space-xs border-l-2 border-border-subtle/50 ml-2">
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 1</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 2</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 3</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 4</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 5</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 6</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 7</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 8</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 9</div></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li class="organogram-node mt-space-xs">
+                                                                <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                                    <span class="material-symbols-outlined text-on-surface-variant text-[16px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                                    <span class="font-body-md text-body-md">Wards (9)</span>
+                                                                </div>
+                                                                <ul class="pl-space-lg mt-space-xs grid grid-cols-3 gap-space-xs border-l-2 border-border-subtle/50 ml-2">
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 1</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 2</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 3</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 4</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 5</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 6</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 7</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 8</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 9</div></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="organogram-node mt-space-sm">
+                                                        <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                            <span class="material-symbols-outlined text-on-surface-variant text-[18px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                            <div class="p-space-xs bg-surface-container-low border border-border-subtle rounded-lg flex-1">
+                                                                <h4 class="font-body-md text-body-md font-semibold">Elias Motswaledi Region</h4>
+                                                            </div>
+                                                        </div>
+                                                        <ul class="pl-space-lg mt-space-xs space-y-space-xs border-l-2 border-border-subtle ml-2">
+                                                            <li class="organogram-node">
+                                                                <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                                    <span class="material-symbols-outlined text-on-surface-variant text-[16px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                                    <span class="font-body-md text-body-md">Sub Regions (9)</span>
+                                                                </div>
+                                                                <ul class="pl-space-lg mt-space-xs grid grid-cols-3 gap-space-xs border-l-2 border-border-subtle/50 ml-2">
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 1</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 2</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 3</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 4</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 5</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 6</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 7</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 8</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 9</div></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li class="organogram-node mt-space-xs">
+                                                                <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                                    <span class="material-symbols-outlined text-on-surface-variant text-[16px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                                    <span class="font-body-md text-body-md">Wards (9)</span>
+                                                                </div>
+                                                                <ul class="pl-space-lg mt-space-xs grid grid-cols-3 gap-space-xs border-l-2 border-border-subtle/50 ml-2">
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 1</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 2</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 3</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 4</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 5</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 6</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 7</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 8</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 9</div></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="organogram-node mt-space-sm">
+                                                        <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                            <span class="material-symbols-outlined text-on-surface-variant text-[18px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                            <div class="p-space-xs bg-surface-container-low border border-border-subtle rounded-lg flex-1">
+                                                                <h4 class="font-body-md text-body-md font-semibold">JS Moroka Region</h4>
+                                                            </div>
+                                                        </div>
+                                                        <ul class="pl-space-lg mt-space-xs space-y-space-xs border-l-2 border-border-subtle ml-2">
+                                                            <li class="organogram-node">
+                                                                <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                                    <span class="material-symbols-outlined text-on-surface-variant text-[16px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                                    <span class="font-body-md text-body-md">Sub Regions (9)</span>
+                                                                </div>
+                                                                <ul class="pl-space-lg mt-space-xs grid grid-cols-3 gap-space-xs border-l-2 border-border-subtle/50 ml-2">
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 1</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 2</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 3</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 4</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 5</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 6</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 7</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 8</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 9</div></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li class="organogram-node mt-space-xs">
+                                                                <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                                    <span class="material-symbols-outlined text-on-surface-variant text-[16px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                                    <span class="font-body-md text-body-md">Wards (9)</span>
+                                                                </div>
+                                                                <ul class="pl-space-lg mt-space-xs grid grid-cols-3 gap-space-xs border-l-2 border-border-subtle/50 ml-2">
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 1</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 2</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 3</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 4</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 5</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 6</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 7</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 8</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 9</div></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="organogram-node mt-space-sm">
+                                                        <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                            <span class="material-symbols-outlined text-on-surface-variant text-[18px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                            <div class="p-space-xs bg-surface-container-low border border-border-subtle rounded-lg flex-1">
+                                                                <h4 class="font-body-md text-body-md font-semibold">Thembisile Hani Region</h4>
+                                                            </div>
+                                                        </div>
+                                                        <ul class="pl-space-lg mt-space-xs space-y-space-xs border-l-2 border-border-subtle ml-2">
+                                                            <li class="organogram-node">
+                                                                <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                                    <span class="material-symbols-outlined text-on-surface-variant text-[16px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                                    <span class="font-body-md text-body-md">Sub Regions (9)</span>
+                                                                </div>
+                                                                <ul class="pl-space-lg mt-space-xs grid grid-cols-3 gap-space-xs border-l-2 border-border-subtle/50 ml-2">
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 1</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 2</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 3</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 4</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 5</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 6</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 7</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 8</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Sub 9</div></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li class="organogram-node mt-space-xs">
+                                                                <div class="flex items-center gap-space-sm cursor-pointer select-none" onclick="toggleNode(this)">
+                                                                    <span class="material-symbols-outlined text-on-surface-variant text-[16px] transition-transform duration-200 expand-icon">expand_more</span>
+                                                                    <span class="font-body-md text-body-md">Wards (9)</span>
+                                                                </div>
+                                                                <ul class="pl-space-lg mt-space-xs grid grid-cols-3 gap-space-xs border-l-2 border-border-subtle/50 ml-2">
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 1</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 2</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 3</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 4</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 5</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 6</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 7</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 8</div></li>
+                                                                    <li><div class="p-1 bg-surface-muted rounded text-center font-body-md text-body-md text-xs">Ward 9</div></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -490,6 +762,36 @@
          document.getElementById('mjoin5').addEventListener('click', function(){
             window.location.href = 'Contact.html'
         })
+
+        // ────────────── Organogram Tree Toggle ──────────────
+        function toggleNode(clickedEl) {
+            const nodeLi = clickedEl.closest('.organogram-node');
+            if (!nodeLi) return;
+            const childUl = nodeLi.querySelector(':scope > ul');
+            if (!childUl) return;
+            const expandIcon = clickedEl.querySelector('.expand-icon');
+
+            if (childUl.classList.contains('hidden')) {
+                childUl.classList.remove('hidden');
+                if (expandIcon) expandIcon.textContent = 'expand_more';
+            } else {
+                childUl.classList.add('hidden');
+                if (expandIcon) expandIcon.textContent = 'chevron_right';
+            }
+        }
+
+        // Initialize: collapse all deeper levels on load
+        document.querySelectorAll('#organogram-tree .organogram-node > ul').forEach(ul => {
+            ul.classList.add('hidden');
+        });
+        // But keep GENCO's immediate children visible (first-level expand)
+        const rootUl = document.querySelector('#organogram-tree > .organogram-root > .organogram-node > ul');
+        if (rootUl) {
+            rootUl.classList.remove('hidden');
+            // Update GENCO icon
+            const gencoIcon = document.querySelector('#organogram-tree > .organogram-root > .organogram-node > div .expand-icon');
+            if (gencoIcon) gencoIcon.textContent = 'expand_more';
+        }
     </script>
 </body>
 

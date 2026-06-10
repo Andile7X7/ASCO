@@ -242,6 +242,89 @@
                     </div>
                 </div>
             </div>
+            <!-- Registered Members Section -->
+            <div class="bg-background-main border border-border-subtle rounded-xl mb-space-xl">
+                <div class="px-space-lg py-space-md border-b border-border-subtle flex flex-col sm:flex-row justify-between items-start sm:items-center gap-space-sm">
+                    <h3 class="font-h3 text-h3 text-on-surface">Registered Members</h3>
+                    <div class="flex items-center gap-space-sm flex-wrap">
+                        <button id="export-csv-btn" class="text-primary font-label-sm text-label-sm hover:underline flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[16px]">download</span>
+                            Export CSV
+                        </button>
+                    </div>
+                </div>
+                <!-- Search & Filter Bar -->
+                <div class="px-space-lg py-space-md flex flex-col sm:flex-row gap-space-sm border-b border-border-subtle">
+                    <div class="relative flex-1">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+                        <input id="member-search" type="text" placeholder="Search by name or email..." 
+                            class="w-full pl-10 pr-4 py-2 rounded-lg border border-border-subtle bg-surface-container-low text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary transition-colors" />
+                    </div>
+                    <select id="status-filter" class="px-4 py-2 rounded-lg border border-border-subtle bg-surface-container-low text-body-md text-on-surface focus:outline-none focus:border-primary transition-colors">
+                        <option value="">All Statuses</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="unconfirmed">Unconfirmed</option>
+                    </select>
+                </div>
+                <!-- Members Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-surface-container-low text-left">
+                                <th class="px-space-lg py-space-sm font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider whitespace-nowrap">Name</th>
+                                <th class="px-space-lg py-space-sm font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider whitespace-nowrap hidden md:table-cell">Email</th>
+                                <th class="px-space-lg py-space-sm font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider whitespace-nowrap hidden lg:table-cell">Phone</th>
+                                <th class="px-space-lg py-space-sm font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider whitespace-nowrap hidden lg:table-cell">Municipality</th>
+                                <th class="px-space-lg py-space-sm font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider whitespace-nowrap">Status</th>
+                                <th class="px-space-lg py-space-sm font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider whitespace-nowrap hidden sm:table-cell">Verified</th>
+                                <th class="px-space-lg py-space-sm font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider whitespace-nowrap hidden xl:table-cell">Joined</th>
+                            </tr>
+                        </thead>
+                        <tbody id="members-table-body" class="divide-y divide-border-subtle">
+                            <!-- Loading skeleton -->
+                            <tr>
+                                <td colspan="7" class="px-space-lg py-space-xl text-center">
+                                    <div class="flex flex-col items-center gap-space-sm">
+                                        <span class="material-symbols-outlined animate-spin text-primary text-[32px]">progress_activity</span>
+                                        <span class="font-body-md text-body-md text-on-surface-variant">Loading members...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination Bar -->
+                <div class="px-space-lg py-space-md border-t border-border-subtle flex flex-col sm:flex-row justify-between items-center gap-space-sm" id="pagination-bar">
+                    <span class="font-label-sm text-label-sm text-on-surface-variant" id="pagination-info">Showing 0 of 0 members</span>
+                    <div class="flex items-center gap-space-xs">
+                        <button id="prev-page-btn" class="px-3 py-1.5 rounded-lg border border-border-subtle text-on-surface-variant hover:bg-surface-container-low disabled:opacity-40 disabled:cursor-not-allowed transition-colors font-label-sm text-label-sm" disabled>
+                            <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+                        </button>
+                        <span class="px-3 py-1.5 font-label-sm text-label-sm text-on-surface" id="page-indicator">Page 1</span>
+                        <button id="next-page-btn" class="px-3 py-1.5 rounded-lg border border-border-subtle text-on-surface-variant hover:bg-surface-container-low disabled:opacity-40 disabled:cursor-not-allowed transition-colors font-label-sm text-label-sm">
+                            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Member Detail Modal -->
+            <div id="member-modal-overlay" class="fixed inset-0 bg-on-background/50 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200">
+                <div class="bg-surface rounded-xl shadow-2xl max-w-lg w-full mx-space-lg max-h-[90vh] overflow-y-auto" id="member-modal-card">
+                    <div class="px-space-lg py-space-md border-b border-border-subtle flex justify-between items-center">
+                        <h3 class="font-h3 text-h3 text-on-surface">Member Details</h3>
+                        <button id="close-member-modal" class="text-on-surface-variant hover:text-on-surface transition-colors">
+                            <span class="material-symbols-outlined text-[24px]">close</span>
+                        </button>
+                    </div>
+                    <div class="px-space-lg py-space-lg space-y-space-md" id="member-detail-content">
+                        <!-- Populated by JS -->
+                    </div>
+                    <div class="px-space-lg py-space-md border-t border-border-subtle flex gap-space-sm flex-wrap" id="member-detail-actions">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
             <!-- Activity Log Section -->
             <div class="bg-background-main border border-border-subtle rounded-xl">
                 <div class="px-space-lg py-space-md border-b border-border-subtle flex justify-between items-center">
