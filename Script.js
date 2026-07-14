@@ -2451,6 +2451,8 @@ if (window.location.pathname.includes('Campaigns.html')) {
     });
   }
 
+ 
+
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -2558,7 +2560,6 @@ if (window.location.pathname.includes('Campaigns.html')) {
       btnSpinner.classList.add('hidden');
     }
   });
-})();
 
 // ============================================================
 // Toast notification helper
@@ -2751,4 +2752,5 @@ window.loadMemberDetails = async function(memberId) {
       </div>
     `;
   }
-};
+  };
+}
