@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Member Details - ASCO Admin</title>
+    <link rel="icon" href="Assets/ASCO_logo.jpeg" type="image/jpeg" />
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script id="tailwind-config">
+        tailwind.config = { darkMode: "class", theme: { extend: { colors: { primary: "#00450d", "on-primary": "#ffffff", surface: "#fcf9f8", "surface-container": "#f0edec", "on-surface": "#1c1b1b", "on-surface-variant": "#41493e", "border-subtle": "#E0E0E0", "error": "#ba1a1a", "error-container": "#ffdad6", "on-error-container": "#93000a" }, fontFamily: { "h1": ["Hanken Grotesk"], "h2": ["Hanken Grotesk"], "h3": ["Hanken Grotesk"], "body-md": ["Hanken Grotesk"] } } } }
+    </script>
+    <style>body { font-family: 'Hanken Grotesk', sans-serif; }</style>
+</head>
+<body class="bg-surface text-on-surface">
+    <header class="w-full bg-white border-b border-border-subtle h-[56px] flex items-center px-6 sticky top-0 z-10 justify-between">
+        <div class="flex items-center gap-4">
+            <a href="Admin.html" class="flex items-center text-primary hover:opacity-80">
+                <span class="material-symbols-outlined">arrow_back</span>
+                <span class="ml-1 font-semibold">Back to Admin</span>
+            </a>
+            <h1 class="font-h2 text-xl font-bold ml-4 border-l pl-4 border-border-subtle">Member Profile</h1>
+        </div>
+        <div id="admin-user-info" class="text-sm text-on-surface-variant"></div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6 space-y-6" id="member-container">
+        <div class="text-center py-10" id="loading-state">
+            <span class="material-symbols-outlined animate-spin text-4xl text-primary">progress_activity</span>
+            <p class="mt-2 text-on-surface-variant">Loading member details...</p>
+        </div>
+
+        <div id="member-content" class="hidden space-y-6">
+            <!-- Basic Info -->
+            <div class="bg-white border border-border-subtle rounded-xl p-6 shadow-sm">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="font-h3 text-lg font-bold text-primary flex items-center gap-2">
+                        <span class="material-symbols-outlined">person</span> Personal Information
+                    </h2>
+                    <span id="member-status" class="px-3 py-1 rounded-full text-sm font-semibold capitalize"></span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><p class="text-sm text-on-surface-variant">Name</p><p id="member-name" class="font-semibold"></p></div>
+                    <div>
+                        <p class="text-sm text-on-surface-variant">Email</p>
+                        <p class="font-semibold flex items-center gap-1">
+                            <span id="member-email"></span>
+                            <span id="email-verified-icon" class="material-symbols-outlined text-sm hidden text-primary" title="Verified">verified</span>
+                        </p>
+                    </div>
+                    <div><p class="text-sm text-on-surface-variant">Phone</p><p id="member-phone" class="font-semibold"></p></div>
+                    <div><p class="text-sm text-on-surface-variant">Gender</p><p id="member-gender" class="font-semibold"></p></div>
+                    <div><p class="text-sm text-on-surface-variant">Language</p><p id="member-language" class="font-semibold"></p></div>
+                    <div><p class="text-sm text-on-surface-variant">Joined</p><p id="member-joined" class="font-semibold"></p></div>
+                </div>
+            </div>
+
+            <!-- Sensitive Info -->
+            <div class="bg-error-container/20 border border-error/20 rounded-xl p-6 shadow-sm relative overflow-hidden">
+                <div class="absolute right-0 top-0 opacity-5 pointer-events-none">
+                    <span class="material-symbols-outlined text-[120px]">lock</span>
+                </div>
+                <h2 class="font-h3 text-lg font-bold text-on-error-container flex items-center gap-2 mb-4">
+                    <span class="material-symbols-outlined">shield_person</span> Sensitive Information
+                </h2>
+                
+                <div class="bg-white rounded-lg p-4 border border-border-subtle flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-on-surface-variant">SA ID Number</p>
+                        <p id="id-number-display" class="font-mono text-lg font-bold tracking-widest text-on-surface">•••••••••••••</p>
+                    </div>
+                    <button id="reveal-id-btn" class="flex items-center gap-1 bg-surface-container hover:bg-border-subtle px-4 py-2 rounded transition-colors text-on-surface">
+                        <span class="material-symbols-outlined text-[18px]">visibility</span>
+                        <span id="reveal-text">Reveal</span>
+                    </button>
+                </div>
+                <p class="text-sm text-on-error-container mt-3 flex items-start gap-1">
+                    <span class="material-symbols-outlined text-[16px]">info</span>
+                    Revealing the ID number is restricted to authorized admins and will be permanently logged in the audit trail.
+                </p>
+            </div>
+
+            <!-- Affiliation -->
+            <div class="bg-white border border-border-subtle rounded-xl p-6 shadow-sm">
+                <h2 class="font-h3 text-lg font-bold text-primary flex items-center gap-2 mb-4">
+                    <span class="material-symbols-outlined">location_on</span> Location & Affiliation
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><p class="text-sm text-on-surface-variant">Municipality</p><p id="member-municipality" class="font-semibold"></p></div>
+                    <div><p class="text-sm text-on-surface-variant">Ward</p><p id="member-ward" class="font-semibold"></p></div>
+                    <div><p class="text-sm text-on-surface-variant">Branch</p><p id="member-branch" class="font-semibold"></p></div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-border-subtle grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-on-surface-variant">Residential Address</p>
+                        <p id="member-residential" class="mt-1 whitespace-pre-wrap"></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-on-surface-variant">Postal Address</p>
+                        <p id="member-postal" class="mt-1 whitespace-pre-wrap"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Log -->
+            <div class="bg-white border border-border-subtle rounded-xl p-6 shadow-sm">
+                <h2 class="font-h3 text-lg font-bold text-primary flex items-center gap-2 mb-4">
+                    <span class="material-symbols-outlined">history</span> Activity Log
+                </h2>
+                <div id="activity-log-container" class="space-y-4">
+                    <!-- Logs injected via JS -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2"></div>
+
+    <script src="Script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const memberId = urlParams.get('id');
+            if (memberId && typeof loadMemberDetails === 'function') {
+                loadMemberDetails(memberId);
+            } else {
+                document.getElementById('loading-state').innerHTML = '<p class="text-error">Member ID not provided.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

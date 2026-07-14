@@ -290,61 +290,136 @@
                             an active participant in the ASCO movement.</p>
                     </div>
                     <form id="contactForm" class="space-y-space-lg">
+                        <!-- Personal Information -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
                             <div class="flex flex-col gap-space-xs">
-                                <label class="font-label-sm text-label-sm text-on-surface-variant" for="full-name">Full
-                                    Name</label>
+                                <label class="font-label-sm text-label-sm text-on-surface-variant" for="first-name">First Name*</label>
                                 <input
                                     class="border border-outline-variant rounded-lg px-space-md py-space-sm font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none"
-                                    id="full-name" placeholder="Enter your full name" type="text" />
+                                    id="first-name" placeholder="First Name" type="text" required />
                             </div>
                             <div class="flex flex-col gap-space-xs">
-                                <label class="font-label-sm text-label-sm text-on-surface-variant"
-                                    for="email">Email</label>
+                                <label class="font-label-sm text-label-sm text-on-surface-variant" for="last-name">Last Name*</label>
                                 <input
                                     class="border border-outline-variant rounded-lg px-space-md py-space-sm font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none"
-                                    id="email" placeholder="email@example.com" type="email" />
+                                    id="last-name" placeholder="Last Name" type="text" required />
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
                             <div class="flex flex-col gap-space-xs">
-                                <label class="font-label-sm text-label-sm text-on-surface-variant"
-                                    for="phone">Phone</label>
+                                <label class="font-label-sm text-label-sm text-on-surface-variant" for="email">Email*</label>
                                 <input
                                     class="border border-outline-variant rounded-lg px-space-md py-space-sm font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none"
-                                    id="phone" placeholder="+27 00 000 0000" type="tel" />
+                                    id="email" placeholder="email@example.com" type="email" required />
                             </div>
                             <div class="flex flex-col gap-space-xs">
-                                <label class="font-label-sm text-label-sm text-on-surface-variant"
-                                    for="province">Municiplaity</label>
+                                <label class="font-label-sm text-label-sm text-on-surface-variant" for="phone">Phone*</label>
+                                <input
+                                    class="border border-outline-variant rounded-lg px-space-md py-space-sm font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none"
+                                    id="phone" placeholder="+27 00 000 0000" type="tel" required />
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+                            <div class="flex flex-col gap-space-xs relative">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant" for="id-number">🔒 SA ID Number*</label>
+                                <div class="relative flex items-center">
+                                    <input
+                                        class="w-full border border-outline-variant rounded-lg px-space-md py-space-sm font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none pr-10"
+                                        id="id-number" placeholder="13-digit ID" type="text" maxlength="13" inputmode="numeric" required />
+                                    <span id="id-feedback" class="absolute right-3 material-symbols-outlined text-[20px] hidden">check_circle</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-space-xs">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant" for="gender">Gender</label>
                                 <select
                                     class="border border-outline-variant rounded-lg px-space-md py-space-sm font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none"
-                                    id="Municipality">
-                                    <option value="">Select Municiplaity</option>
-                                    <option value="Elias Motswaledi">Elias Motswaledi</option>
-                                    <option value="Thembisile Hani">Thembisile Hani</option>
-                                    <option value="JS Moroka">JS Moroka</option>
-                                    
+                                    id="gender">
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                    <option value="Prefer not to say">Prefer not to say</option>
                                 </select>
                             </div>
                         </div>
-                        <div
-                            class="flex items-center gap-space-md p-space-md bg-surface-container-low rounded-lg border border-border-subtle">
-                            <input class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary"
-                                id="join-checkbox" type="checkbox" />
-                            <label class="font-body-md text-body-md text-on-surface" for="join-checkbox">I would like to
-                                join ASCO and receive movement updates.</label>
+
+                        <!-- Location & Affiliation -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+                            <div class="flex flex-col gap-space-xs">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant" for="municipality">Municipality*</label>
+                                <select
+                                    class="border border-outline-variant rounded-lg px-space-md py-space-sm font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none"
+                                    id="municipality" required>
+                                    <option value="">Select Municipality</option>
+                                    <option value="Dr JS Moroka">Dr JS Moroka</option>
+                                    <option value="Thembisile Hani">Thembisile Hani</option>
+                                    <option value="Victor Kanye">Victor Kanye</option>
+                                    <option value="Emalahleni">Emalahleni</option>
+                                    <option value="Steve Tshwete">Steve Tshwete</option>
+                                    <option value="Emakhazeni">Emakhazeni</option>
+                                    <option value="Elias Motswaledi">Elias Motswaledi</option>
+                                    <option value="Ephraim Mogale">Ephraim Mogale</option>
+                                    <option value="Makhuduthamaga">Makhuduthamaga</option>
+                                    <option value="Fetakgomo Tubatse">Fetakgomo Tubatse</option>
+                                </select>
+                            </div>
+                            <div class="flex flex-col gap-space-xs">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant" for="ward">Ward*</label>
+                                <input
+                                    class="border border-outline-variant rounded-lg px-space-md py-space-sm font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none"
+                                    id="ward" placeholder="Enter Ward" type="text" required />
+                            </div>
                         </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+                            <div class="flex flex-col gap-space-xs">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant" for="branch">Branch</label>
+                                <input
+                                    class="border border-outline-variant rounded-lg px-space-md py-space-sm font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none"
+                                    id="branch" placeholder="Enter Branch" type="text" />
+                            </div>
+                            <div class="flex flex-col gap-space-xs">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant" for="language">Language</label>
+                                <input
+                                    class="border border-outline-variant rounded-lg px-space-md py-space-sm font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none"
+                                    id="language" placeholder="Enter Language" type="text" />
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="flex flex-col gap-space-xs">
+                            <label class="font-label-sm text-label-sm text-on-surface-variant" for="residential-address">Residential Address</label>
+                            <textarea
+                                class="border border-outline-variant rounded-lg px-space-md py-space-sm font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none min-h-[80px]"
+                                id="residential-address" placeholder="Residential Address"></textarea>
+                        </div>
+                        <div class="flex flex-col gap-space-xs">
+                            <label class="font-label-sm text-label-sm text-on-surface-variant" for="postal-address">Postal Address</label>
+                            <textarea
+                                class="border border-outline-variant rounded-lg px-space-md py-space-sm font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none min-h-[80px]"
+                                id="postal-address" placeholder="Postal Address"></textarea>
+                        </div>
+
+                        <!-- Consent -->
+                        <div class="mb-space-md border-b border-border-subtle pb-space-sm pt-space-md">
+                            <h3 class="font-h3 text-h3 text-primary">Consent</h3>
+                        </div>
+                        <div class="flex flex-col gap-space-md p-space-md bg-surface-container-low rounded-lg border border-border-subtle">
+                            <div class="flex items-start gap-space-md">
+                                <input class="w-5 h-5 mt-0.5 text-primary border-outline-variant rounded focus:ring-primary" id="join-checkbox" type="checkbox" />
+                                <label class="font-body-md text-body-md text-on-surface" for="join-checkbox">I would like to join ASCO and receive movement updates.</label>
+                            </div>
+                            <div class="flex items-start gap-space-md">
+                                <input class="w-5 h-5 mt-0.5 text-primary border-outline-variant rounded focus:ring-primary" id="popia-consent" type="checkbox" required />
+                                <label class="font-body-md text-body-md text-on-surface" for="popia-consent">I consent to ASCO securely storing my ID number for membership verification purposes as required by POPIA.</label>
+                            </div>
+                        </div>
+                        
                         <div class="flex gap-space-md pt-space-md border-t border-border-subtle">
-                            <button
-                                class="bg-primary text-on-primary px-space-xl py-space-sm rounded-lg font-h3 text-h3 hover:bg-opacity-90 transition-all flex-1 md:flex-none flex items-center justify-center gap-2"
-                                type="submit">
+                            <button class="bg-primary text-on-primary px-space-xl py-space-sm rounded-lg font-h3 text-h3 hover:bg-opacity-90 transition-all flex-1 md:flex-none flex items-center justify-center gap-2" type="submit">
                                 <span class="btn-text">Submit Application</span>
                                 <span class="btn-spinner material-symbols-outlined hidden animate-spin text-[20px]">progress_activity</span>
                             </button>
-                            <button
-                                class="bg-white border border-primary text-primary px-space-xl py-space-sm rounded-lg font-h3 text-h3 hover:bg-surface-container transition-all flex-1 md:flex-none"
-                                type="reset">
+                            <button class="bg-white border border-primary text-primary px-space-xl py-space-sm rounded-lg font-h3 text-h3 hover:bg-surface-container transition-all flex-1 md:flex-none" type="reset">
                                 Clear Form
                             </button>
                         </div>

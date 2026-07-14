@@ -489,7 +489,7 @@ if (window.location.pathname === '/Login.html') {
                     : '<span class="material-symbols-outlined text-on-surface-variant text-[18px]" title="Not Verified">cancel</span>';
 
                 return `
-                <tr class="hover:bg-surface-container-low transition-colors cursor-pointer" onclick="window._openMemberModal && window._openMemberModal('${member.id}')" data-member-id="${member.id}">
+                <tr class="hover:bg-surface-container-low transition-colors cursor-pointer" onclick="window.location.href='MemberDetails.html?id=${member.id}'" data-member-id="${member.id}">
                     <td class="px-space-lg py-space-sm whitespace-nowrap">
                         <span class="font-body-md text-body-md font-semibold text-on-surface">${escapeHtml(fullName)}</span>
                     </td>
@@ -2400,93 +2400,96 @@ if (window.location.pathname.includes('Campaigns.html')) {
     // Can be expanded with a date picker later
   }
 
-  // ── Pagination ─────────────────────────────────────────────────────────────
-  function setupPagination() {
-    const allBtns = document.querySelectorAll('button');
-    let prevBtn = null;
-    let nextBtn = null;
-    allBtns.forEach(btn => {
-      const icon = btn.querySelector('.material-symbols-outlined');
-      if (icon) {
-        if (icon.textContent.trim() === 'chevron_left') prevBtn = btn;
-        if (icon.textContent.trim() === 'chevron_right') nextBtn = btn;
-      }
-    });
-
-    if (prevBtn) {
-      prevBtn.addEventListener('click', () => {
-        if (currentPage > 1) {
-          currentPage--;
-          loadCampaigns();
-        }
-      });
-    }
-
-    if (nextBtn) {
-      nextBtn.addEventListener('click', () => {
-        if (currentPage * pageSize < totalCampaigns) {
-          currentPage++;
-          loadCampaigns();
-        }
-      });
-    }
-  }
-
-  function updatePagination() {
-    const showingText = document.querySelector('.border-t.border-border-subtle span');
-    if (showingText) {
-      const start = (currentPage - 1) * pageSize + 1;
-      const end = Math.min(currentPage * pageSize, totalCampaigns);
-      showingText.textContent = `Showing ${start}-${end} of ${totalCampaigns} campaigns`;
-    }
-
-    // Update page buttons
-    const allBtns = document.querySelectorAll('button');
-    let prevBtn = null;
-    allBtns.forEach(btn => {
-      const icon = btn.querySelector('.material-symbols-outlined');
-      if (icon && icon.textContent.trim() === 'chevron_left') prevBtn = btn;
-    });
-    if (prevBtn) prevBtn.disabled = currentPage === 1;
-  }
-}
-if(document.getElementById('GoToCreateCampaign')){
-  document.getElementById('GoToCreateCampaign').addEventListener('click', function() {
-    window.location.href = 'CreateCampaign.html';
-  });
-}
-
-// ============================================================
-// Contact Form — Join the Movement
-// ============================================================
-(function handleContactForm() {
-  // Only run if the contact form exists on this page
-  const form = document.querySelector('#contactForm');
-  if (!form) return;
-
   const submitBtn = form.querySelector('button[type="submit"]');
   const btnText = submitBtn.querySelector('.btn-text');
   const btnSpinner = submitBtn.querySelector('.btn-spinner');
+
+  const idInput = document.getElementById('id-number');
+  const idFeedback = document.getElementById('id-feedback');
+
+  function luhnCheck(idNumber) {
+    let sum = 0;
+    let isEven = false;
+    for (let i = idNumber.length - 1; i >= 0; i--) {
+      let digit = parseInt(idNumber.charAt(i), 10);
+      if (isEven) {
+        digit *= 2;
+        if (digit > 9) digit -= 9;
+      }
+      sum += digit;
+      isEven = !isEven;
+    }
+    return sum % 10 === 0;
+  }
+
+  function validateSAID(id) {
+    if (!/^\d{13}$/.test(id)) return false;
+    // Extract and validate date of birth (YYMMDD)
+    const mm = parseInt(id.substring(2, 4), 10);
+    const dd = parseInt(id.substring(4, 6), 10);
+    if (mm < 1 || mm > 12) return false;
+    if (dd < 1 || dd > 31) return false;
+    return luhnCheck(id);
+  }
+
+  if (idInput && idFeedback) {
+    idInput.addEventListener('input', (e) => {
+      const val = e.target.value.replace(/\D/g, '').slice(0, 13);
+      e.target.value = val;
+      if (val.length === 13) {
+        idFeedback.classList.remove('hidden');
+        if (validateSAID(val)) {
+          idFeedback.textContent = 'check_circle';
+          idFeedback.className = 'absolute right-3 material-symbols-outlined text-[20px] text-primary';
+        } else {
+          idFeedback.textContent = 'cancel';
+          idFeedback.className = 'absolute right-3 material-symbols-outlined text-[20px] text-error';
+        }
+      } else {
+        idFeedback.classList.add('hidden');
+      }
+    });
+  }
 
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
     // Gather values
-    const fullName = document.getElementById('full-name')?.value.trim();
+    const firstName = document.getElementById('first-name')?.value.trim();
+    const lastName = document.getElementById('last-name')?.value.trim();
     const email     = document.getElementById('email')?.value.trim();
     const phone     = document.getElementById('phone')?.value.trim();
-    const municipality = document.getElementById('Municipality')?.value;
+    const idNumber  = document.getElementById('id-number')?.value.trim();
+    const gender    = document.getElementById('gender')?.value;
+    const municipality = document.getElementById('municipality')?.value;
+    const ward      = document.getElementById('ward')?.value.trim();
+    const branch    = document.getElementById('branch')?.value.trim();
+    const language  = document.getElementById('language')?.value.trim();
+    const residentialAddress = document.getElementById('residential-address')?.value.trim();
+    const postalAddress = document.getElementById('postal-address')?.value.trim();
     const wantsUpdate  = document.getElementById('join-checkbox')?.checked;
+    const popiaConsent = document.getElementById('popia-consent')?.checked;
 
     // Validate required
-    if (!fullName) return showToast('Please enter your full name.', 'error');
+    if (!firstName) return showToast('Please enter your first name.', 'error');
+    if (!lastName) return showToast('Please enter your last name.', 'error');
     if (!email)    return showToast('Please enter your email address.', 'error');
     if (!phone)    return showToast('Please enter your phone number.', 'error');
+    if (!idNumber) return showToast('Please enter your ID number.', 'error');
     if (!municipality) return showToast('Please select your municipality.', 'error');
+    if (!ward) return showToast('Please enter your ward.', 'error');
 
     // Basic email validation
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return showToast('Please enter a valid email address.', 'error');
+    }
+
+    if (!validateSAID(idNumber)) {
+      return showToast('Please enter a valid 13-digit South African ID number.', 'error');
+    }
+
+    if (!popiaConsent) {
+      return showToast('You must consent to POPIA to submit your ID number.', 'error');
     }
 
     // Disable button & show spinner
@@ -2495,82 +2498,56 @@ if(document.getElementById('GoToCreateCampaign')){
     btnSpinner.classList.remove('hidden');
 
     try {
-      // 1) Save member data to database via a Supabase Edge Function
+      // Send member data to Supabase Edge Function
       const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmZG96emllenNleXdhdXVxZGRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NTc2NjMsImV4cCI6MjA5NTAzMzY2M30.on3phI2woSvl7JU1LcuP6yze5FJCkpygGgfiOy6jAkI';
 
-      // Split "John Doe" into name="John" and surname="Doe"
-      const nameParts = fullName.split(' ');
-      const memberName = nameParts[0] || '';
-      const memberSurname = nameParts.slice(1).join(' ') || '';
-
       const memberPayload = {
-        name: memberName,
-        surname: memberSurname,
+        firstName,
+        lastName,
         email: email.toLowerCase(),
-        phone: phone,
-        municipality: municipality,
-        wants_emails: wantsUpdate,
-        status: 'unconfirmed',
-        email_verified: false,
-        source: 'website',
+        phone,
+        idNumber,
+        gender,
+        municipality,
+        ward,
+        branch,
+        language,
+        residentialAddress,
+        postalAddress,
+        wantsEmails: wantsUpdate
       };
 
       const insertRes = await fetch(
-        'https://sfdozziezseywauuqddk.supabase.co/rest/v1/members',
+        'https://sfdozziezseywauuqddk.supabase.co/functions/v1/register-member',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'apikey': SUPABASE_ANON_KEY,
             'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-            'Prefer': 'return=minimal',
           },
           body: JSON.stringify(memberPayload),
         }
       );
 
+      const insertData = await insertRes.json().catch(() => ({}));
+
       if (!insertRes.ok) {
-        // If status 409 (duplicate email), that's OK — silently proceed to send verification
-        if (insertRes.status !== 409) {
-          const errBody = await insertRes.text();
-          console.error('[ContactForm] Insert error:', errBody);
-          throw new Error('Failed to save member data. Please try again later.');
+        if (insertRes.status === 409 && insertData.error?.includes('ID number')) {
+           return showToast('This ID number is already registered.', 'error');
+        } else if (insertRes.status === 409) {
+           // handled silently in edge function probably, but if it returns 409 for something else
+        } else {
+           throw new Error(insertData.error || 'Failed to save member data. Please try again later.');
         }
       }
 
-      // 2) Send verification email
-      const verifyRes = await fetch(
-        'https://sfdozziezseywauuqddk.supabase.co/functions/v1/send-verification',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify({
-            email: email.toLowerCase(),
-            name: fullName,
-          }),
-        }
-      );
-
-      const verifyData = await verifyRes.json();
-
-      if (!verifyRes.ok || !verifyData.success) {
-        console.error('[ContactForm] Verification send error:', verifyData.error);
-        showToast(
-          'Your application has been received, but the verification email failed to send. Please contact us.',
-          'error'
-        );
-        return;
-      }
-
-      // 3) Success
+      // Success
       showToast(
         'Application submitted! Please check your email to verify your address.',
         'success'
       );
       form.reset();
+      if (idFeedback) idFeedback.classList.add('hidden');
 
     } catch (err) {
       console.error('[ContactForm] Error:', err);
@@ -2622,3 +2599,156 @@ function showToast(message, type) {
     if (toast.parentNode) toast.remove();
   }, 8000);
 }
+
+// ============================================================
+// Member Details View (Admin)
+// ============================================================
+window.loadMemberDetails = async function(memberId) {
+  const container = document.getElementById('member-container');
+  const loading = document.getElementById('loading-state');
+  const content = document.getElementById('member-content');
+  if (!container || !loading || !content) return;
+
+  // Initialize Supabase client
+  const SUPABASE_URL = 'https://sfdozziezseywauuqddk.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmZG96emllenNleXdhdXVxZGRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NTc2NjMsImV4cCI6MjA5NTAzMzY2M30.on3phI2woSvl7JU1LcuP6yze5FJCkpygGgfiOy6jAkI';
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // Check auth
+  const { data: { session }, error: authError } = await supabase.auth.getSession();
+  if (authError || !session) {
+    window.location.href = 'Login.html';
+    return;
+  }
+
+  // Display admin info
+  const adminInfo = document.getElementById('admin-user-info');
+  if (adminInfo) {
+    adminInfo.textContent = `Logged in as: ${session.user.email}`;
+  }
+
+  try {
+    // 1. Fetch Member details
+    const { data: member, error: memberErr } = await supabase
+      .from('members')
+      .select('*')
+      .eq('id', memberId)
+      .single();
+
+    if (memberErr) throw memberErr;
+    if (!member) throw new Error('Member not found');
+
+    // 2. Fetch Activity Logs
+    const { data: logs, error: logsErr } = await supabase
+      .from('activity_log')
+      .select('*')
+      .eq('member_id', memberId)
+      .order('created_at', { ascending: false });
+
+    if (logsErr) throw logsErr;
+
+    // Populate UI
+    document.getElementById('member-status').textContent = member.status || 'Active';
+    document.getElementById('member-status').className = `px-3 py-1 rounded-full text-sm font-semibold capitalize ${
+      member.status === 'unconfirmed' ? 'bg-error-container text-on-error-container' : 'bg-primary-container text-on-primary'
+    }`;
+    
+    document.getElementById('member-name').textContent = `${member.name || ''} ${member.surname || ''}`.trim();
+    document.getElementById('member-email').textContent = member.email || 'N/A';
+    if (member.email_verified) document.getElementById('email-verified-icon').classList.remove('hidden');
+    
+    document.getElementById('member-phone').textContent = member.phone || 'N/A';
+    document.getElementById('member-gender').textContent = member.gender || 'N/A';
+    document.getElementById('member-language').textContent = member.language || 'N/A';
+    document.getElementById('member-joined').textContent = new Date(member.created_at).toLocaleDateString();
+
+    document.getElementById('member-municipality').textContent = member.municipality || 'N/A';
+    document.getElementById('member-ward').textContent = member.ward || 'N/A';
+    document.getElementById('member-branch').textContent = member.branch || 'N/A';
+    document.getElementById('member-residential').textContent = member.residential_address || 'N/A';
+    document.getElementById('member-postal').textContent = member.postal_address || 'N/A';
+
+    // Populate logs
+    const logContainer = document.getElementById('activity-log-container');
+    if (logs && logs.length > 0) {
+      logContainer.innerHTML = logs.map(log => `
+        <div class="flex gap-4 p-4 rounded-lg bg-surface-container-low border border-border-subtle">
+          <span class="material-symbols-outlined text-primary mt-1">history_edu</span>
+          <div>
+            <p class="font-semibold text-on-surface">${log.action}</p>
+            ${log.description ? `<p class="text-sm text-on-surface-variant mt-1">${log.description}</p>` : ''}
+            <p class="text-xs text-on-surface-variant mt-2">${new Date(log.created_at).toLocaleString()}</p>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      logContainer.innerHTML = '<p class="text-sm text-on-surface-variant italic">No activity logged for this member.</p>';
+    }
+
+    loading.classList.add('hidden');
+    content.classList.remove('hidden');
+
+    // Handle Reveal ID
+    const revealBtn = document.getElementById('reveal-id-btn');
+    const idDisplay = document.getElementById('id-number-display');
+    const revealText = document.getElementById('reveal-text');
+
+    revealBtn.addEventListener('click', async () => {
+      revealBtn.disabled = true;
+      revealText.textContent = 'Decrypting...';
+
+      try {
+        const { data, error } = await supabase.functions.invoke('decrypt-id', {
+          body: { target_member_id: memberId }
+        });
+
+        if (error) throw error;
+        if (!data || !data.success) throw new Error(data?.error || 'Decryption failed');
+
+        idDisplay.textContent = data.decryptedId;
+        idDisplay.classList.add('text-error'); // highlight it's sensitive
+        
+        revealBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">check</span><span>Revealed</span>';
+        revealBtn.classList.replace('bg-surface-container', 'bg-primary-container');
+        revealBtn.classList.replace('text-on-surface', 'text-on-primary-container');
+
+        // Show toast
+        if (typeof showToast === 'function') {
+          showToast('ID number decrypted successfully. This action has been logged.', 'success');
+        }
+
+        // Add to log UI instantly
+        const logHtml = `
+          <div class="flex gap-4 p-4 rounded-lg bg-error-container/20 border border-error/30">
+            <span class="material-symbols-outlined text-error mt-1">visibility</span>
+            <div>
+              <p class="font-semibold text-error">admin_decrypted_id</p>
+              <p class="text-sm text-on-surface-variant mt-1">Admin decrypted ID number for viewing.</p>
+              <p class="text-xs text-on-surface-variant mt-2">Just now</p>
+            </div>
+          </div>
+        `;
+        logContainer.insertAdjacentHTML('afterbegin', logHtml);
+
+      } catch (err) {
+        console.error('Decryption error:', err);
+        revealBtn.disabled = false;
+        revealText.textContent = 'Reveal';
+        if (typeof showToast === 'function') {
+          showToast('Failed to decrypt ID: ' + (err.message || 'Unauthorized'), 'error');
+        } else {
+          alert('Failed to decrypt ID: ' + (err.message || 'Unauthorized'));
+        }
+      }
+    });
+
+  } catch (error) {
+    console.error('Error loading member:', error);
+    loading.innerHTML = `
+      <div class="text-error bg-error-container p-4 rounded-lg inline-block text-left">
+        <p class="font-bold flex items-center gap-2"><span class="material-symbols-outlined">error</span> Error</p>
+        <p class="mt-1">${error.message || 'Failed to load member details.'}</p>
+      </div>
+    `;
+  }
+};
