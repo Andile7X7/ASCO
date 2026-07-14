@@ -2394,11 +2394,18 @@ if (window.location.pathname.includes('Campaigns.html')) {
 
   // ── Date Filter ────────────────────────────────────────────────────────────
   function setupDateFilter() {
-    // Find the date filter button by looking for calendar_today icon
     const dateBtn = document.querySelector('button .material-symbols-outlined');
-    // For now, just a simple last 30 days toggle
-    // Can be expanded with a date picker later
   }
+  }
+
+// ═════════════════════════════════════════════════════════════════════════════
+// CONTACT / JOIN FORM LOGIC
+// ═════════════════════════════════════════════════════════════════════════════
+
+if (window.location.pathname.includes('Contact.html')) {
+
+  const form = document.getElementById('contactForm');
+  if (!form) { console.error('contactForm not found'); } else {
 
   const submitBtn = form.querySelector('button[type="submit"]');
   const btnText = submitBtn.querySelector('.btn-text');
@@ -2424,7 +2431,6 @@ if (window.location.pathname.includes('Campaigns.html')) {
 
   function validateSAID(id) {
     if (!/^\d{13}$/.test(id)) return false;
-    // Extract and validate date of birth (YYMMDD)
     const mm = parseInt(id.substring(2, 4), 10);
     const dd = parseInt(id.substring(4, 6), 10);
     if (mm < 1 || mm > 12) return false;
@@ -2451,12 +2457,9 @@ if (window.location.pathname.includes('Campaigns.html')) {
     });
   }
 
- 
-
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    // Gather values
     const firstName = document.getElementById('first-name')?.value.trim();
     const lastName = document.getElementById('last-name')?.value.trim();
     const email     = document.getElementById('email')?.value.trim();
@@ -2472,7 +2475,6 @@ if (window.location.pathname.includes('Campaigns.html')) {
     const wantsUpdate  = document.getElementById('join-checkbox')?.checked;
     const popiaConsent = document.getElementById('popia-consent')?.checked;
 
-    // Validate required
     if (!firstName) return showToast('Please enter your first name.', 'error');
     if (!lastName) return showToast('Please enter your last name.', 'error');
     if (!email)    return showToast('Please enter your email address.', 'error');
@@ -2481,7 +2483,6 @@ if (window.location.pathname.includes('Campaigns.html')) {
     if (!municipality) return showToast('Please select your municipality.', 'error');
     if (!ward) return showToast('Please enter your ward.', 'error');
 
-    // Basic email validation
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return showToast('Please enter a valid email address.', 'error');
     }
@@ -2494,13 +2495,11 @@ if (window.location.pathname.includes('Campaigns.html')) {
       return showToast('You must consent to POPIA to submit your ID number.', 'error');
     }
 
-    // Disable button & show spinner
     submitBtn.disabled = true;
     btnText.textContent = 'Submitting…';
     btnSpinner.classList.remove('hidden');
 
     try {
-      // Send member data to Supabase Edge Function
       const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmZG96emllenNleXdhdXVxZGRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NTc2NjMsImV4cCI6MjA5NTAzMzY2M30.on3phI2woSvl7JU1LcuP6yze5FJCkpygGgfiOy6jAkI';
 
       const memberPayload = {
@@ -2537,13 +2536,12 @@ if (window.location.pathname.includes('Campaigns.html')) {
         if (insertRes.status === 409 && insertData.error?.includes('ID number')) {
            return showToast('This ID number is already registered.', 'error');
         } else if (insertRes.status === 409) {
-           // handled silently in edge function probably, but if it returns 409 for something else
+           // Re-verification was sent silently by edge function
         } else {
            throw new Error(insertData.error || 'Failed to save member data. Please try again later.');
         }
       }
 
-      // Success
       showToast(
         'Application submitted! Please check your email to verify your address.',
         'success'
@@ -2560,6 +2558,9 @@ if (window.location.pathname.includes('Campaigns.html')) {
       btnSpinner.classList.add('hidden');
     }
   });
+
+  }
+}
 
 // ============================================================
 // Toast notification helper
@@ -2700,13 +2701,13 @@ window.loadMemberDetails = async function(memberId) {
 
       try {
         const { data, error } = await supabase.functions.invoke('decrypt-id', {
-          body: { target_member_id: memberId }
+          body: { member_id: memberId }
         });
 
         if (error) throw error;
         if (!data || !data.success) throw new Error(data?.error || 'Decryption failed');
 
-        idDisplay.textContent = data.decryptedId;
+        idDisplay.textContent = data.id_number;
         idDisplay.classList.add('text-error'); // highlight it's sensitive
         
         revealBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">check</span><span>Revealed</span>';

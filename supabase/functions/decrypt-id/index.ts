@@ -105,7 +105,7 @@ serve(async (req: Request) => {
     // Fetch the target member's encrypted ID
     const { data: targetMember, error: targetError } = await db
       .from('members')
-      .select('id_number_encrypted, id_number_iv')
+      .select('id, id_number_encrypted, id_number_iv')
       .eq('id', member_id)
       .maybeSingle();
 
@@ -127,7 +127,7 @@ serve(async (req: Request) => {
     await db.from('activity_log').insert({
       action: 'id_number_decrypted',
       description: `Admin [${user.email}] viewed ID number for member [${member_id}]`,
-      member_id: targetMember.id, // Or targetMember.id, but the schema allows logging on the member
+      member_id: member_id,
     });
 
     return new Response(JSON.stringify({ success: true, id_number: plaintextId }), {
