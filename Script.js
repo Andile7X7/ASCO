@@ -1810,8 +1810,8 @@ if (window.location.pathname.includes('CreateCampaign.html')) {
         ? new Date(document.getElementById('schedule-datetime').value).toISOString()
         : null,
       status: 'draft',
-    };
-  }
+  };
+
 
   // ── Save Draft ──────────────────────────────────────────────────────────────
   window.saveDraft = async function(options = {}) {
@@ -2056,13 +2056,14 @@ if (window.location.pathname.includes('CreateCampaign.html')) {
       }
     }
   };
-}
+    }
+  }
 
-// ═════════════════════════════════════════════════════════════════════════════
-// CAMPAIGNS LIST PAGE LOGIC
-// ═════════════════════════════════════════════════════════════════════════════
+  // ═════════════════════════════════════════════════════════════════════════════
+  // CAMPAIGNS LIST PAGE LOGIC
+  // ═════════════════════════════════════════════════════════════════════════════
 
-if (window.location.pathname.includes('Campaigns.html')) {
+  if (window.location.pathname.includes('Campaigns.html')) {
 
   // ── State ──────────────────────────────────────────────────────────────────
   let currentTab = 'sent';
@@ -2402,165 +2403,165 @@ if (window.location.pathname.includes('Campaigns.html')) {
 // CONTACT / JOIN FORM LOGIC
 // ═════════════════════════════════════════════════════════════════════════════
 
-if (window.location.pathname.includes('Contact.html')) {
+  if (window.location.pathname.includes('Contact.html')) {
 
-  const form = document.getElementById('contactForm');
-  if (!form) { console.error('contactForm not found'); } else {
+    const form = document.getElementById('contactForm');
+    if (!form) { console.error('contactForm not found'); } else {
 
-  const submitBtn = form.querySelector('button[type="submit"]');
-  const btnText = submitBtn.querySelector('.btn-text');
-  const btnSpinner = submitBtn.querySelector('.btn-spinner');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnSpinner = submitBtn.querySelector('.btn-spinner');
 
-  const idInput = document.getElementById('id-number');
-  const idFeedback = document.getElementById('id-feedback');
+    const idInput = document.getElementById('id-number');
+    const idFeedback = document.getElementById('id-feedback');
 
-  function luhnCheck(idNumber) {
-    let sum = 0;
-    let isEven = false;
-    for (let i = idNumber.length - 1; i >= 0; i--) {
-      let digit = parseInt(idNumber.charAt(i), 10);
-      if (isEven) {
-        digit *= 2;
-        if (digit > 9) digit -= 9;
-      }
-      sum += digit;
-      isEven = !isEven;
-    }
-    return sum % 10 === 0;
-  }
-
-  function validateSAID(id) {
-    if (!/^\d{13}$/.test(id)) return false;
-    const mm = parseInt(id.substring(2, 4), 10);
-    const dd = parseInt(id.substring(4, 6), 10);
-    if (mm < 1 || mm > 12) return false;
-    if (dd < 1 || dd > 31) return false;
-    return luhnCheck(id);
-  }
-
-  if (idInput && idFeedback) {
-    idInput.addEventListener('input', (e) => {
-      const val = e.target.value.replace(/\D/g, '').slice(0, 13);
-      e.target.value = val;
-      if (val.length === 13) {
-        idFeedback.classList.remove('hidden');
-        if (validateSAID(val)) {
-          idFeedback.textContent = 'check_circle';
-          idFeedback.className = 'absolute right-3 material-symbols-outlined text-[20px] text-primary';
-        } else {
-          idFeedback.textContent = 'cancel';
-          idFeedback.className = 'absolute right-3 material-symbols-outlined text-[20px] text-error';
+    function luhnCheck(idNumber) {
+      let sum = 0;
+      let isEven = false;
+      for (let i = idNumber.length - 1; i >= 0; i--) {
+        let digit = parseInt(idNumber.charAt(i), 10);
+        if (isEven) {
+          digit *= 2;
+          if (digit > 9) digit -= 9;
         }
-      } else {
-        idFeedback.classList.add('hidden');
+        sum += digit;
+        isEven = !isEven;
+      }
+      return sum % 10 === 0;
+    }
+
+    function validateSAID(id) {
+      if (!/^\d{13}$/.test(id)) return false;
+      const mm = parseInt(id.substring(2, 4), 10);
+      const dd = parseInt(id.substring(4, 6), 10);
+      if (mm < 1 || mm > 12) return false;
+      if (dd < 1 || dd > 31) return false;
+      return luhnCheck(id);
+    }
+
+    if (idInput && idFeedback) {
+      idInput.addEventListener('input', (e) => {
+        const val = e.target.value.replace(/\D/g, '').slice(0, 13);
+        e.target.value = val;
+        if (val.length === 13) {
+          idFeedback.classList.remove('hidden');
+          if (validateSAID(val)) {
+            idFeedback.textContent = 'check_circle';
+            idFeedback.className = 'absolute right-3 material-symbols-outlined text-[20px] text-primary';
+          } else {
+            idFeedback.textContent = 'cancel';
+            idFeedback.className = 'absolute right-3 material-symbols-outlined text-[20px] text-error';
+          }
+        } else {
+          idFeedback.classList.add('hidden');
+        }
+      });
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const firstName = document.getElementById('first-name')?.value.trim();
+      const lastName = document.getElementById('last-name')?.value.trim();
+      const email     = document.getElementById('email')?.value.trim();
+      const phone     = document.getElementById('phone')?.value.trim();
+      const idNumber  = document.getElementById('id-number')?.value.trim();
+      const gender    = document.getElementById('gender')?.value;
+      const municipality = document.getElementById('municipality')?.value;
+      const ward      = document.getElementById('ward')?.value.trim();
+      const branch    = document.getElementById('branch')?.value.trim();
+      const language  = document.getElementById('language')?.value.trim();
+      const residentialAddress = document.getElementById('residential-address')?.value.trim();
+      const postalAddress = document.getElementById('postal-address')?.value.trim();
+      const wantsUpdate  = document.getElementById('join-checkbox')?.checked;
+      const popiaConsent = document.getElementById('popia-consent')?.checked;
+
+      if (!firstName) return showToast('Please enter your first name.', 'error');
+      if (!lastName) return showToast('Please enter your last name.', 'error');
+      if (!email)    return showToast('Please enter your email address.', 'error');
+      if (!phone)    return showToast('Please enter your phone number.', 'error');
+      if (!idNumber) return showToast('Please enter your ID number.', 'error');
+      if (!municipality) return showToast('Please select your municipality.', 'error');
+      if (!ward) return showToast('Please enter your ward.', 'error');
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return showToast('Please enter a valid email address.', 'error');
+      }
+
+      if (!validateSAID(idNumber)) {
+        return showToast('Please enter a valid 13-digit South African ID number.', 'error');
+      }
+
+      if (!popiaConsent) {
+        return showToast('You must consent to POPIA to submit your ID number.', 'error');
+      }
+
+      submitBtn.disabled = true;
+      btnText.textContent = 'Submitting…';
+      btnSpinner.classList.remove('hidden');
+
+      try {
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmZG96emllenNleXdhdXVxZGRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NTc2NjMsImV4cCI6MjA5NTAzMzY2M30.on3phI2woSvl7JU1LcuP6yze5FJCkpygGgfiOy6jAkI';
+
+        const memberPayload = {
+          firstName,
+          lastName,
+          email: email.toLowerCase(),
+          phone,
+          idNumber,
+          gender,
+          municipality,
+          ward,
+          branch,
+          language,
+          residentialAddress,
+          postalAddress,
+          wantsEmails: wantsUpdate
+        };
+
+        const insertRes = await fetch(
+          'https://sfdozziezseywauuqddk.supabase.co/functions/v1/register-member',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            },
+            body: JSON.stringify(memberPayload),
+          }
+        );
+
+        const insertData = await insertRes.json().catch(() => ({}));
+
+        if (!insertRes.ok) {
+          if (insertRes.status === 409 && insertData.error?.includes('ID number')) {
+            return showToast('This ID number is already registered.', 'error');
+          } else if (insertRes.status === 409) {
+            // Re-verification was sent silently by edge function
+          } else {
+            throw new Error(insertData.error || 'Failed to save member data. Please try again later.');
+          }
+        }
+
+        showToast(
+          'Application submitted! Please check your email to verify your address.',
+          'success'
+        );
+        form.reset();
+        if (idFeedback) idFeedback.classList.add('hidden');
+
+      } catch (err) {
+        console.error('[ContactForm] Error:', err);
+        showToast(err.message || 'Something went wrong. Please try again.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        btnText.textContent = 'Submit Application';
+        btnSpinner.classList.add('hidden');
       }
     });
+
+    }
   }
-
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const firstName = document.getElementById('first-name')?.value.trim();
-    const lastName = document.getElementById('last-name')?.value.trim();
-    const email     = document.getElementById('email')?.value.trim();
-    const phone     = document.getElementById('phone')?.value.trim();
-    const idNumber  = document.getElementById('id-number')?.value.trim();
-    const gender    = document.getElementById('gender')?.value;
-    const municipality = document.getElementById('municipality')?.value;
-    const ward      = document.getElementById('ward')?.value.trim();
-    const branch    = document.getElementById('branch')?.value.trim();
-    const language  = document.getElementById('language')?.value.trim();
-    const residentialAddress = document.getElementById('residential-address')?.value.trim();
-    const postalAddress = document.getElementById('postal-address')?.value.trim();
-    const wantsUpdate  = document.getElementById('join-checkbox')?.checked;
-    const popiaConsent = document.getElementById('popia-consent')?.checked;
-
-    if (!firstName) return showToast('Please enter your first name.', 'error');
-    if (!lastName) return showToast('Please enter your last name.', 'error');
-    if (!email)    return showToast('Please enter your email address.', 'error');
-    if (!phone)    return showToast('Please enter your phone number.', 'error');
-    if (!idNumber) return showToast('Please enter your ID number.', 'error');
-    if (!municipality) return showToast('Please select your municipality.', 'error');
-    if (!ward) return showToast('Please enter your ward.', 'error');
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return showToast('Please enter a valid email address.', 'error');
-    }
-
-    if (!validateSAID(idNumber)) {
-      return showToast('Please enter a valid 13-digit South African ID number.', 'error');
-    }
-
-    if (!popiaConsent) {
-      return showToast('You must consent to POPIA to submit your ID number.', 'error');
-    }
-
-    submitBtn.disabled = true;
-    btnText.textContent = 'Submitting…';
-    btnSpinner.classList.remove('hidden');
-
-    try {
-      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmZG96emllenNleXdhdXVxZGRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NTc2NjMsImV4cCI6MjA5NTAzMzY2M30.on3phI2woSvl7JU1LcuP6yze5FJCkpygGgfiOy6jAkI';
-
-      const memberPayload = {
-        firstName,
-        lastName,
-        email: email.toLowerCase(),
-        phone,
-        idNumber,
-        gender,
-        municipality,
-        ward,
-        branch,
-        language,
-        residentialAddress,
-        postalAddress,
-        wantsEmails: wantsUpdate
-      };
-
-      const insertRes = await fetch(
-        'https://sfdozziezseywauuqddk.supabase.co/functions/v1/register-member',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify(memberPayload),
-        }
-      );
-
-      const insertData = await insertRes.json().catch(() => ({}));
-
-      if (!insertRes.ok) {
-        if (insertRes.status === 409 && insertData.error?.includes('ID number')) {
-           return showToast('This ID number is already registered.', 'error');
-        } else if (insertRes.status === 409) {
-           // Re-verification was sent silently by edge function
-        } else {
-           throw new Error(insertData.error || 'Failed to save member data. Please try again later.');
-        }
-      }
-
-      showToast(
-        'Application submitted! Please check your email to verify your address.',
-        'success'
-      );
-      form.reset();
-      if (idFeedback) idFeedback.classList.add('hidden');
-
-    } catch (err) {
-      console.error('[ContactForm] Error:', err);
-      showToast(err.message || 'Something went wrong. Please try again.', 'error');
-    } finally {
-      submitBtn.disabled = false;
-      btnText.textContent = 'Submit Application';
-      btnSpinner.classList.add('hidden');
-    }
-  });
-
-  }
-}
 
 // ============================================================
 // Toast notification helper
@@ -2753,5 +2754,5 @@ window.loadMemberDetails = async function(memberId) {
       </div>
     `;
   }
-  };
-}
+};
+
