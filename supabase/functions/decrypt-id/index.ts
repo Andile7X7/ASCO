@@ -2,10 +2,51 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+const ALLOWED_ORIGINS = ['https://asco.org.za', 'https://www.asco.org.za', 'http://127.0.0.1:5500', 'http://localhost:5500'];
+
+function getCorsHeaders(req: Request) {
+  const origin = req.headers.get('origin') || '';
+  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  return {
+    'Access-Control-Allow-Origin': allowed,
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  };
+}
+
+// --- Rate Limiting ---
+const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_MAX = 30;
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+
+function checkRateLimit(ip: string): { allowed: boolean; retryAfterSec: number } {
+  const now = Date.now();
+  const entry = rateLimitStore.get(ip);
+
+  if (rateLimitStore.size > 1000) {
+    for (const [key, val] of rateLimitStore) {
+      if (val.resetAt <= now) rateLimitStore.delete(key);
+    }
+  }
+
+  if (!entry || entry.resetAt <= now) {
+    rateLimitStore.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return { allowed: true, retryAfterSec: 0 };
+  }
+
+  entry.count++;
+  if (entry.count > RATE_LIMIT_MAX) {
+    const retryAfterSec = Math.ceil((entry.resetAt - now) / 1000);
+    return { allowed: false, retryAfterSec };
+  }
+
+  return { allowed: true, retryAfterSec: 0 };
+}
+
+function getClientIp(req: Request): string {
+  return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    || req.headers.get('x-real-ip')
+    || 'unknown';
+}
 
 function hexToArrayBuffer(hex: string) {
   if (hex.length % 2 !== 0) throw new Error("Invalid hex string");
@@ -50,7 +91,17 @@ async function decryptIdNumber(encryptedBase64: string, ivBase64: string, hexKey
 
 serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    return new Response('ok', { headers: getCorsHeaders(req) });
+  }
+
+  // Rate limiting
+  const clientIp = getClientIp(req);
+  const { allowed, retryAfterSec } = checkRateLimit(clientIp);
+  if (!allowed) {
+    return new Response(JSON.stringify({ success: false, error: 'Too many requests.' }), {
+      status: 429,
+      headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json', 'Retry-After': String(retryAfterSec) },
+    });
   }
 
   try {
@@ -65,7 +116,7 @@ serve(async (req: Request) => {
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
       return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
-        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        status: 401, headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' }
       });
     }
 
@@ -76,7 +127,7 @@ serve(async (req: Request) => {
     const { data: { user }, error: userError } = await db.auth.getUser(token);
     if (userError || !user) {
       return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
-        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        status: 401, headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' }
       });
     }
 
@@ -90,7 +141,7 @@ serve(async (req: Request) => {
 
     if (adminError || !adminMember || adminMember.role !== 'admin') {
       return new Response(JSON.stringify({ success: false, error: 'Forbidden' }), {
-        status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        status: 403, headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' }
       });
     }
 
@@ -98,7 +149,7 @@ serve(async (req: Request) => {
     const { member_id } = body;
     if (!member_id) {
       return new Response(JSON.stringify({ success: false, error: 'Missing member_id' }), {
-        status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        status: 400, headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' }
       });
     }
 
@@ -111,13 +162,13 @@ serve(async (req: Request) => {
 
     if (targetError || !targetMember) {
       return new Response(JSON.stringify({ success: false, error: 'Member not found' }), {
-        status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        status: 404, headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' }
       });
     }
 
     if (!targetMember.id_number_encrypted || !targetMember.id_number_iv) {
       return new Response(JSON.stringify({ success: false, error: 'ID number not available for this member' }), {
-        status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        status: 400, headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' }
       });
     }
 
@@ -131,14 +182,14 @@ serve(async (req: Request) => {
     });
 
     return new Response(JSON.stringify({ success: true, id_number: plaintextId }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' }
     });
 
   } catch (err: any) {
     console.error('[decrypt-id] Error:', err.message);
     return new Response(JSON.stringify({ success: false, error: err.message }), {
       status: 400,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' }
     });
   }
 });

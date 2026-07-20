@@ -2465,7 +2465,9 @@ if (window.location.pathname.includes('CreateCampaign.html')) {
       const lastName = document.getElementById('last-name')?.value.trim();
       const email     = document.getElementById('email')?.value.trim();
       const phone     = document.getElementById('phone')?.value.trim();
-      const idNumber  = document.getElementById('id-number')?.value.trim();
+      let idNumber = document.getElementById('id-number')?.value;
+      idNumber = idNumber ? idNumber.replace(/\D/g, '').trim() : '';
+
       const gender    = document.getElementById('gender')?.value;
       const municipality = document.getElementById('municipality')?.value;
       const ward      = document.getElementById('ward')?.value.trim();
@@ -2489,8 +2491,31 @@ if (window.location.pathname.includes('CreateCampaign.html')) {
       }
 
       if (!validateSAID(idNumber)) {
-        return showToast('Please enter a valid 13-digit South African ID number.', 'error');
+      const mm = parseInt(idNumber.substring(2, 4), 10);
+      const dd = parseInt(idNumber.substring(4, 6), 10);
+
+      console.log('[SA ID Debug]', {
+        rawValue: document.getElementById('id-number')?.value,
+        cleanedValue: idNumber,
+        length: idNumber.length,
+        month: mm,
+        day: dd,
+        luhnValid: luhnCheck(idNumber)
+      });
+
+      let reason = '';
+      if (idNumber.length !== 13) {
+        reason = ` You entered ${idNumber.length} digits, need exactly 13.`;
+      } else if (mm < 1 || mm > 12) {
+        reason = ' Invalid month in date portion.';
+      } else if (dd < 1 || dd > 31) {
+        reason = ' Invalid day in date portion.';
+      } else if (!luhnCheck(idNumber)) {
+        reason = ' Checksum digit does not match. Please double-check your ID number.';
       }
+
+      return showToast('Please enter a valid 13-digit South African ID number.' + reason, 'error');
+    }
 
       if (!popiaConsent) {
         return showToast('You must consent to POPIA to submit your ID number.', 'error');

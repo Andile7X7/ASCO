@@ -117,6 +117,15 @@ CREATE TABLE public.members (
   status text DEFAULT 'active'::text CHECK (status = ANY (ARRAY['active'::text, 'inactive'::text, 'unconfirmed'::text])),
   source text DEFAULT 'website'::text,
   role text DEFAULT 'member'::text CHECK (role = ANY (ARRAY['member'::text, 'admin'::text, 'volunteer'::text])),
+  id_number_encrypted text,
+  id_number_iv text,
+  id_number_hash text UNIQUE,
+  ward text,
+  branch text,
+  language text,
+  gender text,
+  residential_address text,
+  postal_address text,
   created_at timestamp with time zone DEFAULT now(),
   updated_at timestamp with time zone DEFAULT now(),
   CONSTRAINT members_pkey PRIMARY KEY (id)
@@ -128,3 +137,12 @@ CREATE TABLE public.settings (
   updated_at timestamp with time zone DEFAULT now(),
   CONSTRAINT settings_pkey PRIMARY KEY (id)
 );
+
+-- ─── Row Level Security ──────────────────────────────────────────────────────
+-- Applied via rls-migration.sql. Run that file in Supabase SQL Editor.
+-- Summary:
+--   - RLS enabled on all tables
+--   - anon role: no SELECT on members (blocks raw ID/PII access from browser)
+--   - anon role: INSERT on members (registration), SELECT/INSERT/UPDATE on blogs, campaigns, etc.
+--   - authenticated role (admin): full access to all tables
+--   - Edge Functions bypass RLS via service role key

@@ -2,10 +2,52 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+const ALLOWED_ORIGINS = ['https://asco.org.za', 'https://www.asco.org.za', 'http://127.0.0.1:5500', 'http://localhost:5500'];
+
+function getCorsHeaders(req: Request) {
+  const origin = req.headers.get('origin') || '';
+  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  return {
+    'Access-Control-Allow-Origin': allowed,
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  };
+}
+
+// --- Rate Limiting ---
+const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+
+function checkRateLimit(ip: string): { allowed: boolean; retryAfterSec: number } {
+  const now = Date.now();
+  const entry = rateLimitStore.get(ip);
+
+  // Clean up expired entries periodically
+  if (rateLimitStore.size > 1000) {
+    for (const [key, val] of rateLimitStore) {
+      if (val.resetAt <= now) rateLimitStore.delete(key);
+    }
+  }
+
+  if (!entry || entry.resetAt <= now) {
+    rateLimitStore.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return { allowed: true, retryAfterSec: 0 };
+  }
+
+  entry.count++;
+  if (entry.count > RATE_LIMIT_MAX) {
+    const retryAfterSec = Math.ceil((entry.resetAt - now) / 1000);
+    return { allowed: false, retryAfterSec };
+  }
+
+  return { allowed: true, retryAfterSec: 0 };
+}
+
+function getClientIp(req: Request): string {
+  return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    || req.headers.get('x-real-ip')
+    || 'unknown';
+}
 
 // --- Crypto Helpers ---
 function hexToArrayBuffer(hex: string) {
@@ -86,7 +128,17 @@ function luhnCheck(id: string): boolean {
 
 serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    return new Response('ok', { headers: getCorsHeaders(req) });
+  }
+
+  // Rate limiting
+  const clientIp = getClientIp(req);
+  const { allowed, retryAfterSec } = checkRateLimit(clientIp);
+  if (!allowed) {
+    return new Response(JSON.stringify({ success: false, error: 'Too many requests. Please try again later.' }), {
+      status: 429,
+      headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json', 'Retry-After': String(retryAfterSec) },
+    });
   }
 
   try {
@@ -109,9 +161,54 @@ serve(async (req: Request) => {
       throw new Error('Missing required fields.');
     }
     
-    if (!/^\\d{13}$/.test(idNumber) || !luhnCheck(idNumber)) {
-      throw new Error('Invalid SA ID Number format.');
-    }
+    // if (!/^\\d{13}$/.test(idNumber) || !luhnCheck(idNumber)) {
+    //   throw new Error('Invalid SA ID Number format.');
+    // }
+    function isLeapYear(year: number): boolean {
+  return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+}
+
+function validateSAID(id: string): { valid: boolean; reason?: string } {
+  if (!/^\d{13}$/.test(id)) {
+    return { valid: false, reason: 'Must be exactly 13 digits' };
+  }
+
+  const yy = parseInt(id.substring(0, 2), 10);
+  const mm = parseInt(id.substring(2, 4), 10);
+  const dd = parseInt(id.substring(4, 6), 10);
+  const fullYear = yy >= 50 ? 1900 + yy : 2000 + yy;
+
+  if (mm < 1 || mm > 12) {
+    return { valid: false, reason: `Invalid month: ${mm}` };
+  }
+
+  const daysInMonth = [31, isLeapYear(fullYear) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (dd < 1 || dd > daysInMonth[mm - 1]) {
+    return { valid: false, reason: `Invalid day ${dd} for month ${mm}` };
+  }
+
+  const citizenship = parseInt(id[10], 10);
+  if (citizenship !== 0 && citizenship !== 1) {
+    return { valid: false, reason: `Citizenship digit must be 0 or 1` };
+  }
+
+  const raceDigit = parseInt(id[11], 10);
+  if (raceDigit !== 8 && raceDigit !== 9) {
+    return { valid: false, reason: `12th digit must be 8 or 9` };
+  }
+
+  if (!luhnCheck(id)) {
+    return { valid: false, reason: 'Luhn checksum failed' };
+  }
+
+  return { valid: true };
+}
+
+// Then use it:
+const idCheck = validateSAID(idNumber);
+if (!idCheck.valid) {
+  throw new Error(`Invalid SA ID: ${idCheck.reason}`);
+}
 
     const validMunicipalities = [
       'Dr JS Moroka', 'Thembisile Hani', 'Victor Kanye', 'Emalahleni', 
@@ -148,31 +245,37 @@ serve(async (req: Request) => {
     if (insertError) {
       if (insertError.code === '23505' && insertError.message.includes('id_number_hash')) {
         return new Response(JSON.stringify({ success: false, error: 'This ID number is already registered' }), {
-          status: 409, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+          status: 409, headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' }
         });
       }
       if (insertError.code === '23505' && insertError.message.includes('email')) {
         // Silent re-verification
         await triggerVerification(PROJECT_URL, PROJECT_SERVICE_KEY, email, firstName);
         return new Response(JSON.stringify({ success: true, message: 'Member already exists, verification re-sent' }), {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+          headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' }
         });
       }
-      throw new Error(insertError.message);
+      console.error('[register-member] DB insert error:', insertError.message, insertError.code);
+      throw new Error('Failed to register. Please try again later.');
     }
     
     // Trigger verification
     await triggerVerification(PROJECT_URL, PROJECT_SERVICE_KEY, email, firstName);
     
     return new Response(JSON.stringify({ success: true, member: insertedMember }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' }
     });
 
   } catch (err: any) {
     console.error('[register-member] Error:', err.message);
-    return new Response(JSON.stringify({ success: false, error: err.message }), {
+    const safeMessage = err.message?.startsWith('Missing required') 
+      || err.message?.startsWith('Invalid')
+      || err.message?.startsWith('Server configuration')
+      ? err.message 
+      : 'An unexpected error occurred. Please try again later.';
+    return new Response(JSON.stringify({ success: false, error: safeMessage }), {
       status: 400,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' }
     });
   }
 });

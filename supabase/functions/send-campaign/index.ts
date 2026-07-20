@@ -2,10 +2,16 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+const ALLOWED_ORIGINS = ['https://asco.org.za', 'https://www.asco.org.za', 'http://127.0.0.1:5500', 'http://localhost:5500'];
+
+function getCorsHeaders(req: Request) {
+  const origin = req.headers.get('origin') || '';
+  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  return {
+    'Access-Control-Allow-Origin': allowed,
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  };
+}
 
 // ─── HMAC Token Helper ───────────────────────────────────────────────────────
 async function generateUnsubscribeToken(memberId: string, campaignId: string, secret: string): Promise<string> {
@@ -134,13 +140,13 @@ function buildEmailText(campaign: { title: string; text: string; sender_name?: s
 serve(async (req: Request) => {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    return new Response('ok', { headers: getCorsHeaders(req) });
   }
 
   // Health check endpoint
   if (req.method === 'GET') {
     return new Response(JSON.stringify({ status: 'connected', service: 'send-campaign' }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
     });
   }
 
@@ -232,7 +238,7 @@ serve(async (req: Request) => {
       if (!resendRes.ok) throw new Error(`Resend error: ${resendData.message || JSON.stringify(resendData)}`);
 
       return new Response(JSON.stringify({ success: true, message: `Test email sent to ${test_email}`, resend_id: resendData.id }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
       });
     }
 
@@ -377,14 +383,14 @@ serve(async (req: Request) => {
       recipient_count: sentCount,
       status: finalStatus,
     }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
     });
 
   } catch (err: any) {
     console.error('[send-campaign] Error:', err.message);
     return new Response(JSON.stringify({ success: false, error: err.message }), {
       status: 400,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
     });
   }
 });
